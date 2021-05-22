@@ -2,6 +2,6 @@
 | --- | :-: | :-: | :-: |
 | Dispatcher.interval | Yes | Yes | Yes |
 | Promise.defer | Yes | No | Yes |
-| Dispatcher.Signal | No | No | No |
+| Dispatcher.Signal | No | Yes | No |
 
 Lowest row = Fastest;
