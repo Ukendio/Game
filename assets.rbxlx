@@ -1338,63 +1338,6 @@ return Luck
 			<int64 name="SourceAssetId">-1</int64>
 			<BinaryString name="Tags"></BinaryString>
 		</Properties>
-		<Item class="ModuleScript" referent="RBXA756E9585C09423BBB6101A99A061580">
-			<Properties>
-				<BinaryString name="AttributesSerialize"></BinaryString>
-				<Content name="LinkedSource"><null></null></Content>
-				<string name="Name">Tests.bench</string>
-				<string name="ScriptGuid">{2A245663-6D3D-4706-BAAF-D1C126650544}</string>
-				<ProtectedString name="Source"><![CDATA[--[[
-
-|WARNING| THESE TESTS RUN IN YOUR REAL ENVIRONMENT. |WARNING|
-
-If your tests alter a DataStore, it will actually alter your DataStore.
-
-This is useful in allowing your tests to move Parts around in the workspace or something,
-but with great power comes great responsibility. Don't mess up your stuff!
-
----------------------------------------------------------------------
-
-Documentation and Change Log:
-https://devforum.roblox.com/t/benchmarker-plugin-compare-function-speeds-with-graphs-percentiles-and-more/829912/1
-
---------------------------------------------------------------------]]
-
-return {
-
-	ParameterGenerator = function()
-		-- This function is called before running your function (outside the timer)
-		-- and the return(s) are passed into your function arguments (after the Profiler). This sample
-		-- will pass the function a random number, but you can make it pass
-		-- arrays, Vector3s, or anything else you want to test your function on.
-		return true
-	end;
-
-	Functions = {
-		["Sample A"] = function(Profiler, RandomNumber) -- You can change "Sample A" to a descriptive name for your function
-
-			-- The first argument passed is always our Profiler tool, so you can put
-			-- Profiler.Begin("UNIQUE_LABEL_NAME") ... Profiler.End() around portions of your code
-			-- to break your function into labels that are viewable under the results
-			-- histogram graph to see what parts of your function take the most time.
-
-
-			-- Your code here
-
-		end;
-
-		["Sample B"] = function(Profiler, RandomNumber)
-
-		end;
-
-		-- You can add as many functions as you like!
-	};
-
-}]]></ProtectedString>
-				<int64 name="SourceAssetId">-1</int64>
-				<BinaryString name="Tags"></BinaryString>
-			</Properties>
-		</Item>
 	</Item>
 	<Item class="ReplicatedStorage" referent="42">
 		<Properties>
@@ -19665,14 +19608,6 @@ return SingleEvent
 						<BinaryString name="Tags"></BinaryString>
 					</Properties>
 				</Item>
-			</Item>
-			<Item class="Folder" referent="RBX06C25FA5B04A428BBE0A6AB13C0088E7">
-				<Properties>
-					<BinaryString name="AttributesSerialize"></BinaryString>
-					<string name="Name">benchmark</string>
-					<int64 name="SourceAssetId">-1</int64>
-					<BinaryString name="Tags"></BinaryString>
-				</Properties>
 			</Item>
 		</Item>
 	</Item>
