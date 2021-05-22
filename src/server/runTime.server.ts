@@ -58,22 +58,6 @@ async function handleCharacterAdded(character: Model) {
 const onPlayerAdded = (player: Player) => {
 	if (player.Character) handleCharacterAdded(player.Character);
 	else player.CharacterAdded.Connect(handleCharacterAdded);
-
-	/*
-	const listener = interval(5, (message: string) => {
-		print(message);
-	});
-
-	const connection = listener.event.connect(() => {
-		connection.disconnect();
-		listener.callback("Hello"); // This will never be ran!
-	});*/
-
-	const listener = spreadInterval(5, () => {
-		return function (message: Callback) {
-			print(message());
-		};
-	});
 };
 
 for (const player of Players.GetPlayers()) {
