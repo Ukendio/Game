@@ -37,13 +37,17 @@ export = () => {
 	});
 
 	describe("Signal", () => {
-		it("Should not run", () => {
+		it("Should only run once", () => {
 			const signal = new Dispatcher();
+			let hasRanTimes = 0;
 			const connection = signal.connect((check) => {
-				expect(check).to.be.never;
+				connection.disconnect();
+				hasRanTimes = check;
 			});
-			connection.disconnect();
 			signal.fire(1);
+			signal.fire(2); // This should not connect
+
+			expect(hasRanTimes).to.equal(1);
 		});
 	});
 };
