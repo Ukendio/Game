@@ -1,5 +1,7 @@
-| Classes | Yield | Loop |
-| --- | :-- | --: |
-| Promise.defer | Yes | No | 
-| Dispatcher.interval | Yes |
-| Dispatcher.Signal | No | No |
+| Classes | Yield | Loop | Multiple Connections |
+| --- | :-- | :-: | --: |
+| Promise.defer | Yes | No | No |
+| Dispatcher.interval | Yes | Yes | No |
+| Dispatcher.Signal | No | No | Yes |
+
+Lowest row = Fastest;
