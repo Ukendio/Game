@@ -70,18 +70,18 @@
 			<Properties>
 				<BinaryString name="AttributesSerialize"></BinaryString>
 				<CoordinateFrame name="CFrame">
-					<X>-1.88598645</X>
-					<Y>23.8972931</Y>
-					<Z>37.7265892</Z>
-					<R00>0.992805243</R00>
-					<R01>-0.0846377835</R01>
-					<R02>0.0847015753</R02>
+					<X>-2.18115854</X>
+					<Y>23.8444958</Y>
+					<Z>37.7822189</Z>
+					<R00>0.996311307</R00>
+					<R01>0.0583912581</R01>
+					<R02>-0.0628844574</R02>
 					<R10>-0</R10>
-					<R11>0.707373202</R11>
-					<R12>0.706840336</R12>
-					<R20>-0.119741023</R20>
-					<R21>-0.701754808</R21>
-					<R22>0.70228368</R22>
+					<R11>0.732802033</R11>
+					<R12>0.680441916</R12>
+					<R20>0.085813731</R20>
+					<R21>-0.677931964</R21>
+					<R22>0.730098784</R22>
 				</CoordinateFrame>
 				<Ref name="CameraSubject">null</Ref>
 				<token name="CameraType">0</token>
@@ -22287,7 +22287,7 @@ return {
 							</Vector3>
 							<int64 name="SourceAssetId">-1</int64>
 							<BinaryString name="Tags"></BinaryString>
-							<Content name="TextureID"><null></null></Content>
+							<Content name="TextureID"><url>rbxassetid://3492801677</url></Content>
 							<float name="TopParamA">-0.5</float>
 							<float name="TopParamB">0.5</float>
 							<token name="TopSurface">0</token>
