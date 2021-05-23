@@ -76,7 +76,7 @@ export = () => {
 				});
 			}, tracebackReporter);
 
-			warn(result);
+			//warn(result); silence the warning
 			expect(ok).to.equal(false);
 		});
 	});
