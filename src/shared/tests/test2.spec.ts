@@ -72,12 +72,12 @@ export = () => {
 
 			const [ok, result] = xpcall(() => {
 				noYield(() => {
-					signal.fire();
+					error("Hello");
 				});
 			}, tracebackReporter);
 
 			warn(result);
-			expect(ok).to.equal(true);
+			expect(ok).to.equal(false);
 		});
 	});
 };

@@ -1,6 +1,6 @@
 function resultHandler(co: thread, ok: boolean, ...results: unknown[]) {
 	if (!ok) {
-		error(debug.traceback(co, ...((results as never) as string)), 2);
+		error(debug.traceback(co, ...(results as string[])), 2);
 	}
 
 	if (coroutine.status(co) !== "dead") {
