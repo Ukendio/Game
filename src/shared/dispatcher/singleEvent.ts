@@ -1,6 +1,7 @@
 class SingleEvent {
 	private _listener = undefined! as Callback;
 	private _promise = undefined! as Promise<unknown>;
+
 	constructor(
 		executor: (
 			dispatch: Callback,
