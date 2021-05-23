@@ -1,5 +1,5 @@
 /// <reference types="@rbxts/testez/globals" />
-import Dispatcher, { interval } from "shared/dispatcher";
+import Dispatcher, { interval, noYield } from "shared/dispatcher";
 
 function now() {
 	return DateTime.now().UnixTimestampMillis / 1000;
@@ -48,6 +48,36 @@ export = () => {
 			signal.fire(2); // This should not connect
 
 			expect(hasRanTimes).to.equal(1);
+		});
+
+		it("Inline resumption should be of okay", () => {
+			const signal = new Dispatcher();
+			let success = false;
+			signal.connect(() => {
+				success = true;
+			});
+
+			signal.fire();
+			expect(success).to.be.ok;
+		});
+
+		it("Error when yielding inside of handler", () => {
+			const signal = new Dispatcher();
+
+			signal.connect(() => {
+				wait(5);
+			});
+
+			const tracebackReporter = (message: unknown) => debug.traceback(tostring(message));
+
+			const [ok, result] = xpcall(() => {
+				noYield(() => {
+					signal.fire();
+				});
+			}, tracebackReporter);
+
+			warn(result);
+			expect(ok).to.equal(false);
 		});
 	});
 };
