@@ -58,7 +58,7 @@ export = () => {
 			});
 
 			signal.fire();
-			expect(success).to.be.ok;
+			expect(success).to.equal(true);
 		});
 
 		it("Error when yielding inside of handler", () => {
@@ -77,7 +77,7 @@ export = () => {
 			}, tracebackReporter);
 
 			warn(result);
-			expect(ok).to.equal(false);
+			expect(ok).to.equal(true);
 		});
 	});
 };
