@@ -1,0 +1,26 @@
+{
+    "className": "Tool",
+    "properties": {
+        "Grip": [
+            -1, 0, 0,
+            0.639, 0, 0,
+            0, 0, 0,
+            0, 0, -1
+        ]
+    },
+    "Children": [
+        {
+            "Name": "Handle",
+            "ClassName": "MeshPart",
+            "Properties": {
+                "MeshId": "rbxassetid://6856171736",
+                "TextureId": "rbxassetid://6856171793",
+                "Size": {
+                    "type": "Vector3",
+                    "Value": [1.445, 0.726, 0.188]
+                }
+            }
+            
+        }
+    ]
+}
