@@ -31,7 +31,6 @@ function createHealthPack(character: CharacterRigR15) {
 	ServerCreateHealthPack.SendToAllPlayersExcept(Players.GetPlayerFromCharacter(character)!, healthPack);
 
 	Promise.delay(30).then(() => {
-		fabric.removeAllUnitsWithRef("Heal");
 		healthPack.Destroy();
 	});
 }
