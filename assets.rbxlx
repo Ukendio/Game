@@ -70,27 +70,27 @@
 			<Properties>
 				<BinaryString name="AttributesSerialize"></BinaryString>
 				<CoordinateFrame name="CFrame">
-					<X>-13.3442364</X>
-					<Y>34.9211464</Y>
-					<Z>-22.6802788</Z>
-					<R00>-0.505451739</R00>
-					<R01>0.519882321</R01>
-					<R02>-0.688651562</R02>
+					<X>-56.2748833</X>
+					<Y>7.82525063</Y>
+					<Z>-97.7034149</Z>
+					<R00>-0.978732228</R00>
+					<R01>0.0709089041</R01>
+					<R02>-0.192497328</R02>
 					<R10>-0</R10>
-					<R11>0.79810822</R11>
-					<R12>0.602514267</R12>
-					<R20>0.862854838</R20>
-					<R21>0.304541886</R21>
-					<R22>-0.40340519</R22>
+					<R11>0.938360929</R11>
+					<R12>0.345657468</R12>
+					<R20>0.205142111</R20>
+					<R21>0.338306099</R21>
+					<R22>-0.918403983</R22>
 				</CoordinateFrame>
 				<Ref name="CameraSubject">null</Ref>
 				<token name="CameraType">0</token>
 				<float name="FieldOfView">70</float>
 				<token name="FieldOfViewMode">0</token>
 				<CoordinateFrame name="Focus">
-					<X>-11.9669333</X>
-					<Y>33.7161179</Y>
-					<Z>-21.8734684</Z>
+					<X>-55.8898888</X>
+					<Y>7.13393593</Y>
+					<Z>-95.8666077</Z>
 					<R00>1</R00>
 					<R01>0</R01>
 					<R02>0</R02>
@@ -701,7 +701,7 @@ local FabricLib = TS.import(script, TS.getModule(script, "fabric").src.FabricLib
 local Remotes = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Remotes").default
 local Spirit = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Spirit")
 local fabric = FabricLib.Fabric.new("Example")
-fabric.DEBUG = false
+fabric.DEBUG = true
 FabricLib.useReplication(fabric)
 FabricLib.useTags(fabric)
 FabricLib.useBatching(fabric)
@@ -711,8 +711,7 @@ ServerCreateHealthPack:Connect(function(healthPack)
 	local c = fabric:getOrCreateUnitByRef("Heal", healthPack)
 	c:mergeBaseLayer({})
 end)
-Players.LocalPlayer.CharacterAdded:Wait()
-local gunTool = Players.LocalPlayer:WaitForChild("Backpack"):WaitForChild("GunTool")
+local gunTool = Players.LocalPlayer:WaitForChild("Backpack"):WaitForChild("Pistol")
 local gun = fabric:getOrCreateUnitByRef("Gun", gunTool)
 gun:mergeBaseLayer({})
 Spirit.bind(Enum.KeyCode.M)
@@ -762,6 +761,11 @@ Spirit.bind(Enum.KeyCode.M)
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
 local Players = TS.import(script, TS.getModule(script, "services")).Players
 local player = Players.LocalPlayer
+local _0 = player.Character
+if _0 == nil then
+	_0 = (player.CharacterAdded:Wait())
+end
+local character = _0
 local mouse = player:GetMouse()
 local gun = {
 	name = "Gun",
@@ -774,6 +778,8 @@ local gun = {
 		debounce = true,
 		mouseDown = false,
 		equipped = false,
+		origin = nil,
+		direction = nil,
 	},
 	onInitialize = function(self)
 		local function updateMouseIcon(mouse)
@@ -788,22 +794,20 @@ local gun = {
 			updateMouseIcon()
 		end
 		local tool = self.ref
+		print(tool)
 		tool.Equipped:Connect(onEquipped)
 		tool.Unequipped:Connect(onUnequipped)
 		tool.Activated:Connect(function()
 			if (self:get("debounce")) == true then
-				local amount = math.random(10, 50)
-				self:getUnit("Transmitter"):sendWithPredictiveLayer({
-					damage = amount,
-				}, "shoot", amount)
+				local data = {
+					origin = character.HumanoidRootPart.Position,
+					direction = Vector3.new(0, -100, 0),
+				}
+				self:getUnit("Transmitter"):sendWithPredictiveLayer(data, "shoot", data)
 			end
 		end)
 	end,
-	effects = { function(self)
-		local tool = self.ref
-		local handle = tool:FindFirstChild("Handle")
-		handle.Size = Vector3.new(handle.Size.X, self:get("damage"), handle.Size.Z)
-	end },
+	effects = {},
 }
 return gun
 ]]></ProtectedString>
@@ -1113,16 +1117,16 @@ local handleCharacterAdded = TS.async(function(character)
 	rig.Humanoid.Died:Connect(function()
 		createHealthPack(rig)
 	end)
-	local gunTool = Instance.new("Tool")
-	gunTool.Name = "GunTool"
-	local _1 = Players:GetPlayerFromCharacter(rig)
+	local _1 = ReplicatedStorage.TS.assets:FindFirstChild("Pistol")
 	if _1 ~= nil then
-		_1 = _1:WaitForChild("Backpack")
+		_1 = _1:Clone()
 	end
-	gunTool.Parent = _1
-	local handle = Instance.new("Part")
-	handle.Parent = gunTool
-	handle.Name = "Handle"
+	local gunTool = _1
+	local _2 = Players:GetPlayerFromCharacter(rig)
+	if _2 ~= nil then
+		_2 = _2:WaitForChild("Backpack")
+	end
+	gunTool.Parent = _2
 	local gun = fabric:getOrCreateUnitByRef("Gun", gunTool)
 	gun:mergeBaseLayer({})
 end)
@@ -1180,6 +1184,7 @@ _0:run(_1)
 						<string name="ScriptGuid">{EF4E6A90-B0E9-418D-8AC7-F21C4BC697F5}</string>
 						<ProtectedString name="Source"><![CDATA[-- Compiled with roblox-ts v1.1.1
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
+local Workspace = TS.import(script, TS.getModule(script, "services")).Workspace
 local gun = {
 	name = "Gun",
 	tag = "Gun",
@@ -1191,21 +1196,59 @@ local gun = {
 		debounce = true,
 		mouseDown = false,
 		equipped = false,
+		origin = nil,
+		direction = nil,
 	},
 	onInitialize = function(self)
 		self.fabric:getOrCreateUnitByRef("Luck", self)
 	end,
-	onClientShoot = function(self, _player, amount)
-		local luck = self.fabric:getOrCreateUnitByRef("Luck", self)
-		self:addLayer(self, {
-			damage = luck:applyLuck(amount),
-		})
-		local _0 = TS.Promise.delay(5)
-		local _1 = function()
-			self:removeLayer(self)
+	onClientShoot = function(self, _player, data)
+		if (self:get("debounce")) == true then
+			self:removeLayer("rayLayer")
+			self:addLayer("rayLayer", {
+				origin = data.origin,
+				direction = data.direction,
+			})
+			local luck = self.fabric:getOrCreateUnitByRef("Luck", self)
+			self:addLayer("debounce", {
+				damage = luck:applyLuck(math.random(10, 50)),
+				debounce = false,
+			})
+			local _0 = TS.Promise.delay(5)
+			local _1 = function()
+				self:removeLayer("debounce")
+			end
+			_0:andThen(_1)
 		end
-		_0:andThen(_1)
 	end,
+	effects = { function(self)
+		local tool = self.ref
+		local character = tool.Parent
+		local rayCastParameters = RaycastParams.new()
+		rayCastParameters.FilterDescendantsInstances = { character }
+		rayCastParameters.FilterType = Enum.RaycastFilterType.Blacklist
+		local direction = self:get("direction")
+		if direction ~= nil then
+			local result = Workspace:Raycast(self:get("origin"), direction, rayCastParameters)
+			local _0 = result
+			if _0 ~= nil then
+				_0 = _0.Instance
+			end
+			local hit = _0
+			print(hit)
+			if result and hit then
+				local _1 = hit.Parent
+				if _1 ~= nil then
+					_1 = _1:FindFirstChildOfClass("Humanoid")
+				end
+				local humanoid = _1
+				if humanoid then
+					humanoid:TakeDamage(self:get("damage"))
+				end
+				print("take damage??!?")
+			end
+		end
+	end },
 }
 return gun
 ]]></ProtectedString>
