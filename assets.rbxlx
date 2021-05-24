@@ -70,27 +70,27 @@
 			<Properties>
 				<BinaryString name="AttributesSerialize"></BinaryString>
 				<CoordinateFrame name="CFrame">
-					<X>23.5956306</X>
-					<Y>10.1296453</Y>
-					<Z>-17.1985874</Z>
-					<R00>-0.999591947</R00>
-					<R01>0.0115538584</R01>
-					<R02>-0.0261268653</R02>
+					<X>-13.3442364</X>
+					<Y>34.9211464</Y>
+					<Z>-22.6802788</Z>
+					<R00>-0.505451739</R00>
+					<R01>0.519882321</R01>
+					<R02>-0.688651562</R02>
 					<R10>-0</R10>
-					<R11>0.914564669</R11>
-					<R12>0.404439986</R12>
-					<R20>0.028567547</R20>
-					<R21>0.40427494</R21>
-					<R22>-0.914191365</R22>
+					<R11>0.79810822</R11>
+					<R12>0.602514267</R12>
+					<R20>0.862854838</R20>
+					<R21>0.304541886</R21>
+					<R22>-0.40340519</R22>
 				</CoordinateFrame>
 				<Ref name="CameraSubject">null</Ref>
 				<token name="CameraType">0</token>
 				<float name="FieldOfView">70</float>
 				<token name="FieldOfViewMode">0</token>
 				<CoordinateFrame name="Focus">
-					<X>23.6478844</X>
-					<Y>9.3207655</Y>
-					<Z>-15.3702049</Z>
+					<X>-11.9669333</X>
+					<Y>33.7161179</Y>
+					<Z>-21.8734684</Z>
 					<R00>1</R00>
 					<R01>0</R01>
 					<R02>0</R02>
@@ -339,9 +339,9 @@ gcLgc4RKxr21zq2UlJSM]]></BinaryString>
 				<token name="BottomSurface">0</token>
 				<token name="BottomSurfaceInput">0</token>
 				<CoordinateFrame name="CFrame">
-					<X>0</X>
+					<X>1.40686035</X>
 					<Y>0.5</Y>
-					<Z>0</Z>
+					<Z>3.35192871</Z>
 					<R00>1</R00>
 					<R01>0</R01>
 					<R02>0</R02>
@@ -18161,7 +18161,7 @@ return {
 							<BinaryString name="AttributesSerialize"></BinaryString>
 							<Content name="LinkedSource"><null></null></Content>
 							<string name="Name">src</string>
-							<string name="ScriptGuid"></string>
+							<string name="ScriptGuid">{581C15B1-D4CD-43B9-A09E-FE77B9595904}</string>
 							<ProtectedString name="Source"><![CDATA[local RunService = game:GetService("RunService")
 
 local exports = {}
@@ -18201,7 +18201,7 @@ return exports
 								<BinaryString name="AttributesSerialize"></BinaryString>
 								<Content name="LinkedSource"><null></null></Content>
 								<string name="Name">Knit</string>
-								<string name="ScriptGuid"></string>
+								<string name="ScriptGuid">{BA0685AC-7CE0-4700-A3E6-125B4180ECFD}</string>
 								<ProtectedString name="Source"><![CDATA[if (game:GetService("RunService"):IsServer()) then
 	return require(script.KnitServer)
 else
@@ -18216,7 +18216,7 @@ end]]></ProtectedString>
 									<BinaryString name="AttributesSerialize"></BinaryString>
 									<Content name="LinkedSource"><null></null></Content>
 									<string name="Name">KnitClient</string>
-									<string name="ScriptGuid"></string>
+									<string name="ScriptGuid">{A1BD599A-805B-4865-81E3-31F74593D093}</string>
 									<ProtectedString name="Source"><![CDATA[--[[
 
 	Knit.CreateController(controller): Controller
@@ -18396,7 +18396,7 @@ return KnitClient]]></ProtectedString>
 									<BinaryString name="AttributesSerialize"></BinaryString>
 									<Content name="LinkedSource"><null></null></Content>
 									<string name="Name">KnitServer</string>
-									<string name="ScriptGuid"></string>
+									<string name="ScriptGuid">{25E6AFE5-7256-41CE-88D6-6A8ED7043D43}</string>
 									<ProtectedString name="Source"><![CDATA[--[[
 
 	Knit.CreateService(service): Service
@@ -18639,7 +18639,7 @@ return KnitServer]]></ProtectedString>
 										<BinaryString name="AttributesSerialize"></BinaryString>
 										<Content name="LinkedSource"><null></null></Content>
 										<string name="Name">Component</string>
-										<string name="ScriptGuid"></string>
+										<string name="ScriptGuid">{79C2FD02-B293-40D5-9C7E-545E3B4AA788}</string>
 										<ProtectedString name="Source"><![CDATA[-- Component
 -- Stephen Leitnick
 -- July 25, 2020
@@ -19011,7 +19011,7 @@ return Component]]></ProtectedString>
 										<BinaryString name="AttributesSerialize"></BinaryString>
 										<Content name="LinkedSource"><null></null></Content>
 										<string name="Name">EnumList</string>
-										<string name="ScriptGuid"></string>
+										<string name="ScriptGuid">{B5D7CCF2-224F-4EC7-8CF4-272E384BE260}</string>
 										<ProtectedString name="Source"><![CDATA[-- EnumList
 -- Stephen Leitnick
 -- January 08, 2021
@@ -19078,7 +19078,7 @@ return EnumList]]></ProtectedString>
 										<BinaryString name="AttributesSerialize"></BinaryString>
 										<Content name="LinkedSource"><null></null></Content>
 										<string name="Name">Loader</string>
-										<string name="ScriptGuid"></string>
+										<string name="ScriptGuid">{C5FA0EC5-0EDA-4ECD-A819-A96D29E66AF2}</string>
 										<ProtectedString name="Source"><![CDATA[-- Loader
 -- Stephen Leitnick
 -- January 10, 2021
@@ -19130,7 +19130,7 @@ return Loader]]></ProtectedString>
 										<BinaryString name="AttributesSerialize"></BinaryString>
 										<Content name="LinkedSource"><null></null></Content>
 										<string name="Name">Maid</string>
-										<string name="ScriptGuid"></string>
+										<string name="ScriptGuid">{70E59286-D225-479A-A5FA-EFF2D89E5151}</string>
 										<ProtectedString name="Source"><![CDATA[-- Maid
 -- Author: Quenty
 -- Source: https://github.com/Quenty/NevermoreEngine/blob/version2/Modules/Shared/Events/Maid.lua
@@ -19288,7 +19288,7 @@ return Maid]]></ProtectedString>
 										<BinaryString name="AttributesSerialize"></BinaryString>
 										<Content name="LinkedSource"><null></null></Content>
 										<string name="Name">Option</string>
-										<string name="ScriptGuid"></string>
+										<string name="ScriptGuid">{F177FF17-3C62-429E-8857-BAA22E43791D}</string>
 										<ProtectedString name="Source"><![CDATA[-- Option
 -- Stephen Leitnick
 -- August 28, 2020
@@ -19585,7 +19585,7 @@ return Option]]></ProtectedString>
 										<BinaryString name="AttributesSerialize"></BinaryString>
 										<Content name="LinkedSource"><null></null></Content>
 										<string name="Name">Promise</string>
-										<string name="ScriptGuid"></string>
+										<string name="ScriptGuid">{6D883B41-BEEF-4479-9F72-4C042F9F1A4A}</string>
 										<ProtectedString name="Source"><![CDATA[-- hack to use roblox-ts's copy of roblox-lua-promise
 
 local TS = _G[script.Parent.Parent.Parent]
@@ -19649,7 +19649,7 @@ return Promise
 											<BinaryString name="AttributesSerialize"></BinaryString>
 											<Content name="LinkedSource"><null></null></Content>
 											<string name="Name">ClientRemoteProperty</string>
-											<string name="ScriptGuid"></string>
+											<string name="ScriptGuid">{7D000C1B-3697-41F3-99E3-7D4753EFE213}</string>
 											<ProtectedString name="Source"><![CDATA[-- ClientRemoteProperty
 -- Stephen Leitnick
 -- January 07, 2021
@@ -19728,7 +19728,7 @@ return ClientRemoteProperty]]></ProtectedString>
 											<BinaryString name="AttributesSerialize"></BinaryString>
 											<Content name="LinkedSource"><null></null></Content>
 											<string name="Name">ClientRemoteSignal</string>
-											<string name="ScriptGuid"></string>
+											<string name="ScriptGuid">{8C12A7F8-B4C2-438F-A69B-FA6E0ED232D3}</string>
 											<ProtectedString name="Source"><![CDATA[-- ClientRemoteSignal
 -- Stephen Leitnick
 -- January 07, 2021
@@ -19856,7 +19856,7 @@ return ClientRemoteSignal]]></ProtectedString>
 											<BinaryString name="AttributesSerialize"></BinaryString>
 											<Content name="LinkedSource"><null></null></Content>
 											<string name="Name">RemoteProperty</string>
-											<string name="ScriptGuid"></string>
+											<string name="ScriptGuid">{39850263-E8AB-49D5-B8B2-F3BE2E3508DB}</string>
 											<ProtectedString name="Source"><![CDATA[-- RemoteProperty
 -- Stephen Leitnick
 -- January 07, 2021
@@ -19980,7 +19980,7 @@ return RemoteProperty]]></ProtectedString>
 											<BinaryString name="AttributesSerialize"></BinaryString>
 											<Content name="LinkedSource"><null></null></Content>
 											<string name="Name">RemoteSignal</string>
-											<string name="ScriptGuid"></string>
+											<string name="ScriptGuid">{CE057352-7A11-458B-AC80-2F8E8FCCFD34}</string>
 											<ProtectedString name="Source"><![CDATA[-- RemoteSignal
 -- Stephen Leitnick
 -- January 07, 2021
@@ -20071,7 +20071,7 @@ return RemoteSignal]]></ProtectedString>
 										<BinaryString name="AttributesSerialize"></BinaryString>
 										<Content name="LinkedSource"><null></null></Content>
 										<string name="Name">Ser</string>
-										<string name="ScriptGuid"></string>
+										<string name="ScriptGuid">{723A2E75-0026-40B9-ABFB-DEE22848B96E}</string>
 										<ProtectedString name="Source"><![CDATA[-- Ser
 -- Stephen Leitnick
 -- August 28, 2020
@@ -20190,7 +20190,7 @@ return Ser]]></ProtectedString>
 										<BinaryString name="AttributesSerialize"></BinaryString>
 										<Content name="LinkedSource"><null></null></Content>
 										<string name="Name">Signal</string>
-										<string name="ScriptGuid"></string>
+										<string name="ScriptGuid">{4DC94B26-3B1D-4B17-8428-0669BAA0C5D9}</string>
 										<ProtectedString name="Source"><![CDATA[-- Signal
 -- Stephen Leitnick
 -- Based off of Anaminus' Signal class: https://gist.github.com/Anaminus/afd813efc819bad8e560caea28942010
@@ -20378,7 +20378,7 @@ return Signal]]></ProtectedString>
 										<BinaryString name="AttributesSerialize"></BinaryString>
 										<Content name="LinkedSource"><null></null></Content>
 										<string name="Name">Streamable</string>
-										<string name="ScriptGuid"></string>
+										<string name="ScriptGuid">{283F42F2-1661-41FE-A896-68DEEA32280D}</string>
 										<ProtectedString name="Source"><![CDATA[-- Streamable
 -- Stephen Leitnick
 -- March 03, 2021
@@ -20468,7 +20468,7 @@ return Streamable]]></ProtectedString>
 										<BinaryString name="AttributesSerialize"></BinaryString>
 										<Content name="LinkedSource"><null></null></Content>
 										<string name="Name">StreamableUtil</string>
-										<string name="ScriptGuid"></string>
+										<string name="ScriptGuid">{2E850100-5446-4DCD-8EEC-340617E912E5}</string>
 										<ProtectedString name="Source"><![CDATA[-- StreamableUtil
 -- Stephen Leitnick
 -- March 03, 2021
@@ -20541,7 +20541,7 @@ return StreamableUtil]]></ProtectedString>
 										<BinaryString name="AttributesSerialize"></BinaryString>
 										<Content name="LinkedSource"><null></null></Content>
 										<string name="Name">Symbol</string>
-										<string name="ScriptGuid"></string>
+										<string name="ScriptGuid">{F48B072D-E218-43B1-993D-FCCCE927071E}</string>
 										<ProtectedString name="Source"><![CDATA[-- Symbol
 -- Stephen Leitnick
 -- December 27, 2020
@@ -20601,7 +20601,7 @@ return Symbol]]></ProtectedString>
 										<BinaryString name="AttributesSerialize"></BinaryString>
 										<Content name="LinkedSource"><null></null></Content>
 										<string name="Name">TableUtil</string>
-										<string name="ScriptGuid"></string>
+										<string name="ScriptGuid">{FD40D909-9CB9-4573-B7E6-5EB8B20BFE18}</string>
 										<ProtectedString name="Source"><![CDATA[-- Table Util
 -- Stephen Leitnick
 -- September 13, 2017
@@ -21101,7 +21101,7 @@ return TableUtil]]></ProtectedString>
 										<BinaryString name="AttributesSerialize"></BinaryString>
 										<Content name="LinkedSource"><null></null></Content>
 										<string name="Name">Thread</string>
-										<string name="ScriptGuid"></string>
+										<string name="ScriptGuid">{8A024337-A774-403F-84A8-2AC87170C8E0}</string>
 										<ProtectedString name="Source"><![CDATA[-- Thread
 -- Stephen Leitnick
 -- January 5, 2020
@@ -22334,18 +22334,18 @@ return {
 						<bool name="CanBeDropped">true</bool>
 						<bool name="Enabled">true</bool>
 						<CoordinateFrame name="Grip">
-							<X>0</X>
-							<Y>0</Y>
+							<X>0.615402222</X>
+							<Y>2.98023224e-08</Y>
 							<Z>0</Z>
-							<R00>1</R00>
-							<R01>0</R01>
-							<R02>0</R02>
-							<R10>0</R10>
+							<R00>1.1920929e-07</R00>
+							<R01>2.79396772e-08</R01>
+							<R02>1</R02>
+							<R10>2.04890949e-08</R10>
 							<R11>1</R11>
-							<R12>0</R12>
-							<R20>0</R20>
-							<R21>0</R21>
-							<R22>1</R22>
+							<R12>-2.7939679e-08</R12>
+							<R20>-1</R20>
+							<R21>2.04890984e-08</R21>
+							<R22>1.1920929e-07</R22>
 						</CoordinateFrame>
 						<bool name="ManualActivationOnly">false</bool>
 						<string name="Name">Pistol</string>
@@ -22479,7 +22479,7 @@ return {
 						<BinaryString name="AttributesSerialize"></BinaryString>
 						<Content name="LinkedSource"><null></null></Content>
 						<string name="Name">Events.spec</string>
-						<string name="ScriptGuid"></string>
+						<string name="ScriptGuid">{6E5EB8FA-A6E0-40AD-AEFD-BE8C84047B6F}</string>
 						<ProtectedString name="Source"><![CDATA[-- Compiled with roblox-ts v1.1.1
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
 -- / <reference types="@rbxts/testez/globals" />
@@ -22505,6 +22505,7 @@ return function()
 			expect(hasRan).to.equal(false)
 		end)
 		it("Should fire every interval", function()
+			TS.Promise.delay(0.5):await()
 			local testValue = 0
 			local times = {}
 			local listener = interval(1 / 6, function()
@@ -23023,7 +23024,7 @@ return SingleEvent
 						<BinaryString name="AttributesSerialize"></BinaryString>
 						<Content name="LinkedSource"><null></null></Content>
 						<string name="Name">noYield</string>
-						<string name="ScriptGuid"></string>
+						<string name="ScriptGuid">{CD1B78E4-BDFE-4FC3-9352-9A2AF2D904ED}</string>
 						<ProtectedString name="Source"><![CDATA[-- Compiled with roblox-ts v1.1.1
 local function resultHandler(co, ok, ...)
 	local results = { ... }
