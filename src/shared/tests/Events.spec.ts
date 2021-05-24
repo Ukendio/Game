@@ -1,4 +1,5 @@
 /// <reference types="@rbxts/testez/globals" />
+import { RunService } from "@rbxts/services";
 import Dispatcher, { interval, noYield } from "shared/dispatcher";
 
 function now() {
@@ -20,6 +21,7 @@ export = () => {
 		});
 
 		it("Should fire every interval", () => {
+			Promise.delay(0.5).await(); // yield til after player loaded
 			let testValue = 0;
 			const times = new Array<number>();
 			const listener = interval(1 / 6, () => {
@@ -32,6 +34,7 @@ export = () => {
 
 			Promise.delay(5.2 / 6).await();
 			connection.disconnect();
+
 			expect(math.abs(testValue - 5) <= 1).to.equal(true);
 		});
 	});
