@@ -4,7 +4,7 @@ import Remotes from "shared/Remotes";
 import Spirit from "shared/Spirit";
 
 const fabric = new FabricLib.Fabric("Example");
-fabric.DEBUG = false;
+fabric.DEBUG = true;
 FabricLib.useReplication(fabric);
 FabricLib.useTags(fabric);
 FabricLib.useBatching(fabric);
@@ -17,8 +17,7 @@ ServerCreateHealthPack.Connect((healthPack) => {
 	c.mergeBaseLayer({});
 });
 
-Players.LocalPlayer.CharacterAdded.Wait();
-const gunTool = Players.LocalPlayer.WaitForChild("Backpack").WaitForChild("GunTool");
+const gunTool = Players.LocalPlayer.WaitForChild("Backpack").WaitForChild("Pistol");
 const gun = fabric.getOrCreateUnitByRef("Gun", gunTool);
 gun.mergeBaseLayer({});
 

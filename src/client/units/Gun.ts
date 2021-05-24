@@ -1,8 +1,6 @@
 import FabricLib, { ThisFabricUnit, UnitDefinition } from "@rbxts/fabric";
 import { Players } from "@rbxts/services";
-
-const player = Players.LocalPlayer;
-const mouse = player.GetMouse();
+import { CharacterRigR15 } from "@rbxts/yield-for-character";
 
 declare global {
 	interface FabricUnits {
@@ -23,10 +21,23 @@ interface GunDefinition extends UnitDefinition<"Gun"> {
 		debounce: boolean;
 		mouseDown: boolean;
 		equipped: boolean;
+		origin: Vector3;
+		direction: Vector3;
 	};
 
-	onClientShoot?: (this: ThisFabricUnit<"Gun">, _player: Player, damage: number) => void;
+	onClientShoot?: (
+		this: ThisFabricUnit<"Gun">,
+		_player: Player,
+		data: {
+			origin: Vector3;
+			direction: Vector3;
+		},
+	) => void;
 }
+
+const player = Players.LocalPlayer;
+const character = (player.Character ?? player.CharacterAdded.Wait()[0]) as CharacterRigR15;
+const mouse = player.GetMouse();
 
 const gun: GunDefinition = {
 	name: "Gun",
@@ -41,6 +52,8 @@ const gun: GunDefinition = {
 		debounce: true,
 		mouseDown: false,
 		equipped: false,
+		origin: undefined!,
+		direction: undefined!,
 	},
 
 	onInitialize: function (this) {
@@ -63,25 +76,16 @@ const gun: GunDefinition = {
 
 		tool.Activated.Connect(() => {
 			if ((this.get("debounce") as boolean) === true) {
-				const amount = math.random(10, 50);
-				this.getUnit("Transmitter")!.sendWithPredictiveLayer(
-					{
-						damage: amount,
-					},
-					"shoot",
-					amount,
-				);
+				const data = {
+					origin: character.HumanoidRootPart.Position,
+					direction: mouse.Hit.Position.sub(character.HumanoidRootPart.Position).Unit.mul(100),
+				};
+				this.getUnit("Transmitter")!.sendWithPredictiveLayer(data, "shoot", data);
 			}
 		});
 	},
 
-	effects: [
-		function (this) {
-			const tool = this.ref as Tool;
-			const handle = tool.FindFirstChild("Handle")! as BasePart;
-			handle.Size = new Vector3(handle.Size.X, this.get("damage") as number, handle.Size.Z);
-		},
-	],
+	effects: [],
 };
 
 export = gun;

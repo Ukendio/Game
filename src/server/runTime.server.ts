@@ -42,12 +42,8 @@ async function handleCharacterAdded(character: Model) {
 	rig.Humanoid.Died.Connect(() => {
 		createHealthPack(rig);
 	});
-	const gunTool = new Instance("Tool");
-	gunTool.Name = "GunTool";
+	const gunTool = ReplicatedStorage.TS.assets.FindFirstChild("Pistol")?.Clone() as Tool;
 	gunTool.Parent = Players.GetPlayerFromCharacter(rig)?.WaitForChild("Backpack");
-	const handle = new Instance("Part");
-	handle.Parent = gunTool;
-	handle.Name = "Handle";
 
 	const gun = fabric.getOrCreateUnitByRef("Gun", gunTool);
 	gun.mergeBaseLayer({});
