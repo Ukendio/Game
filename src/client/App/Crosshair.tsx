@@ -14,11 +14,7 @@ interface Props {
 	recoil: number;
 }
 
-interface State {
-	currentOffset: number;
-}
-
-export class Crosshair extends Roact.Component<Props, State> {
+export class Crosshair extends Roact.Component<Props> {
 	private _motor = new Flipper.SingleMotor(0);
 	private _binding;
 
@@ -97,7 +93,7 @@ export class Crosshair extends Roact.Component<Props, State> {
 					AnchorPoint={new Vector2(0.5, 0.5)}
 					BackgroundTransparency={1}
 					Position={new UDim2(0.5, 0, 0.5, 0)}
-					Size={new UDim2(0.1, 0, 0.1, 0)}
+					Size={new UDim2(0.3, 0, 0.3, 0)}
 					ZIndex={10}
 				>
 					<Outline name="Up" layer="Inner" />
