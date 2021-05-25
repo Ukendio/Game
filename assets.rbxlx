@@ -85,27 +85,27 @@
 			<Properties>
 				<BinaryString name="AttributesSerialize"></BinaryString>
 				<CoordinateFrame name="CFrame">
-					<X>-14.1318016</X>
-					<Y>62.9160843</Y>
-					<Z>100.053253</Z>
-					<R00>0.993039131</R00>
-					<R01>0.0646837503</R01>
-					<R02>-0.0984344333</R02>
-					<R10>3.72529074e-09</R10>
-					<R11>0.835712254</R11>
-					<R12>0.549167573</R12>
-					<R20>0.117785089</R20>
-					<R21>-0.545344889</R21>
-					<R22>0.8298949</R22>
+					<X>-254.001434</X>
+					<Y>145.854568</Y>
+					<Z>-93.5160904</Z>
+					<R00>-0.765597045</R00>
+					<R01>0.387704849</R01>
+					<R02>-0.513367474</R02>
+					<R10>-1.49011594e-08</R10>
+					<R11>0.797996521</R11>
+					<R12>0.602662086</R12>
+					<R20>0.643320441</R20>
+					<R21>0.461396307</R21>
+					<R22>-0.610943794</R22>
 				</CoordinateFrame>
 				<Ref name="CameraSubject">null</Ref>
 				<token name="CameraType">0</token>
 				<float name="FieldOfView">70</float>
 				<token name="FieldOfViewMode">0</token>
 				<CoordinateFrame name="Focus">
-					<X>-13.9349327</X>
-					<Y>61.817749</Y>
-					<Z>98.3934631</Z>
+					<X>-252.974701</X>
+					<Y>144.649246</Y>
+					<Z>-92.2942047</Z>
 					<R00>1</R00>
 					<R01>0</R01>
 					<R02>0</R02>
@@ -5087,7 +5087,7 @@ do
 			if debounce then
 				debounce = false
 				self._motor:setGoal(Flipper.Spring.new(1, {
-					frequency = self.props.fireRate,
+					frequency = 5,
 					dampingRatio = 1,
 				}))
 				local _0 = TS.Promise.delay(1 / self.props.fireRate)
@@ -5110,7 +5110,7 @@ do
 			AnchorPoint = Vector2.new(0.5, 0.5),
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0.5, 0, 0, self.props.mouseOffset),
-			Size = UDim2.new(0, 300, 0, 300),
+			Size = UDim2.new(0, 100, 0, 100),
 			ZIndex = 0,
 		}, {
 			CenterPoint = Roact.createElement("Frame", {
@@ -5126,7 +5126,7 @@ do
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0.5, 0, 0.5, 0),
 				Size = self._binding:map(function(value)
-					return UDim2.new(0.5, 0, 0.1, 0):Lerp(UDim2.new(0.5, 0, self.props.recoil, 0), value)
+					return UDim2.new(0.5, 0, 0.3, 0):Lerp(UDim2.new(0.5, 0, self.props.recoil, 0), value)
 				end),
 				ZIndex = 20,
 			}, {
@@ -5155,7 +5155,7 @@ do
 				AnchorPoint = Vector2.new(0.5, 0.5),
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0.5, 0, 0.5, 0),
-				Size = UDim2.new(0.1, 0, 0.1, 0),
+				Size = UDim2.new(0.3, 0, 0.3, 0),
 				ZIndex = 10,
 			}, {
 				Roact.createElement(Outline, {
@@ -5187,65 +5187,6 @@ return {
 						</Properties>
 					</Item>
 				</Item>
-				<Item class="LocalScript" referent="RBX03CDEE4BCB7A427C80EAADC114A79A90">
-					<Properties>
-						<BinaryString name="AttributesSerialize"></BinaryString>
-						<bool name="Disabled">false</bool>
-						<Content name="LinkedSource"><null></null></Content>
-						<string name="Name">example</string>
-						<string name="ScriptGuid">{6A821BCC-3DCC-4369-85EB-6353495A226A}</string>
-						<ProtectedString name="Source"><![CDATA[-- Compiled with roblox-ts v1.1.1
-local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
-local _0 = TS.import(script, TS.getModule(script, "services"))
-local StarterPlayer = _0.StarterPlayer
-local Players = _0.Players
-local FabricLib = TS.import(script, TS.getModule(script, "fabric").src.FabricLib)
-local Remotes = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Remotes").default
-local Spirit = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Spirit")
-local fabric = FabricLib.Fabric.new("Example")
-fabric.DEBUG = true
-FabricLib.useReplication(fabric)
-FabricLib.useTags(fabric)
-FabricLib.useBatching(fabric)
-fabric:registerUnitsIn(StarterPlayer.StarterPlayerScripts.TS.units)
-local ServerCreateHealthPack = Remotes.Client:Get("ServerCreateHealthPack")
-ServerCreateHealthPack:Connect(function(healthPack)
-	local c = fabric:getOrCreateUnitByRef("Heal", healthPack)
-	c:mergeBaseLayer({})
-end)
-local gunTool = Players.LocalPlayer:WaitForChild("Backpack"):WaitForChild("Pistol")
-local gun = fabric:getOrCreateUnitByRef("Gun", gunTool)
-gun:mergeBaseLayer({})
-Spirit.bind(Enum.KeyCode.M)
-]]></ProtectedString>
-						<int64 name="SourceAssetId">-1</int64>
-						<BinaryString name="Tags"></BinaryString>
-					</Properties>
-				</Item>
-				<Item class="LocalScript" referent="RBX65C0C894406648CBB0F149D93B82B385">
-					<Properties>
-						<BinaryString name="AttributesSerialize"></BinaryString>
-						<bool name="Disabled">false</bool>
-						<Content name="LinkedSource"><null></null></Content>
-						<string name="Name">testtype</string>
-						<string name="ScriptGuid">{9AC0C764-0847-4C49-9D02-31F34D337986}</string>
-						<ProtectedString name="Source"><![CDATA[-- Compiled with roblox-ts v1.1.1
---[[
-	Roact.mount(
-	<screengui>
-	<Typist
-	interval={0.05}
-	finalText={'Each event offers <font color ="#ffee59">unique</font> rewards and prizes'}
-	></Typist>
-	</screengui>,
-	Players.LocalPlayer.WaitForChild("PlayerGui"),
-	);
-]]
-]]></ProtectedString>
-						<int64 name="SourceAssetId">-1</int64>
-						<BinaryString name="Tags"></BinaryString>
-					</Properties>
-				</Item>
 				<Item class="Folder" referent="RBXC8275BDDE9A64D9DAC4FE52F7D9A82E4">
 					<Properties>
 						<BinaryString name="AttributesSerialize"></BinaryString>
@@ -5261,14 +5202,23 @@ Spirit.bind(Enum.KeyCode.M)
 							<string name="ScriptGuid">{D829071E-9DB9-4ED2-B362-305FCF1F5E95}</string>
 							<ProtectedString name="Source"><![CDATA[-- Compiled with roblox-ts v1.1.1
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
-local Players = TS.import(script, TS.getModule(script, "services")).Players
+local Roact = TS.import(script, TS.getModule(script, "roact").src)
+local _0 = TS.import(script, TS.getModule(script, "services"))
+local Players = _0.Players
+local UserInputService = _0.UserInputService
+local Workspace = _0.Workspace
+local Crosshair = TS.import(script, script.Parent.Parent, "App", "Crosshair").Crosshair
 local player = Players.LocalPlayer
-local _0 = player.Character
-if _0 == nil then
-	_0 = (player.CharacterAdded:Wait())
+local _1 = player.Character
+if _1 == nil then
+	_1 = (player.CharacterAdded:Wait())
 end
-local character = _0
+local character = _1
 local mouse = player:GetMouse()
+local SETTINGS = {
+	fireRate = 1,
+	recoil = 1,
+}
 local gun = {
 	name = "Gun",
 	tag = "Gun",
@@ -5284,33 +5234,38 @@ local gun = {
 		direction = nil,
 	},
 	onInitialize = function(self)
-		local function updateMouseIcon()
-			print(mouse.Icon)
-			if mouse.Icon == "rbxasset://textures/GunCursor.png" then
-				mouse.Icon = ""
-			else
-				mouse.Icon = "rbxasset://textures/GunCursor.png"
-			end
-		end
+		local handle
 		local onEquipped = function()
-			updateMouseIcon()
+			handle = Roact.mount(Roact.createElement("ScreenGui", {
+				ZIndexBehavior = "Sibling",
+			}, {
+				Roact.createElement(Crosshair, {
+					mouseOffset = Workspace.CurrentCamera.ViewportSize.Y / 2 - 36,
+					fireRate = SETTINGS.fireRate,
+					recoil = SETTINGS.recoil,
+				}),
+			}), player:WaitForChild("PlayerGui"))
+			UserInputService.MouseIconEnabled = false
 		end
 		local onUnequipped = function()
-			updateMouseIcon()
+			mouse.Icon = ""
+			Roact.unmount(handle)
 		end
+		player.CameraMode = Enum.CameraMode.LockFirstPerson
+		UserInputService.MouseBehavior = Enum.MouseBehavior.LockCenter
 		local tool = self.ref
 		tool.Equipped:Connect(onEquipped)
 		tool.Unequipped:Connect(onUnequipped)
 		tool.Activated:Connect(function()
 			if (self:get("debounce")) == true then
-				local _1 = {
+				local _2 = {
 					origin = character.HumanoidRootPart.Position,
 				}
-				local _2 = "direction"
-				local _3 = mouse.Hit.Position
-				local _4 = character.HumanoidRootPart.Position
-				_1[_2] = (_3 - _4).Unit * 100
-				local data = _1
+				local _3 = "direction"
+				local _4 = mouse.Hit.Position
+				local _5 = character.HumanoidRootPart.Position
+				_2[_3] = (_4 - _5).Unit * 100
+				local data = _2
 				self:getUnit("Transmitter"):sendWithPredictiveLayer(data, "shoot", data)
 			end
 		end)
@@ -5472,29 +5427,32 @@ return Outline
 						<string name="ScriptGuid">{CA711FD5-0950-42BC-A2BB-1062C277823B}</string>
 						<ProtectedString name="Source"><![CDATA[-- Compiled with roblox-ts v1.1.1
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
-local Roact = TS.import(script, TS.getModule(script, "roact").src)
 local _0 = TS.import(script, TS.getModule(script, "services"))
+local StarterPlayer = _0.StarterPlayer
 local Players = _0.Players
 local UserInputService = _0.UserInputService
-local Workspace = _0.Workspace
-local Crosshair = TS.import(script, script.Parent, "App", "Crosshair").Crosshair
-local player = Players.LocalPlayer
-local mouse = player:GetMouse()
-player.CameraMode = Enum.CameraMode.LockFirstPerson
-UserInputService.MouseBehavior = Enum.MouseBehavior.LockCenter
-local SETTINGS = {
-	fireRate = 1,
-	recoil = 0.4,
-}
-Roact.mount(Roact.createElement("ScreenGui", {
-	ZIndexBehavior = "Sibling",
-}, {
-	Roact.createElement(Crosshair, {
-		mouseOffset = Workspace.CurrentCamera.ViewportSize.Y / 2 - 36,
-		fireRate = SETTINGS.fireRate,
-		recoil = SETTINGS.recoil,
-	}),
-}), player:WaitForChild("PlayerGui"))
+local FabricLib = TS.import(script, TS.getModule(script, "fabric").src.FabricLib)
+local Remotes = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Remotes").default
+local Spirit = TS.import(script, game:GetService("ReplicatedStorage"), "TS", "Spirit")
+local fabric = FabricLib.Fabric.new("Example")
+do
+	fabric.DEBUG = true
+	FabricLib.useReplication(fabric)
+	FabricLib.useTags(fabric)
+	FabricLib.useBatching(fabric)
+	fabric:registerUnitsIn(StarterPlayer.StarterPlayerScripts.TS.units)
+	Players.LocalPlayer.CameraMode = Enum.CameraMode.LockFirstPerson
+	UserInputService.MouseBehavior = Enum.MouseBehavior.LockCenter
+end
+local ServerCreateHealthPack = Remotes.Client:Get("ServerCreateHealthPack")
+ServerCreateHealthPack:Connect(function(healthPack)
+	local c = fabric:getOrCreateUnitByRef("Heal", healthPack)
+	c:mergeBaseLayer({})
+end)
+local gunTool = Players.LocalPlayer:WaitForChild("Backpack"):WaitForChild("Pistol")
+local gun = fabric:getOrCreateUnitByRef("Gun", gunTool)
+gun:mergeBaseLayer({})
+Spirit.bind(Enum.KeyCode.M)
 ]]></ProtectedString>
 						<int64 name="SourceAssetId">-1</int64>
 						<BinaryString name="Tags"></BinaryString>
@@ -5742,7 +5700,11 @@ local handleCharacterAdded = TS.async(function(character)
 		_1 = _1:Clone()
 	end
 	local gunTool = _1
-	gunTool.Parent = Players:GetPlayerFromCharacter(rig):WaitForChild("Backpack")
+	local _2 = Players:GetPlayerFromCharacter(rig)
+	if _2 ~= nil then
+		_2 = _2:WaitForChild("Backpack")
+	end
+	gunTool.Parent = _2
 	local gun = fabric:getOrCreateUnitByRef("Gun", gunTool)
 	gun:mergeBaseLayer({})
 end)
