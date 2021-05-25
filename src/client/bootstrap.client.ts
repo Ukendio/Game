@@ -1,15 +1,18 @@
-import { StarterPlayer, Workspace, Players } from "@rbxts/services";
+import { StarterPlayer, Players, UserInputService } from "@rbxts/services";
 import FabricLib from "@rbxts/fabric";
 import Remotes from "shared/Remotes";
 import Spirit from "shared/Spirit";
 
 const fabric = new FabricLib.Fabric("Example");
-fabric.DEBUG = true;
-FabricLib.useReplication(fabric);
-FabricLib.useTags(fabric);
-FabricLib.useBatching(fabric);
-
-fabric.registerUnitsIn(StarterPlayer.StarterPlayerScripts.TS.units);
+{
+	fabric.DEBUG = true;
+	FabricLib.useReplication(fabric);
+	FabricLib.useTags(fabric);
+	FabricLib.useBatching(fabric);
+	fabric.registerUnitsIn(StarterPlayer.StarterPlayerScripts.TS.units);
+	Players.LocalPlayer.CameraMode = Enum.CameraMode.LockFirstPerson;
+	UserInputService.MouseBehavior = Enum.MouseBehavior.LockCenter;
+}
 
 const ServerCreateHealthPack = Remotes.Client.Get("ServerCreateHealthPack");
 ServerCreateHealthPack.Connect((healthPack) => {
