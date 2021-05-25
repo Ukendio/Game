@@ -105,11 +105,14 @@ const gun: GunDefinition = {
 
 	effects: [
 		function (this) {
-			const damage = this.get("hit");
-			if (damage !== undefined && typeIs(damage, "string") && damage !== "Miss") {
-				((this.get("target") as Instance).Parent?.FindFirstChild("Humanoid") as Humanoid).TakeDamage(
-					tonumber(damage)!,
-				);
+			if (this.get("debounce") === false) {
+				const damage = this.get("hit");
+				if (damage !== undefined && typeIs(damage, "string") && damage !== "Miss") {
+					((this.get("target") as Instance).Parent?.FindFirstChild("Humanoid") as Humanoid).TakeDamage(
+						tonumber(damage)!,
+					);
+					print(`Shot at ${(this.get("target") as Instance).Parent?.Name}`);
+				}
 			}
 		},
 	],
