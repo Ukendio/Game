@@ -5,6 +5,9 @@ interface Props {
 }
 
 class HitMark extends Roact.Component<Props> {
+	didMount() {
+		print(this.getElementTraceback());
+	}
 	render() {
 		return (
 			<billboardgui AlwaysOnTop={true} Size={new UDim2(1.5, 0, 1.5, 0)}>

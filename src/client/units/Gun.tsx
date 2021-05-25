@@ -107,7 +107,10 @@ const gun: GunDefinition = {
 
 	effects: [
 		function (this) {
-			if (this.get("debounce") === false) {
+			if (
+				this.get("target") !== undefined &&
+				(this.get("target") as Instance).Parent?.FindFirstChild("Humanoid") !== undefined
+			) {
 				const handle = Roact.mount(<HitMark hit={this.get("hit") as string} />, this.get("target") as Instance);
 				Promise.delay(0.25).then(() => Roact.unmount(handle));
 			}
