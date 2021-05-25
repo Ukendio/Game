@@ -1,5 +1,5 @@
 import FabricLib, { ThisFabricUnit, UnitDefinition } from "@rbxts/fabric";
-import { Players } from "@rbxts/services";
+import { Players, UserInputService } from "@rbxts/services";
 import { CharacterRigR15 } from "@rbxts/yield-for-character";
 
 declare global {
@@ -57,16 +57,12 @@ const gun: GunDefinition = {
 	},
 
 	onInitialize: function (this) {
-		function updateMouseIcon() {
-			mouse.Icon = "";
-		}
-
 		const onEquipped = () => {
-			updateMouseIcon();
+			UserInputService.MouseIconEnabled = false;
 		};
 
 		const onUnequipped = () => {
-			updateMouseIcon();
+			mouse.Icon = "";
 		};
 
 		const tool = this.ref as Tool;
