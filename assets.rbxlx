@@ -85,27 +85,27 @@
 			<Properties>
 				<BinaryString name="AttributesSerialize"></BinaryString>
 				<CoordinateFrame name="CFrame">
-					<X>-35.5802078</X>
-					<Y>12.1847057</Y>
-					<Z>-139.198868</Z>
-					<R00>-0.920729339</R00>
-					<R01>-0.10007748</R01>
-					<R02>0.37714991</R02>
-					<R10>7.4505806e-09</R10>
-					<R11>0.966550648</R11>
-					<R12>0.256476134</R12>
-					<R20>-0.390201956</R20>
-					<R21>0.236145094</R21>
-					<R22>-0.88993144</R22>
+					<X>27.9007244</X>
+					<Y>12.3602238</Y>
+					<Z>-14.7234163</Z>
+					<R00>-0.825428724</R00>
+					<R01>-0.339024335</R01>
+					<R02>0.451364517</R02>
+					<R10>-0</R10>
+					<R11>0.799573898</R11>
+					<R12>0.600567818</R12>
+					<R20>-0.564506352</R20>
+					<R21>0.49572593</R21>
+					<R22>-0.659991264</R22>
 				</CoordinateFrame>
 				<Ref name="CameraSubject">null</Ref>
 				<token name="CameraType">0</token>
 				<float name="FieldOfView">70</float>
 				<token name="FieldOfViewMode">0</token>
 				<CoordinateFrame name="Focus">
-					<X>-36.334507</X>
-					<Y>11.6717539</Y>
-					<Z>-137.419006</Z>
+					<X>26.9979954</X>
+					<Y>11.1590881</Y>
+					<Z>-13.4034338</Z>
 					<R00>1</R00>
 					<R01>0</R01>
 					<R02>0</R02>
@@ -5087,7 +5087,7 @@ do
 			if debounce then
 				debounce = false
 				self._motor:setGoal(Flipper.Spring.new(1, {
-					frequency = 5,
+					frequency = 0.5,
 					dampingRatio = 1,
 				}))
 				local _0 = TS.Promise.delay(1 / self.props.fireRate)
@@ -5310,6 +5310,9 @@ local gun = {
 				_2[_3] = (_4 - _5).Unit * 100
 				local data = _2
 				self:getUnit("Transmitter"):sendWithPredictiveLayer(data, "shoot", data)
+				self:addLayer("temporaryRecoil", {
+					recoil = 1231,
+				})
 			end
 		end)
 	end,
@@ -5332,6 +5335,8 @@ local gun = {
 			end
 			_3:andThen(_4)
 		end
+	end, function(self)
+		print(self:get("recoil"))
 	end },
 }
 return gun
@@ -28132,18 +28137,18 @@ return {
 						<bool name="CanBeDropped">true</bool>
 						<bool name="Enabled">true</bool>
 						<CoordinateFrame name="Grip">
-							<X>0.601991653</X>
-							<Y>-5.96046448e-08</Y>
-							<Z>-4.76837158e-07</Z>
-							<R00>-5.96046448e-08</R00>
-							<R01>6.33299351e-08</R01>
+							<X>0.633958817</X>
+							<Y>2.98023224e-08</Y>
+							<Z>0</Z>
+							<R00>-5.96046519e-08</R00>
+							<R01>1.67638046e-08</R01>
 							<R02>1</R02>
-							<R10>2.23517418e-08</R10>
+							<R10>4.47035013e-08</R10>
 							<R11>1</R11>
-							<R12>-6.33299351e-08</R12>
+							<R12>-1.6763801e-08</R12>
 							<R20>-1</R20>
-							<R21>2.23517382e-08</R21>
-							<R22>-5.96046448e-08</R22>
+							<R21>4.47035013e-08</R21>
+							<R22>-5.96046519e-08</R22>
 						</CoordinateFrame>
 						<bool name="ManualActivationOnly">false</bool>
 						<string name="Name">Pistol</string>
