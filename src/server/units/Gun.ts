@@ -8,7 +8,7 @@ declare global {
 	}
 }
 
-const FIRE_RATE = 1 / 20;
+const FIRE_RATE = 1;
 
 interface GunDefinition extends UnitDefinition<"Gun"> {
 	name: "Gun";
