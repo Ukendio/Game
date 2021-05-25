@@ -1,8 +1,8 @@
-:exclamation: Quick Start :exclamation:
+## :exclamation: Quick Start :exclamation:
 
 There are two ways to get started:
 
-1. Build from source: 
+## Build from source: 
 
 Step 1. Download the project: 
 
@@ -16,5 +16,5 @@ Step 4. Run ``rbxtsc -w`` to start watch mode
 
 Step 5. Run ``rojo serve`` in another terminal
 
-2. Download the rbxlx File: Locate the assets place file and open it.
+## Download the rbxlx File: Locate the assets place file and open it.
 
