@@ -33,10 +33,10 @@ const Luck: LuckDefinition = {
 	applyLuck: function (this, layerData) {
 		const rng = math.random(0, layerData);
 		if (rng < 25) {
-			return layerData;
+			return tostring(layerData);
 		}
 
-		return 0;
+		return "Miss";
 	},
 };
 
