@@ -19,12 +19,13 @@ interface GunDefinition extends UnitDefinition<"Gun"> {
 	};
 
 	defaults?: {
-		damage: number;
 		debounce: boolean;
 		mouseDown: boolean;
 		equipped: boolean;
 		origin: Vector3;
 		direction: Vector3;
+		hit: string;
+		target: Model;
 	};
 
 	onClientShoot?: (
@@ -46,12 +47,13 @@ const gun: GunDefinition = {
 	},
 
 	defaults: {
-		damage: 0,
 		debounce: true,
 		mouseDown: false,
 		equipped: false,
 		origin: undefined!,
 		direction: undefined!,
+		hit: "Miss",
+		target: undefined!,
 	},
 
 	onInitialize: function (this) {
@@ -68,18 +70,9 @@ const gun: GunDefinition = {
 
 			const luck = this.fabric.getOrCreateUnitByRef("Luck", this);
 			this.addLayer("debounce", {
-				damage: luck.applyLuck!(math.random(10, 50)),
 				debounce: false,
 			});
 
-			Promise.delay(FIRE_RATE).then(() => {
-				this.removeLayer("debounce");
-			});
-		}
-	},
-
-	effects: [
-		function (this) {
 			const tool = this.ref as Tool;
 
 			const character = tool.Parent as CharacterRigR15;
@@ -92,13 +85,31 @@ const gun: GunDefinition = {
 
 			if (direction !== undefined) {
 				const result = Workspace.Raycast(this.get("origin") as Vector3, direction, rayCastParameters);
-				const hit = result?.Instance;
+				const target = result?.Instance;
 
-				if (result && hit) {
-					const humanoid = hit.Parent?.FindFirstChildOfClass("Humanoid");
-
-					if (humanoid) humanoid.TakeDamage(this.get("damage") as number);
+				if (result && target) {
+					const hit = luck.applyLuck?.(math.random(10, 50));
+					this.addLayer("damage", {
+						hit: hit,
+						target: result.Instance,
+					});
 				}
+			}
+
+			Promise.delay(FIRE_RATE).then(() => {
+				this.removeLayer("damage");
+				this.removeLayer("debounce");
+			});
+		}
+	},
+
+	effects: [
+		function (this) {
+			const damage = this.get("hit");
+			if (damage !== undefined && typeIs(damage, "string") && damage !== "Miss") {
+				((this.get("target") as Instance).Parent?.FindFirstChild("Humanoid") as Humanoid).TakeDamage(
+					tonumber(damage)!,
+				);
 			}
 		},
 	],

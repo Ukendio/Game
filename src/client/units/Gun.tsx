@@ -3,6 +3,7 @@ import Roact from "@rbxts/roact";
 import { Players, UserInputService, Workspace } from "@rbxts/services";
 import { CharacterRigR15 } from "@rbxts/yield-for-character";
 import { Crosshair } from "client/App/Crosshair";
+import HitMark from "client/App/Hitmark";
 
 declare global {
 	interface FabricUnits {
@@ -19,12 +20,13 @@ interface GunDefinition extends UnitDefinition<"Gun"> {
 	};
 
 	defaults?: {
-		damage: number;
 		debounce: boolean;
 		mouseDown: boolean;
 		equipped: boolean;
 		origin: Vector3;
 		direction: Vector3;
+		hit: string;
+		target: Model;
 	};
 
 	onClientShoot?: (
@@ -54,12 +56,13 @@ const gun: GunDefinition = {
 	},
 
 	defaults: {
-		damage: 0,
 		debounce: true,
 		mouseDown: false,
 		equipped: false,
 		origin: undefined!,
 		direction: undefined!,
+		hit: "Miss",
+		target: undefined!,
 	},
 
 	onInitialize: function (this) {
@@ -102,7 +105,14 @@ const gun: GunDefinition = {
 		});
 	},
 
-	effects: [],
+	effects: [
+		function (this) {
+			if (this.get("debounce") === false) {
+				const handle = Roact.mount(<HitMark hit={this.get("hit") as string} />, this.get("target") as Instance);
+				Promise.delay(0.25).then(() => Roact.unmount(handle));
+			}
+		},
+	],
 };
 
 export = gun;
