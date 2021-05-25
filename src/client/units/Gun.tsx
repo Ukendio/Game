@@ -1,6 +1,8 @@
 import FabricLib, { ThisFabricUnit, UnitDefinition } from "@rbxts/fabric";
-import { Players, UserInputService } from "@rbxts/services";
+import Roact from "@rbxts/roact";
+import { Players, UserInputService, Workspace } from "@rbxts/services";
 import { CharacterRigR15 } from "@rbxts/yield-for-character";
+import { Crosshair } from "client/App/Crosshair";
 
 declare global {
 	interface FabricUnits {
@@ -38,6 +40,10 @@ interface GunDefinition extends UnitDefinition<"Gun"> {
 const player = Players.LocalPlayer;
 const character = (player.Character ?? player.CharacterAdded.Wait()[0]) as CharacterRigR15;
 const mouse = player.GetMouse();
+const SETTINGS = {
+	fireRate: 1,
+	recoil: 1,
+};
 
 const gun: GunDefinition = {
 	name: "Gun",
@@ -57,13 +63,28 @@ const gun: GunDefinition = {
 	},
 
 	onInitialize: function (this) {
+		let handle: Roact.Tree;
 		const onEquipped = () => {
+			handle = Roact.mount(
+				<screengui ZIndexBehavior="Sibling">
+					<Crosshair
+						mouseOffset={Workspace.CurrentCamera!.ViewportSize.Y / 2 - 36}
+						fireRate={SETTINGS.fireRate}
+						recoil={SETTINGS.recoil}
+					/>
+				</screengui>,
+				player.WaitForChild("PlayerGui"),
+			);
+
 			UserInputService.MouseIconEnabled = false;
 		};
 
 		const onUnequipped = () => {
 			mouse.Icon = "";
+			Roact.unmount(handle);
 		};
+		player.CameraMode = Enum.CameraMode.LockFirstPerson;
+		UserInputService.MouseBehavior = Enum.MouseBehavior.LockCenter;
 
 		const tool = this.ref as Tool;
 
