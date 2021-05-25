@@ -85,27 +85,27 @@
 			<Properties>
 				<BinaryString name="AttributesSerialize"></BinaryString>
 				<CoordinateFrame name="CFrame">
-					<X>-254.001434</X>
-					<Y>145.854568</Y>
-					<Z>-93.5160904</Z>
-					<R00>-0.765597045</R00>
-					<R01>0.387704849</R01>
-					<R02>-0.513367474</R02>
-					<R10>-1.49011594e-08</R10>
-					<R11>0.797996521</R11>
-					<R12>0.602662086</R12>
-					<R20>0.643320441</R20>
-					<R21>0.461396307</R21>
-					<R22>-0.610943794</R22>
+					<X>-35.5802078</X>
+					<Y>12.1847057</Y>
+					<Z>-139.198868</Z>
+					<R00>-0.920729339</R00>
+					<R01>-0.10007748</R01>
+					<R02>0.37714991</R02>
+					<R10>7.4505806e-09</R10>
+					<R11>0.966550648</R11>
+					<R12>0.256476134</R12>
+					<R20>-0.390201956</R20>
+					<R21>0.236145094</R21>
+					<R22>-0.88993144</R22>
 				</CoordinateFrame>
 				<Ref name="CameraSubject">null</Ref>
 				<token name="CameraType">0</token>
 				<float name="FieldOfView">70</float>
 				<token name="FieldOfViewMode">0</token>
 				<CoordinateFrame name="Focus">
-					<X>-252.974701</X>
-					<Y>144.649246</Y>
-					<Z>-92.2942047</Z>
+					<X>-36.334507</X>
+					<Y>11.6717539</Y>
+					<Z>-137.419006</Z>
 					<R00>1</R00>
 					<R01>0</R01>
 					<R02>0</R02>
@@ -5186,6 +5186,47 @@ return {
 							<BinaryString name="Tags"></BinaryString>
 						</Properties>
 					</Item>
+					<Item class="ModuleScript" referent="RBX480ADD9162DE491EB53695E0F8D5597A">
+						<Properties>
+							<BinaryString name="AttributesSerialize"></BinaryString>
+							<Content name="LinkedSource"><null></null></Content>
+							<string name="Name">HitMark</string>
+							<string name="ScriptGuid">{3CEFACFD-1CA8-4B44-AC60-9B09B6867C3B}</string>
+							<ProtectedString name="Source"><![CDATA[-- Compiled with roblox-ts v1.1.1
+local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
+local Roact = TS.import(script, TS.getModule(script, "roact").src)
+local HitMark
+do
+	HitMark = Roact.Component:extend("HitMark")
+	function HitMark:init()
+	end
+	function HitMark:didMount()
+		print(self:getElementTraceback())
+	end
+	function HitMark:render()
+		return Roact.createElement("BillboardGui", {
+			AlwaysOnTop = true,
+			Size = UDim2.new(1.5, 0, 1.5, 0),
+		}, {
+			Roact.createElement("TextLabel", {
+				AnchorPoint = Vector2.new(0.5, 0.5),
+				Position = UDim2.new(0.5, 0, 0.5, 0),
+				TextScaled = true,
+				BackgroundTransparency = 1,
+				Font = Enum.Font.GothamBlack,
+				Text = self.props.hit,
+				Size = UDim2.new(1, 0, 1, 0),
+				TextColor3 = Color3.new(188, 0, 0),
+			}),
+		})
+	end
+end
+return HitMark
+]]></ProtectedString>
+							<int64 name="SourceAssetId">-1</int64>
+							<BinaryString name="Tags"></BinaryString>
+						</Properties>
+					</Item>
 				</Item>
 				<Item class="Folder" referent="RBXC8275BDDE9A64D9DAC4FE52F7D9A82E4">
 					<Properties>
@@ -5208,6 +5249,7 @@ local Players = _0.Players
 local UserInputService = _0.UserInputService
 local Workspace = _0.Workspace
 local Crosshair = TS.import(script, script.Parent.Parent, "App", "Crosshair").Crosshair
+local HitMark = TS.import(script, script.Parent.Parent, "App", "HitMark")
 local player = Players.LocalPlayer
 local _1 = player.Character
 if _1 == nil then
@@ -5226,12 +5268,13 @@ local gun = {
 		Replicated = {},
 	},
 	defaults = {
-		damage = 0,
 		debounce = true,
 		mouseDown = false,
 		equipped = false,
 		origin = nil,
 		direction = nil,
+		hit = "Miss",
+		target = nil,
 	},
 	onInitialize = function(self)
 		local handle
@@ -5270,7 +5313,26 @@ local gun = {
 			end
 		end)
 	end,
-	effects = {},
+	effects = { function(self)
+		local _2 = self:get("target") ~= nil
+		if _2 then
+			local _3 = (self:get("target")).Parent
+			if _3 ~= nil then
+				_3 = _3:FindFirstChild("Humanoid")
+			end
+			_2 = _3 ~= nil
+		end
+		if _2 then
+			local handle = Roact.mount(Roact.createElement(HitMark, {
+				hit = self:get("hit"),
+			}), self:get("target"))
+			local _3 = TS.Promise.delay(0.25)
+			local _4 = function()
+				return Roact.unmount(handle)
+			end
+			_3:andThen(_4)
+		end
+	end },
 }
 return gun
 ]]></ProtectedString>
@@ -5317,26 +5379,6 @@ local healPackage = {
 	end,
 }
 return healPackage
-]]></ProtectedString>
-							<int64 name="SourceAssetId">-1</int64>
-							<BinaryString name="Tags"></BinaryString>
-						</Properties>
-					</Item>
-					<Item class="ModuleScript" referent="RBX3BD5935EF4C344DDBE393DFD3BD21DB3">
-						<Properties>
-							<BinaryString name="AttributesSerialize"></BinaryString>
-							<Content name="LinkedSource"><null></null></Content>
-							<string name="Name">Luck</string>
-							<string name="ScriptGuid">{AF35BE98-A08C-4F6B-931D-BE0DF1ADEF13}</string>
-							<ProtectedString name="Source"><![CDATA[-- Compiled with roblox-ts v1.1.1
-local Luck = {
-	name = "Luck",
-	units = {
-		Replicated = {},
-	},
-	onInitialize = function(self) end,
-}
-return Luck
 ]]></ProtectedString>
 							<int64 name="SourceAssetId">-1</int64>
 							<BinaryString name="Tags"></BinaryString>
@@ -5771,12 +5813,13 @@ local gun = {
 		Replicated = {},
 	},
 	defaults = {
-		damage = 0,
 		debounce = true,
 		mouseDown = false,
 		equipped = false,
 		origin = nil,
 		direction = nil,
+		hit = "Miss",
+		target = nil,
 	},
 	onInitialize = function(self)
 		self.fabric:getOrCreateUnitByRef("Luck", self)
@@ -5790,38 +5833,68 @@ local gun = {
 			})
 			local luck = self.fabric:getOrCreateUnitByRef("Luck", self)
 			self:addLayer("debounce", {
-				damage = luck:applyLuck(math.random(10, 50)),
 				debounce = false,
 			})
+			local tool = self.ref
+			local character = tool.Parent
+			local rayCastParameters = RaycastParams.new()
+			rayCastParameters.FilterDescendantsInstances = { character }
+			rayCastParameters.FilterType = Enum.RaycastFilterType.Blacklist
+			local direction = self:get("direction")
+			if direction ~= nil then
+				local result = Workspace:Raycast(self:get("origin"), direction, rayCastParameters)
+				local _0 = result
+				if _0 ~= nil then
+					_0 = _0.Instance
+				end
+				local target = _0
+				if result and target then
+					local _1 = luck
+					local _2 = _1.applyLuck
+					if _2 ~= nil then
+						_2 = _2(_1, math.random(10, 50))
+					end
+					local hit = _2
+					self:addLayer("damage", {
+						hit = hit,
+						target = result.Instance,
+					})
+				end
+			end
 			local _0 = TS.Promise.delay(FIRE_RATE)
 			local _1 = function()
+				self:removeLayer("damage")
 				self:removeLayer("debounce")
 			end
 			_0:andThen(_1)
 		end
 	end,
 	effects = { function(self)
-		local tool = self.ref
-		local character = tool.Parent
-		local rayCastParameters = RaycastParams.new()
-		rayCastParameters.FilterDescendantsInstances = { character }
-		rayCastParameters.FilterType = Enum.RaycastFilterType.Blacklist
-		local direction = self:get("direction")
-		if direction ~= nil then
-			local result = Workspace:Raycast(self:get("origin"), direction, rayCastParameters)
-			local _0 = result
-			if _0 ~= nil then
-				_0 = _0.Instance
+		local damage = self:get("hit")
+		local _0 = damage ~= nil
+		if _0 then
+			local _1 = damage
+			_0 = type(_1) == "string"
+			if _0 then
+				_0 = damage ~= "Miss"
 			end
-			local hit = _0
-			if result and hit then
-				local _1 = hit.Parent
+		end
+		if _0 then
+			local target = self:get("target")
+			if target then
+				print(target)
+				local _1 = target.Parent
 				if _1 ~= nil then
 					_1 = _1:FindFirstChildOfClass("Humanoid")
 				end
 				local humanoid = _1
 				if humanoid then
-					humanoid:TakeDamage(self:get("damage"))
+					humanoid:TakeDamage(tonumber(self:get("hit")))
+					local _2 = (self:get("target")).Parent
+					if _2 ~= nil then
+						_2 = _2.Name
+					end
+					print("Shot at " .. tostring(_2))
 				end
 			end
 		end
@@ -5936,9 +6009,9 @@ local Luck = {
 	applyLuck = function(self, layerData)
 		local rng = math.random(0, layerData)
 		if rng < 25 then
-			return layerData
+			return tostring(layerData)
 		end
-		return 0
+		return "Miss"
 	end,
 }
 return Luck
