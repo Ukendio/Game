@@ -5087,7 +5087,7 @@ do
 			if debounce then
 				debounce = false
 				self._motor:setGoal(Flipper.Spring.new(1, {
-					frequency = 0.5,
+					frequency = 10,
 					dampingRatio = 1,
 				}))
 				local _0 = TS.Promise.delay(1 / self.props.fireRate)

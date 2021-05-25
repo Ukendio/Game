@@ -101,6 +101,10 @@ const gun: GunDefinition = {
 					direction: mouse.Hit.Position.sub(character.HumanoidRootPart.Position).Unit.mul(100),
 				};
 				this.getUnit("Transmitter")!.sendWithPredictiveLayer(data, "shoot", data);
+
+				this.addLayer("temporaryRecoil", {
+					recoil: 1231,
+				});
 			}
 		});
 	},
@@ -114,6 +118,10 @@ const gun: GunDefinition = {
 				const handle = Roact.mount(<HitMark hit={this.get("hit") as string} />, this.get("target") as Instance);
 				Promise.delay(0.25).then(() => Roact.unmount(handle));
 			}
+		},
+
+		function (this) {
+			print(this.get("recoil"));
 		},
 	],
 };
