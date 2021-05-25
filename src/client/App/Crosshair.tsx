@@ -40,7 +40,7 @@ export class Crosshair extends Roact.Component<Props, State> {
 				debounce = false;
 				this._motor.setGoal(
 					new Flipper.Spring(1, {
-						frequency: this.props.fireRate,
+						frequency: 5,
 						dampingRatio: 1,
 					}),
 				);

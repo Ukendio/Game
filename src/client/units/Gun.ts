@@ -58,12 +58,7 @@ const gun: GunDefinition = {
 
 	onInitialize: function (this) {
 		function updateMouseIcon() {
-			print(mouse.Icon);
-			if (mouse.Icon === "rbxasset://textures/GunCursor.png") {
-				mouse.Icon = "";
-			} else {
-				mouse.Icon = "rbxasset://textures/GunCursor.png";
-			}
+			mouse.Icon = "";
 		}
 
 		const onEquipped = () => {
