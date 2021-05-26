@@ -85,27 +85,27 @@
 			<Properties>
 				<BinaryString name="AttributesSerialize"></BinaryString>
 				<CoordinateFrame name="CFrame">
-					<X>27.9007244</X>
-					<Y>12.3602238</Y>
-					<Z>-14.7234163</Z>
-					<R00>-0.825428724</R00>
-					<R01>-0.339024335</R01>
-					<R02>0.451364517</R02>
-					<R10>-0</R10>
-					<R11>0.799573898</R11>
-					<R12>0.600567818</R12>
-					<R20>-0.564506352</R20>
-					<R21>0.49572593</R21>
-					<R22>-0.659991264</R22>
+					<X>-45.7277641</X>
+					<Y>58.7454605</Y>
+					<Z>36.4514732</Z>
+					<R00>0.648551047</R00>
+					<R01>0.458745837</R01>
+					<R02>-0.607399225</R02>
+					<R10>1.49011594e-08</R10>
+					<R11>0.797979772</R11>
+					<R12>0.602684259</R12>
+					<R20>0.761171103</R20>
+					<R21>-0.390871495</R21>
+					<R22>0.51753062</R22>
 				</CoordinateFrame>
 				<Ref name="CameraSubject">null</Ref>
 				<token name="CameraType">0</token>
 				<float name="FieldOfView">70</float>
 				<token name="FieldOfViewMode">0</token>
 				<CoordinateFrame name="Focus">
-					<X>26.9979954</X>
-					<Y>11.1590881</Y>
-					<Z>-13.4034338</Z>
+					<X>-44.5129662</X>
+					<Y>57.5400925</Y>
+					<Z>35.4164124</Z>
 					<R00>1</R00>
 					<R01>0</R01>
 					<R02>0</R02>
@@ -28137,18 +28137,18 @@ return {
 						<bool name="CanBeDropped">true</bool>
 						<bool name="Enabled">true</bool>
 						<CoordinateFrame name="Grip">
-							<X>0.633958817</X>
-							<Y>2.98023224e-08</Y>
-							<Z>0</Z>
-							<R00>-5.96046519e-08</R00>
-							<R01>1.67638046e-08</R01>
+							<X>0.602336884</X>
+							<Y>5.96046448e-08</Y>
+							<Z>9.53674316e-07</Z>
+							<R00>-1.7881392e-07</R00>
+							<R01>-4.47034623e-08</R01>
 							<R02>1</R02>
-							<R10>4.47035013e-08</R10>
+							<R10>1.8626285e-09</R10>
 							<R11>1</R11>
-							<R12>-1.6763801e-08</R12>
+							<R12>4.47034623e-08</R12>
 							<R20>-1</R20>
-							<R21>4.47035013e-08</R21>
-							<R22>-5.96046519e-08</R22>
+							<R21>1.8626376e-09</R21>
+							<R22>-1.7881392e-07</R22>
 						</CoordinateFrame>
 						<bool name="ManualActivationOnly">false</bool>
 						<string name="Name">Pistol</string>
