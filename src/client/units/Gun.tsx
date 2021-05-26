@@ -3,7 +3,7 @@ import Roact from "@rbxts/roact";
 import { Players, UserInputService, Workspace } from "@rbxts/services";
 import { CharacterRigR15 } from "@rbxts/yield-for-character";
 import { Crosshair } from "client/App/Crosshair";
-import HitMark from "client/App/Hitmark";
+import HitMark from "client/App/HitMark";
 
 declare global {
 	interface FabricUnits {
