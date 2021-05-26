@@ -2,8 +2,11 @@ import { ServerScriptService, Workspace, Players, ReplicatedStorage } from "@rbx
 import { CharacterRigR15, yieldForR15CharacterDescendants } from "@rbxts/yield-for-character";
 import FabricLib from "@rbxts/fabric";
 import Remotes from "shared/Remotes";
+import { spawnStore } from "./Spawn";
 
 const ServerCreateHealthPack = Remotes.Server.Create("ServerCreateHealthPack");
+const ClientRequestDeploy = Remotes.Server.Create("ClientRequestDeploy");
+
 const fabric = new FabricLib.Fabric("Example");
 {
 	FabricLib.useReplication(fabric);
@@ -34,12 +37,46 @@ function createHealthPack(character: CharacterRigR15) {
 	});
 }
 
+function respawnPlayer(currentPlayer?: Player) {
+	if (currentPlayer === undefined) return;
+
+	const state = spawnStore.getState();
+
+	let closestSpawn = undefined! as SpawnLocation;
+
+	let closestMagnitude = undefined! as number;
+
+	state.spawnLocations.forEach((spawnLocation) => {
+		let totalMagnitude = 0;
+		state.players.forEach((player) => {
+			const root = player.Character?.FindFirstChild("HumanoidRootPart") as BasePart;
+			if (root) {
+				totalMagnitude += spawnLocation.Position.sub(root.Position).Magnitude;
+			}
+		});
+
+		if (closestMagnitude === undefined) {
+			closestMagnitude = totalMagnitude;
+		}
+
+		if (totalMagnitude < closestMagnitude) {
+			closestMagnitude = totalMagnitude;
+			closestSpawn = spawnLocation;
+		}
+	});
+
+	currentPlayer.RespawnLocation = closestSpawn;
+
+	Promise.delay(5).then(() => currentPlayer.LoadCharacter());
+}
+
 async function handleCharacterAdded(character: Model) {
 	const rig = await yieldForR15CharacterDescendants(character);
 	rig.Humanoid.Health = 20;
 
 	rig.Humanoid.Died.Connect(() => {
 		createHealthPack(rig);
+		respawnPlayer(Players.GetPlayerFromCharacter(rig));
 	});
 	const gunTool = ReplicatedStorage.TS.assets.FindFirstChild("Pistol")?.Clone() as Tool;
 	gunTool.Parent = Players.GetPlayerFromCharacter(rig)?.WaitForChild("Backpack");
@@ -48,13 +85,10 @@ async function handleCharacterAdded(character: Model) {
 	gun.mergeBaseLayer({});
 }
 
-const onPlayerAdded = (player: Player) => {
+ClientRequestDeploy.Connect((player) => {
+	assert(player.Character === undefined, "CharacterAutoLoads is disabled, this should not happen");
+
+	player.LoadCharacter();
 	if (player.Character) handleCharacterAdded(player.Character);
-	else player.CharacterAdded.Connect(handleCharacterAdded);
-};
-
-for (const player of Players.GetPlayers()) {
-	onPlayerAdded(player);
-}
-
-Players.PlayerAdded.Connect(onPlayerAdded);
+	player.CharacterAdded.Connect(handleCharacterAdded);
+});

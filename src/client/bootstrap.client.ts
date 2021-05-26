@@ -15,9 +15,15 @@ const fabric = new FabricLib.Fabric("Example");
 }
 
 const ServerCreateHealthPack = Remotes.Client.Get("ServerCreateHealthPack");
+const ClientRequestDeploy = Remotes.Client.WaitFor("ClientRequestDeploy");
+
 ServerCreateHealthPack.Connect((healthPack) => {
 	const c = fabric.getOrCreateUnitByRef("Heal", healthPack);
 	c.mergeBaseLayer({});
+});
+
+ClientRequestDeploy.then((remote) => {
+	remote.SendToServer();
 });
 
 const gunTool = Players.LocalPlayer.WaitForChild("Backpack").WaitForChild("Pistol");
