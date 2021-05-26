@@ -1,8 +1,7 @@
-import { ServerScriptService, Workspace, Players, ReplicatedStorage, PhysicsService } from "@rbxts/services";
+import { ServerScriptService, Workspace, Players, ReplicatedStorage } from "@rbxts/services";
 import { CharacterRigR15, yieldForR15CharacterDescendants } from "@rbxts/yield-for-character";
-import FabricLib, { Fabric } from "@rbxts/fabric";
+import FabricLib from "@rbxts/fabric";
 import Remotes from "shared/Remotes";
-import { t } from "@rbxts/t";
 
 const ServerCreateHealthPack = Remotes.Server.Create("ServerCreateHealthPack");
 const fabric = new FabricLib.Fabric("Example");
