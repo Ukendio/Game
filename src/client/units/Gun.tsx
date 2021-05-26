@@ -96,15 +96,13 @@ const gun: GunDefinition = {
 
 				const target = result?.Instance;
 
-				if (result) {
-					this.getUnit("Transmitter")!.sendWithPredictiveLayer(
-						{
-							target,
-						},
-						"shoot",
+				this.getUnit("Transmitter")!.sendWithPredictiveLayer(
+					{
 						target,
-					);
-				}
+					},
+					"shoot",
+					target,
+				);
 			}
 		});
 	},
