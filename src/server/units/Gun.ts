@@ -1,7 +1,3 @@
-import FabricLib, { ThisFabricUnit, UnitDefinition } from "@rbxts/fabric";
-import { Workspace } from "@rbxts/services";
-import { CharacterRigR15 } from "@rbxts/yield-for-character";
-
 const FIRE_RATE = 1;
 
 const gun: FabricUnits["Gun"] = {
