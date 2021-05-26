@@ -48,7 +48,6 @@ const gun: FabricUnits["Gun"] = {
 			if (damage !== undefined && typeIs(damage, "string") && damage !== "Miss") {
 				const target = this.get("target") as BasePart;
 				if (target) {
-					print(target);
 					const humanoid = target.Parent?.FindFirstChildOfClass("Humanoid");
 					if (humanoid) {
 						humanoid.TakeDamage(tonumber(this.get("hit") as string)!);

@@ -54,8 +54,6 @@ const gun: GunDefinition = {
 
 	onInitialize: function (this) {
 		let handle: Roact.Tree;
-		const pistolShot = ReplicatedStorage.TS.assets.PistolShot.Clone();
-
 		const onEquipped = () => {
 			handle = Roact.mount(
 				<screengui ZIndexBehavior="Sibling">
@@ -89,26 +87,24 @@ const gun: GunDefinition = {
 				rayCastParameters.FilterDescendantsInstances = [character];
 				rayCastParameters.FilterType = Enum.RaycastFilterType.Blacklist;
 
-				const direction = this.get("direction") as Vector3;
+				const origin = Workspace.CurrentCamera!.CFrame.Position;
+				const result = Workspace.Raycast(
+					origin,
+					mouse.Hit.Position.sub(origin).Unit.mul(100),
+					rayCastParameters,
+				);
 
-				if (direction !== undefined) {
-					const result = Workspace.Raycast(this.get("origin") as Vector3, direction, rayCastParameters);
-					const target = result?.Instance;
+				const target = result?.Instance;
 
-					if (result && target) {
-						this.getUnit("Transmitter")!.sendWithPredictiveLayer(
-							{
-								target,
-							},
-							"shoot",
+				if (result && target) {
+					this.getUnit("Transmitter")!.sendWithPredictiveLayer(
+						{
 							target,
-						);
-					}
+						},
+						"shoot",
+						target,
+					);
 				}
-
-				this.addLayer("temporaryRecoil", {
-					recoil: 1231,
-				});
 			}
 		});
 	},
@@ -117,16 +113,21 @@ const gun: GunDefinition = {
 		function (this) {
 			if (
 				this.get("target") !== undefined &&
-				(this.get("target") as Instance).Parent?.FindFirstChild("Humanoid") !== undefined
+				(this.get("target") as Instance).Parent?.FindFirstChild("Humanoid") !== undefined &&
+				this.get("debounce") === false
 			) {
 				const handle = Roact.mount(<HitMark hit={this.get("hit") as string} />, this.get("target") as Instance);
-				Promise.delay(0.25).then(() => Roact.unmount(handle));
+				const pistolShot = ReplicatedStorage.TS.assets.PistolShot.Clone();
+
+				Promise.delay(0.25).then(() => {
+					Roact.unmount(handle);
+					pistolShot.Stop();
+					pistolShot.Destroy();
+				});
 			}
 		},
 
-		function (this) {
-			print(this.get("recoil"));
-		},
+		function (this) {},
 	],
 };
 
