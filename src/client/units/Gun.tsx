@@ -1,6 +1,6 @@
 import FabricLib, { ThisFabricUnit, UnitDefinition } from "@rbxts/fabric";
 import Roact from "@rbxts/roact";
-import { Players, UserInputService, Workspace } from "@rbxts/services";
+import { Players, ReplicatedStorage, UserInputService, Workspace } from "@rbxts/services";
 import { CharacterRigR15 } from "@rbxts/yield-for-character";
 import { Crosshair } from "client/App/Crosshair";
 import HitMark from "client/App/HitMark";
@@ -23,20 +23,10 @@ interface GunDefinition extends UnitDefinition<"Gun"> {
 		debounce: boolean;
 		mouseDown: boolean;
 		equipped: boolean;
-		origin: Vector3;
-		direction: Vector3;
-		hit: string;
 		target: Model;
 	};
 
-	onClientShoot?: (
-		this: ThisFabricUnit<"Gun">,
-		_player: Player,
-		data: {
-			origin: Vector3;
-			direction: Vector3;
-		},
-	) => void;
+	onClientShoot?: (this: ThisFabricUnit<"Gun">, _player: Player, target: Model) => void;
 }
 
 const player = Players.LocalPlayer;
@@ -59,14 +49,13 @@ const gun: GunDefinition = {
 		debounce: true,
 		mouseDown: false,
 		equipped: false,
-		origin: undefined!,
-		direction: undefined!,
-		hit: "Miss",
 		target: undefined!,
 	},
 
 	onInitialize: function (this) {
 		let handle: Roact.Tree;
+		const pistolShot = ReplicatedStorage.TS.assets.PistolShot.Clone();
+
 		const onEquipped = () => {
 			handle = Roact.mount(
 				<screengui ZIndexBehavior="Sibling">
@@ -96,11 +85,26 @@ const gun: GunDefinition = {
 
 		tool.Activated.Connect(() => {
 			if ((this.get("debounce") as boolean) === true) {
-				const data = {
-					origin: character.HumanoidRootPart.Position,
-					direction: mouse.Hit.Position.sub(character.HumanoidRootPart.Position).Unit.mul(100),
-				};
-				this.getUnit("Transmitter")!.sendWithPredictiveLayer(data, "shoot", data);
+				const rayCastParameters = new RaycastParams();
+				rayCastParameters.FilterDescendantsInstances = [character];
+				rayCastParameters.FilterType = Enum.RaycastFilterType.Blacklist;
+
+				const direction = this.get("direction") as Vector3;
+
+				if (direction !== undefined) {
+					const result = Workspace.Raycast(this.get("origin") as Vector3, direction, rayCastParameters);
+					const target = result?.Instance;
+
+					if (result && target) {
+						this.getUnit("Transmitter")!.sendWithPredictiveLayer(
+							{
+								target,
+							},
+							"shoot",
+							target,
+						);
+					}
+				}
 
 				this.addLayer("temporaryRecoil", {
 					recoil: 1231,
