@@ -28,6 +28,7 @@
     "@rbxts/knit": "0.0.15-alpha.0",
     "@rbxts/net": "^2.1.1",
     "@rbxts/roact": "^1.3.0-ts.14",
+    "@rbxts/rodux": "^3.0.0-ts.3",
     "@rbxts/services": "^1.1.4",
     "@rbxts/spr": "^1.0.1",
     "@rbxts/spring": "^1.0.1",
