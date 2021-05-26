@@ -96,7 +96,7 @@ const gun: GunDefinition = {
 
 				const target = result?.Instance;
 
-				if (result && target) {
+				if (result) {
 					this.getUnit("Transmitter")!.sendWithPredictiveLayer(
 						{
 							target,
@@ -117,17 +117,21 @@ const gun: GunDefinition = {
 				this.get("debounce") === false
 			) {
 				const handle = Roact.mount(<HitMark hit={this.get("hit") as string} />, this.get("target") as Instance);
-				const pistolShot = ReplicatedStorage.TS.assets.PistolShot.Clone();
-				pistolShot.Play();
+
 				Promise.delay(0.75).then(() => {
 					Roact.unmount(handle);
-					pistolShot.Stop();
-					pistolShot.Destroy();
 				});
 			}
 		},
 
-		function (this) {},
+		function (this) {
+			if (this.get("debounce") === false) {
+				const pistolShot = ReplicatedStorage.TS.assets.PistolShot.Clone();
+				pistolShot.Parent = character.Head;
+				pistolShot.Play();
+				pistolShot.Ended.Connect(() => pistolShot.Destroy());
+			}
+		},
 	],
 };
 
