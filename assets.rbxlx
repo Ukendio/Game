@@ -85,27 +85,27 @@
 			<Properties>
 				<BinaryString name="AttributesSerialize"></BinaryString>
 				<CoordinateFrame name="CFrame">
-					<X>18.1991577</X>
-					<Y>39.3336639</Y>
-					<Z>-89.4857712</Z>
-					<R00>-0.936281741</R00>
-					<R01>-0.151293278</R01>
-					<R02>0.316996604</R02>
+					<X>293.221924</X>
+					<Y>98.7498703</Y>
+					<Z>-67.1812515</Z>
+					<R00>-0.0808794424</R00>
+					<R01>-0.553807378</R01>
+					<R02>0.828707397</R02>
 					<R10>-0</R10>
-					<R11>0.902481675</R11>
-					<R12>0.430728346</R12>
-					<R20>-0.351249874</R20>
-					<R21>0.403283089</R21>
-					<R22>-0.84497714</R22>
+					<R11>0.831431329</R11>
+					<R12>0.555627644</R12>
+					<R20>-0.99672395</R20>
+					<R21>0.0449388549</R21>
+					<R22>-0.067245692</R22>
 				</CoordinateFrame>
 				<Ref name="CameraSubject">null</Ref>
 				<token name="CameraType">0</token>
 				<float name="FieldOfView">70</float>
 				<token name="FieldOfViewMode">0</token>
 				<CoordinateFrame name="Focus">
-					<X>17.5651665</X>
-					<Y>38.4722099</Y>
-					<Z>-87.7958221</Z>
+					<X>291.564514</X>
+					<Y>97.6386185</Y>
+					<Z>-67.0467606</Z>
 					<R00>1</R00>
 					<R01>0</R01>
 					<R02>0</R02>
@@ -4811,25 +4811,6 @@ gcLgc4RKxr21zq2UlJSM]]></BinaryString>
 					</Properties>
 				</Item>
 			</Item>
-		</Item>
-		<Item class="Sound" referent="RBX967FCE0B8ED148459F211726C15BB098">
-			<Properties>
-				<BinaryString name="AttributesSerialize"></BinaryString>
-				<float name="EmitterSize">10</float>
-				<bool name="Looped">false</bool>
-				<string name="Name">Healing_SFX_3</string>
-				<bool name="PlayOnRemove">false</bool>
-				<float name="PlaybackSpeed">1</float>
-				<bool name="Playing">false</bool>
-				<token name="RollOffMode">0</token>
-				<Ref name="SoundGroup">null</Ref>
-				<Content name="SoundId"><url>rbxassetid://6865820978</url></Content>
-				<int64 name="SourceAssetId">-1</int64>
-				<BinaryString name="Tags"></BinaryString>
-				<double name="TimePosition">0</double>
-				<float name="Volume">0.5</float>
-				<float name="xmlRead_MaxDistance_3">10000</float>
-			</Properties>
 		</Item>
 	</Item>
 	<Item class="SoundService" referent="7">
@@ -32884,6 +32865,44 @@ return {
 							</Item>
 						</Item>
 					</Item>
+				</Item>
+				<Item class="Sound" referent="RBXBB52CA79F5F44C2DA1C32A33AA1CF366">
+					<Properties>
+						<BinaryString name="AttributesSerialize"></BinaryString>
+						<float name="EmitterSize">10</float>
+						<bool name="Looped">false</bool>
+						<string name="Name">HealingSound</string>
+						<bool name="PlayOnRemove">false</bool>
+						<float name="PlaybackSpeed">1</float>
+						<bool name="Playing">false</bool>
+						<token name="RollOffMode">0</token>
+						<Ref name="SoundGroup">null</Ref>
+						<Content name="SoundId"><url>rbxassetid://6865820978</url></Content>
+						<int64 name="SourceAssetId">-1</int64>
+						<BinaryString name="Tags"></BinaryString>
+						<double name="TimePosition">0</double>
+						<float name="Volume">0.5</float>
+						<float name="xmlRead_MaxDistance_3">10000</float>
+					</Properties>
+				</Item>
+				<Item class="Sound" referent="RBX9FBFD90F4B704C14ACBA64CB6F9D931B">
+					<Properties>
+						<BinaryString name="AttributesSerialize"></BinaryString>
+						<float name="EmitterSize">10</float>
+						<bool name="Looped">false</bool>
+						<string name="Name">PistolShot</string>
+						<bool name="PlayOnRemove">false</bool>
+						<float name="PlaybackSpeed">1</float>
+						<bool name="Playing">false</bool>
+						<token name="RollOffMode">0</token>
+						<Ref name="SoundGroup">null</Ref>
+						<Content name="SoundId"><url>rbxassetid://6867664361</url></Content>
+						<int64 name="SourceAssetId">-1</int64>
+						<BinaryString name="Tags"></BinaryString>
+						<double name="TimePosition">0</double>
+						<float name="Volume">0.5</float>
+						<float name="xmlRead_MaxDistance_3">10000</float>
+					</Properties>
 				</Item>
 			</Item>
 			<Item class="Folder" referent="RBX7031D41C7A904932894DE576CA471525">
