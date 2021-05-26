@@ -118,8 +118,8 @@ const gun: GunDefinition = {
 			) {
 				const handle = Roact.mount(<HitMark hit={this.get("hit") as string} />, this.get("target") as Instance);
 				const pistolShot = ReplicatedStorage.TS.assets.PistolShot.Clone();
-
-				Promise.delay(0.25).then(() => {
+				pistolShot.Play();
+				Promise.delay(0.75).then(() => {
 					Roact.unmount(handle);
 					pistolShot.Stop();
 					pistolShot.Destroy();
