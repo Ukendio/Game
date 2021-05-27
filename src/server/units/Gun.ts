@@ -1,4 +1,37 @@
+import { Players } from "@rbxts/services";
+import { addDeathToPlayer, addKillToPlayer, competitorStore } from "server/core/Competitor";
+import { roundStore } from "server/core/Round";
+import { addKillToTeam, addDeathToTeam, teamStore } from "server/core/Team";
+
 const FIRE_RATE = 1;
+
+function addKill(player: Player, target: BasePart) {
+	const killMap = {
+		["Team Deathmatch"]: () => {
+			if (roundStore.getState().sequence === "intermission") return;
+
+			competitorStore.dispatch(addKillToPlayer(player));
+			competitorStore.dispatch(addDeathToPlayer(player));
+
+			teamStore.getState().teams.forEach((team) => {
+				if (team.tag === player.Team) {
+					teamStore.dispatch(addKillToTeam(team));
+				} else if (team.tag === Players.GetPlayerFromCharacter(target.Parent)!.Team) {
+					teamStore.dispatch(addDeathToTeam(team));
+				}
+			});
+		},
+
+		["Free For All"]: () => {
+			if (roundStore.getState().sequence === "intermission") return;
+
+			competitorStore.dispatch(addKillToPlayer(player));
+			competitorStore.dispatch(addDeathToPlayer(player));
+		},
+	};
+
+	return killMap;
+}
 
 const gun: FabricUnits["Gun"] = {
 	name: "Gun",
@@ -22,12 +55,14 @@ const gun: FabricUnits["Gun"] = {
 	onClientShoot: function (this, _player, target) {
 		if ((this.get("debounce") as boolean) === true) {
 			const luck = this.fabric.getOrCreateUnitByRef("Luck", this);
+
 			this.addLayer("debounce", {
 				debounce: false,
 			});
 
 			this.addLayer("damage", {
 				hit: luck.applyLuck?.(math.random(10, 50)),
+				player: _player,
 				target: target,
 			});
 
@@ -43,13 +78,13 @@ const gun: FabricUnits["Gun"] = {
 			const damage = this.get("hit");
 			if (damage !== undefined && typeIs(damage, "string") && damage !== "Miss") {
 				const target = this.get("target") as BasePart;
-				if (target) {
-					const humanoid = target.Parent?.FindFirstChildOfClass("Humanoid");
-					if (humanoid) {
-						humanoid.TakeDamage(tonumber(this.get("hit") as string)!);
+				const player = this.get("player") as Player;
+				const humanoid = target.Parent?.FindFirstChildOfClass("Humanoid");
 
-						print(`Shot at ${(this.get("target") as Instance).Parent?.Name}`);
-					}
+				if (humanoid) {
+					humanoid.TakeDamage(tonumber(this.get("hit") as string)!);
+
+					if (humanoid.Health <= 0) addKill(player, target)[roundStore.getState().gameMode];
 				}
 			}
 		},
