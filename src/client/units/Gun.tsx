@@ -64,12 +64,11 @@ const gun: GunDefinition = {
 				player.WaitForChild("PlayerGui"),
 			);
 
-			print("mount :(");
 			UserInputService.MouseIconEnabled = false;
 		};
 
 		const onUnequipped = () => {
-			mouse.Icon = "";
+			UserInputService.MouseIconEnabled = true;
 			Roact.unmount(handle);
 		};
 
