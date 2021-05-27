@@ -1,10 +1,10 @@
 function resultHandler(co: thread, ok: boolean, ...results: unknown[]) {
 	if (!ok) {
-		warn(debug.traceback(co, ...(results as string[]), 2));
+		error(debug.traceback(co, ...(results as string[])), 2);
 	}
 
 	if (coroutine.status(co) !== "dead") {
-		warn(debug.traceback(co, "Attempted to yield inside changed event!", 2));
+		error(debug.traceback(co, "Attempted to yield inside changed event!"), 2);
 	}
 
 	return results as LuaTuple<[unknown, unknown]>;
