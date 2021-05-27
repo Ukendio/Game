@@ -2,7 +2,7 @@ import { ServerScriptService, Workspace, Players, ReplicatedStorage } from "@rbx
 import { CharacterRigR15, yieldForR15CharacterDescendants } from "@rbxts/yield-for-character";
 import FabricLib from "@rbxts/fabric";
 import Remotes from "shared/remotes";
-import { spawnStore } from "./Spawn";
+import { setSpawnLocations, spawnStore } from "./Spawn";
 import { castVote, councilStore, createTopic, startVote, stopVote } from "server/core/Council";
 import { mapLoadAsync } from "shared/Architect/Loader";
 import { selectGameMode, selectMap } from "./Round/actions";
@@ -192,12 +192,15 @@ function intermission() {
 			await Promise.delay(10).then(() => {
 				const state = councilStore.getState();
 				const vote = getVoteOrDefault(state.votes, state.topic.options);
-				print(vote);
-				mapLoadAsync(vote);
+				const currentMap = mapLoadAsync(vote);
+				const spawnLocations = new Set<SpawnLocation>();
+				for (const smartSpawn of currentMap.FindFirstChild("Spawns")!.GetChildren()) {
+					spawnLocations.add(smartSpawn.FindFirstChildOfClass("SpawnLocation")!);
+				}
 
+				spawnStore.dispatch(setSpawnLocations(spawnLocations));
 				roundStore.dispatch(selectMap(vote));
 				councilStore.dispatch(stopVote());
-
 				CouncilStopVote.SendToAllPlayers();
 			});
 		})
