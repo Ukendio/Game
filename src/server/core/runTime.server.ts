@@ -12,8 +12,8 @@ import { getKeys } from "shared/tableUtil";
 import { mapNames } from "shared/Architect/maps";
 
 const ServerCreateHealthPack = Remotes.Server.Create("ServerCreateHealthPack");
+const ServerCreatePistol = Remotes.Server.Create("ServerCreatePistol");
 const ClientRequestDeploy = Remotes.Server.Create("ClientRequestDeploy");
-print(ClientRequestDeploy);
 const CouncilVoteOn = Remotes.Server.Create("CouncilVoteOn");
 const CouncilStopVote = Remotes.Server.Create("CouncilStopVote");
 const UIScoreboardUpdate = Remotes.Server.Create("UIScoreboardUpdate");
@@ -50,6 +50,15 @@ function createHealthPack(character: CharacterRigR15) {
 	});
 }
 
+function createPistol(character: CharacterRigR15) {
+	const gunTool = ReplicatedStorage.TS.assets.FindFirstChild("Pistol")?.Clone() as Tool;
+	gunTool.Parent = Players.GetPlayerFromCharacter(character)?.WaitForChild("Backpack");
+
+	const gun = fabric.getOrCreateUnitByRef("Gun", gunTool);
+	gun.mergeBaseLayer({});
+
+	ServerCreatePistol.SendToPlayer(Players.GetPlayerFromCharacter(character)!, gunTool);
+}
 function respawnPlayer(currentPlayer?: Player) {
 	if (currentPlayer === undefined) return;
 
@@ -84,7 +93,6 @@ function respawnPlayer(currentPlayer?: Player) {
 }
 
 async function handleCharacterAdded(character: Model) {
-	print(character);
 	const rig = await yieldForR15CharacterDescendants(character);
 	rig.Humanoid.Health = 20;
 
@@ -93,11 +101,7 @@ async function handleCharacterAdded(character: Model) {
 		respawnPlayer(Players.GetPlayerFromCharacter(rig));
 	});
 
-	const gunTool = ReplicatedStorage.TS.assets.FindFirstChild("Pistol")?.Clone() as Tool;
-	gunTool.Parent = Players.GetPlayerFromCharacter(rig)?.WaitForChild("Backpack");
-
-	const gun = fabric.getOrCreateUnitByRef("Gun", gunTool);
-	gun.mergeBaseLayer({});
+	createPistol(rig);
 
 	return rig;
 }

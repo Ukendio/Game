@@ -3,6 +3,7 @@ import { TopicFormat } from "server/core/Council";
 
 const remotes = Net.Definitions.Create({
 	ServerCreateHealthPack: Net.Definitions.ServerToClientEvent<[Model]>(),
+	ServerCreatePistol: Net.Definitions.ServerToClientEvent<[Tool]>(),
 
 	CouncilVoteOn: Net.Definitions.ServerToClientEvent<[TopicFormat]>(),
 	CouncilStopVote: Net.Definitions.ServerToClientEvent(),
