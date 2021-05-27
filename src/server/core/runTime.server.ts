@@ -104,8 +104,6 @@ function respawnPlayer(currentPlayer?: Player) {
 		if (currentPlayer.Character) handleCharacterAdded(currentPlayer.Character);
 		currentPlayer.CharacterAdded.Connect(handleCharacterAdded);
 	});
-
-	currentPlayer.LoadCharacter();
 }
 
 async function handleCharacterAdded(character: Model) {
