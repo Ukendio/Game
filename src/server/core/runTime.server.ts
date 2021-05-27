@@ -51,14 +51,22 @@ function createHealthPack(character: CharacterRigR15) {
 }
 
 function createPistol(character: CharacterRigR15) {
+	const player = Players.GetPlayerFromCharacter(character)!;
+	const backpack = player.WaitForChild("Backpack");
+
+	for (const [_, tool] of pairs(backpack.GetChildren())) {
+		tool.Destroy();
+	}
+
 	const gunTool = ReplicatedStorage.TS.assets.FindFirstChild("Pistol")?.Clone() as Tool;
-	gunTool.Parent = Players.GetPlayerFromCharacter(character)?.WaitForChild("Backpack");
+	gunTool.Parent = backpack;
 
 	const gun = fabric.getOrCreateUnitByRef("Gun", gunTool);
 	gun.mergeBaseLayer({});
 
-	ServerCreatePistol.SendToPlayer(Players.GetPlayerFromCharacter(character)!, gunTool);
+	ServerCreatePistol.SendToPlayer(player, gunTool);
 }
+
 function respawnPlayer(currentPlayer?: Player) {
 	if (currentPlayer === undefined) return;
 
