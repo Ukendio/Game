@@ -73,8 +73,6 @@ const gun: GunDefinition = {
 			mouse.Icon = "";
 			Roact.unmount(handle);
 		};
-		player.CameraMode = Enum.CameraMode.LockFirstPerson;
-		UserInputService.MouseBehavior = Enum.MouseBehavior.LockCenter;
 
 		const tool = this.ref as Tool;
 
