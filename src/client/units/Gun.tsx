@@ -1,7 +1,6 @@
 import { ThisFabricUnit, UnitDefinition } from "@rbxts/fabric";
 import Roact from "@rbxts/roact";
-import { Players, ReplicatedStorage, UserInputService, Workspace } from "@rbxts/services";
-import { CharacterRigR15 } from "@rbxts/yield-for-character";
+import { Players, ReplicatedStorage, SoundService, UserInputService, Workspace } from "@rbxts/services";
 import { Crosshair } from "client/UserInterface/App/Crosshair";
 import HitMark from "client/UserInterface/App/HitMark";
 
@@ -30,7 +29,6 @@ interface GunDefinition extends UnitDefinition<"Gun"> {
 }
 
 const player = Players.LocalPlayer;
-const character = (player.Character ?? player.CharacterAdded.Wait()[0]) as CharacterRigR15;
 const mouse = player.GetMouse();
 const SETTINGS = {
 	fireRate: 1,
@@ -66,6 +64,7 @@ const gun: GunDefinition = {
 				player.WaitForChild("PlayerGui"),
 			);
 
+			print("mount :(");
 			UserInputService.MouseIconEnabled = false;
 		};
 
@@ -82,7 +81,7 @@ const gun: GunDefinition = {
 		tool.Activated.Connect(() => {
 			if ((this.get("debounce") as boolean) === true) {
 				const rayCastParameters = new RaycastParams();
-				rayCastParameters.FilterDescendantsInstances = [character];
+				rayCastParameters.FilterDescendantsInstances = [player.Character!];
 				rayCastParameters.FilterType = Enum.RaycastFilterType.Blacklist;
 
 				const origin = Workspace.CurrentCamera!.CFrame.Position;
@@ -124,7 +123,7 @@ const gun: GunDefinition = {
 			if (this.get("debounce") === false) {
 				const pistolShot = ReplicatedStorage.TS.assets.PistolShot.Clone();
 
-				pistolShot.Parent = character.Head;
+				pistolShot.Parent = SoundService;
 				pistolShot.Play();
 				pistolShot.Ended.Connect(() => pistolShot.Destroy());
 			}
