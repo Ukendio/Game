@@ -76,8 +76,9 @@ const gun: FabricUnits["Gun"] = {
 	effects: [
 		function (this) {
 			const damage = this.get("hit");
-			if (damage !== undefined && typeIs(damage, "string") && damage !== "Miss") {
-				const target = this.get("target") as BasePart;
+			const target = this.get("target") as BasePart;
+
+			if (damage !== undefined && typeIs(damage, "string") && damage !== "Miss" && target !== undefined) {
 				const player = this.get("player") as Player;
 				const humanoid = target.Parent?.FindFirstChildOfClass("Humanoid");
 
