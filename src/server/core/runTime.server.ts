@@ -9,11 +9,11 @@ import { selectGameMode, selectMap } from "./Round/actions";
 import { gameModes } from "shared/gameModes";
 import { roundStore, deploy, startRound } from "./Round";
 import { getKeys } from "shared/tableUtil";
-import { resolve } from "@rbxts/knit/src/Knit/Util/Promise";
 import { mapNames } from "shared/Architect/maps";
 
 const ServerCreateHealthPack = Remotes.Server.Create("ServerCreateHealthPack");
 const ClientRequestDeploy = Remotes.Server.Create("ClientRequestDeploy");
+print(ClientRequestDeploy);
 const CouncilVoteOn = Remotes.Server.Create("CouncilVoteOn");
 const CouncilStopVote = Remotes.Server.Create("CouncilStopVote");
 const UIScoreboardUpdate = Remotes.Server.Create("UIScoreboardUpdate");
@@ -84,6 +84,7 @@ function respawnPlayer(currentPlayer?: Player) {
 }
 
 async function handleCharacterAdded(character: Model) {
+	print(character);
 	const rig = await yieldForR15CharacterDescendants(character);
 	rig.Humanoid.Health = 20;
 
@@ -103,6 +104,18 @@ async function handleCharacterAdded(character: Model) {
 	return rig;
 }
 
+const onPlayerAdded = (player: Player) => {
+	player.RespawnLocation = Workspace.FindFirstChild("SpawnLocation") as SpawnLocation;
+	player.LoadCharacter();
+	if (player.Character) handleCharacterAdded(player.Character);
+	player.CharacterAdded.Connect(handleCharacterAdded);
+};
+
+for (const player of Players.GetPlayers()) {
+	onPlayerAdded(player);
+}
+
+Players.PlayerAdded.Connect(onPlayerAdded);
 Players.PlayerRemoving.Connect((player) => {
 	UIScoreboardUpdate.SendToAllPlayersExcept(player, player.Name);
 });
@@ -113,8 +126,10 @@ ClientRequestDeploy.SetCallback((player) => {
 		if (roundStore.getState().deployedPlayers.find((val) => val === player)) return false;
 
 		roundStore.dispatch(deploy(player));
-		if (player.Character) return handleCharacterAdded(player.Character);
+		return true;
 	}
+
+	return false;
 });
 
 ClientAppendVote.Connect((player, vote) => {
@@ -161,17 +176,13 @@ function intermission() {
 			await Promise.delay(10).then(() => {
 				const state = councilStore.getState();
 				const vote = getVoteOrDefault(state.votes, state.topic.options);
+				print(vote);
+				mapLoadAsync(vote);
 
-				mapLoadAsync(vote)
-					.then(() => {
-						roundStore.dispatch(selectMap(vote));
-						councilStore.dispatch(stopVote());
+				roundStore.dispatch(selectMap(vote));
+				councilStore.dispatch(stopVote());
 
-						CouncilStopVote.SendToAllPlayers();
-					})
-					.catch((mapName) => {
-						error(`${mapName} failed to load`);
-					});
+				CouncilStopVote.SendToAllPlayers();
 			});
 		})
 		.then(async () => {

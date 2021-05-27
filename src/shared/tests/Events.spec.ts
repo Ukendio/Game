@@ -21,7 +21,7 @@ export = () => {
 		});
 
 		it("Should fire every interval", () => {
-			Promise.delay(0.5).await(); // yield til after player loaded
+			Promise.delay(2.5).await(); // yield til after player loaded
 			let testValue = 0;
 			const times = new Array<number>();
 			const listener = interval(1 / 6, () => {

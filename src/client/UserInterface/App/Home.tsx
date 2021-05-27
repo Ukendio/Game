@@ -1,9 +1,7 @@
 import Roact from "@rbxts/roact";
 import Remotes from "shared/remotes";
 import UserCamera from "client/UserInterface/Components/camera";
-
-const DeployUser = Remotes.Client.Get("ClientRequestDeploy");
-const RoundStarted = Remotes.Client.Get("RoundStarted");
+import { Players, UserInputService } from "@rbxts/services";
 
 interface State {
 	status: Color3;
@@ -20,10 +18,13 @@ export class Home extends Roact.Component<Props, State> {
 	};
 
 	didMount() {
+		const RoundStarted = Remotes.Client.Get("RoundStarted");
+
 		RoundStarted.Connect(() => this.setState({ status: new Color3(0, 1, 0), visible: this.state.visible }));
 	}
 
 	render(): Roact.Element {
+		const DeployUser = Remotes.Client.Get("ClientRequestDeploy");
 		return (
 			<frame
 				Key={"MainFrame"}
@@ -54,6 +55,9 @@ export class Home extends Roact.Component<Props, State> {
 									if (deployed === false) return;
 
 									UserCamera.removeBlur();
+									Players.LocalPlayer.CameraMode = Enum.CameraMode.LockFirstPerson;
+									UserInputService.MouseBehavior = Enum.MouseBehavior.LockCenter;
+
 									this.setState({ status: this.state.status, visible: false });
 								});
 
