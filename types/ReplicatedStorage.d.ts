@@ -7,5 +7,8 @@ interface ReplicatedStorage extends Instance {
 			PistolShot: Sound;
 		};
 		tests: Folder;
+		Architect: Folder & {
+			maps: Folder;
+		};
 	};
 }
