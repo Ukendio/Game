@@ -18,15 +18,17 @@ const fabric = new FabricLib.Fabric("Example");
 }
 
 const ServerCreateHealthPack = Remotes.Client.Get("ServerCreateHealthPack");
+const ServerCreatePistol = Remotes.Client.Get("ServerCreatePistol");
 
 ServerCreateHealthPack.Connect((healthPack) => {
 	const c = fabric.getOrCreateUnitByRef("Heal", healthPack);
 	c.mergeBaseLayer({});
 });
 
-const gunTool = Players.LocalPlayer.WaitForChild("Backpack").WaitForChild("Pistol");
-const gun = fabric.getOrCreateUnitByRef("Gun", gunTool);
-gun.mergeBaseLayer({});
+ServerCreatePistol.Connect((pistol) => {
+	const gun = fabric.getOrCreateUnitByRef("Gun", pistol);
+	gun.mergeBaseLayer({});
+});
 
 Spirit.bind(Enum.KeyCode.M);
 
