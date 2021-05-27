@@ -89,7 +89,15 @@ function respawnPlayer(currentPlayer?: Player) {
 
 	currentPlayer.RespawnLocation = closestSpawn;
 
-	Promise.delay(5).then(() => currentPlayer.LoadCharacter());
+	new Promise<void>((resolve) => {
+		currentPlayer.LoadCharacter();
+		resolve();
+	}).then(() => {
+		if (currentPlayer.Character) handleCharacterAdded(currentPlayer.Character);
+		currentPlayer.CharacterAdded.Connect(handleCharacterAdded);
+	});
+
+	currentPlayer.LoadCharacter();
 }
 
 async function handleCharacterAdded(character: Model) {
@@ -107,10 +115,7 @@ async function handleCharacterAdded(character: Model) {
 }
 
 const onPlayerAdded = (player: Player) => {
-	player.RespawnLocation = Workspace.FindFirstChild("SpawnLocation") as SpawnLocation;
-	player.LoadCharacter();
-	if (player.Character) handleCharacterAdded(player.Character);
-	player.CharacterAdded.Connect(handleCharacterAdded);
+	respawnPlayer(player);
 };
 
 for (const player of Players.GetPlayers()) {
@@ -128,6 +133,9 @@ ClientRequestDeploy.SetCallback((player) => {
 		if (roundStore.getState().deployedPlayers.find((val) => val === player)) return false;
 
 		roundStore.dispatch(deploy(player));
+		if (player.Character) {
+			respawnPlayer(player);
+		}
 		return true;
 	}
 
