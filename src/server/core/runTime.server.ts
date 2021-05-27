@@ -99,8 +99,6 @@ async function handleCharacterAdded(character: Model) {
 	const gun = fabric.getOrCreateUnitByRef("Gun", gunTool);
 	gun.mergeBaseLayer({});
 
-	respawnPlayer(Players.GetPlayerFromCharacter(rig));
-
 	return rig;
 }
 
