@@ -1,9 +1,9 @@
-import FabricLib, { ThisFabricUnit, UnitDefinition } from "@rbxts/fabric";
+import { ThisFabricUnit, UnitDefinition } from "@rbxts/fabric";
 import Roact from "@rbxts/roact";
 import { Players, ReplicatedStorage, UserInputService, Workspace } from "@rbxts/services";
 import { CharacterRigR15 } from "@rbxts/yield-for-character";
-import { Crosshair } from "client/App/Crosshair";
-import HitMark from "client/App/HitMark";
+import { Crosshair } from "client/UserInterface/App/Crosshair";
+import HitMark from "client/UserInterface/App/HitMark";
 
 declare global {
 	interface FabricUnits {
@@ -125,6 +125,7 @@ const gun: GunDefinition = {
 		function (this) {
 			if (this.get("debounce") === false) {
 				const pistolShot = ReplicatedStorage.TS.assets.PistolShot.Clone();
+
 				pistolShot.Parent = character.Head;
 				pistolShot.Play();
 				pistolShot.Ended.Connect(() => pistolShot.Destroy());
