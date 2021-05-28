@@ -1,12 +1,13 @@
 import Roact from "@rbxts/roact";
 import Remotes from "shared/remotes";
 import UserCamera from "client/UserInterface/Components/camera";
-import { Players, UserInputService } from "@rbxts/services";
+import { ContextActionService, Players, UserInputService, Workspace } from "@rbxts/services";
 
 interface State {
 	status: Color3;
 	visible: boolean;
 	debounce: boolean;
+	mouseConnection: RBXScriptConnection;
 }
 interface Props {}
 
@@ -15,16 +16,26 @@ export class Home extends Roact.Component<Props, State> {
 		status: new Color3(1, 0, 0),
 		visible: true,
 		debounce: true,
+		mouseConnection: undefined!,
 	};
 
 	didMount() {
 		const RoundStarted = Remotes.Client.Get("RoundStarted");
 
 		RoundStarted.Connect(() => this.setState({ status: new Color3(0, 1, 0), visible: this.state.visible }));
+		UserCamera.setActorNone();
+		UserCamera.addBlur(1);
+
+		this.setState({
+			mouseConnection: UserInputService.InputChanged.Connect((inputObject) => {
+				if (inputObject.UserInputType === Enum.UserInputType.MouseMovement) UserCamera.moveCamera();
+			}),
+		});
 	}
 
 	render(): Roact.Element {
 		const DeployUser = Remotes.Client.Get("ClientRequestDeploy");
+		print("state change?");
 		return (
 			<frame
 				Key={"MainFrame"}
@@ -46,19 +57,22 @@ export class Home extends Roact.Component<Props, State> {
 					Event={{
 						MouseButton1Down: (rbx, x, y) => {
 							if (this.state.debounce) {
-								this.setState({
-									status: this.state.status,
-									visible: this.state.visible,
-									debounce: false,
-								});
 								DeployUser.CallServerAsync().then((deployed: boolean | Model) => {
-									if (deployed === false) return;
+									if (deployed !== false && typeIs(deployed, "Instance") && deployed.IsA("Model")) {
+										UserCamera.removeBlur();
+										UserCamera.setActorUser(deployed);
+										Players.LocalPlayer.CameraMode = Enum.CameraMode.LockFirstPerson;
+										UserInputService.MouseBehavior = Enum.MouseBehavior.LockCenter;
 
-									UserCamera.removeBlur();
-									Players.LocalPlayer.CameraMode = Enum.CameraMode.LockFirstPerson;
-									UserInputService.MouseBehavior = Enum.MouseBehavior.LockCenter;
+										this.state.mouseConnection.Disconnect();
 
-									this.setState({ status: this.state.status, visible: false });
+										this.setState({
+											status: this.state.status,
+											visible: false,
+											debounce: false,
+											mouseConnection: undefined!,
+										});
+									}
 								});
 
 								Promise.delay(1).then(() =>
