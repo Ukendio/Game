@@ -18,7 +18,7 @@ interface LuckDefinition extends UnitDefinition<"Luck"> {
 
 	ref?: ThisFabricUnit<keyof FabricUnits>;
 
-	applyLuck?: (this: ThisFabricUnit<"Luck">, layerData: number) => void;
+	applyLuck: (this: ThisFabricUnit<"Luck">, layerData: number) => string;
 }
 
 const Luck: LuckDefinition = {

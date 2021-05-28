@@ -63,7 +63,7 @@ const gun: FabricUnits["Gun"] = {
 			});
 
 			this.addLayer("damage", {
-				hit: luck.applyLuck?.(math.random(10, 50)),
+				hit: luck.applyLuck(math.random(10, 50)),
 				player: _player,
 				target: target,
 			});

@@ -27,7 +27,7 @@ interface GunDefinition extends UnitDefinition<"Gun"> {
 		player: Player;
 	};
 
-	onClientShoot?: (this: ThisFabricUnit<"Gun">, _player: Player, target: Model) => void;
+	onClientShoot?: (this: ThisFabricUnit<"Gun">, _player: Player, target: BasePart) => void;
 }
 
 const player = Players.LocalPlayer;
