@@ -10,7 +10,6 @@ const playerGui = player.WaitForChild("PlayerGui");
 
 const fabric = new FabricLib.Fabric("Example");
 {
-	fabric.DEBUG = true;
 	FabricLib.useReplication(fabric);
 	FabricLib.useTags(fabric);
 	FabricLib.useBatching(fabric);
