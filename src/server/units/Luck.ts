@@ -5,6 +5,7 @@ declare global {
 		Luck: LuckDefinition;
 	}
 }
+
 interface LuckDefinition extends UnitDefinition<"Luck"> {
 	name: "Luck";
 
