@@ -14,7 +14,11 @@ interface HealPackage extends UnitDefinition<"Heal"> {
 	};
 
 	defaults?: {
-		debounce: true;
+		debounce: boolean;
+		target: Humanoid;
+		heal: number;
+		transparency: number;
+		particle: boolean;
 	};
 
 	particle?: ParticleEmitter;
@@ -31,10 +35,6 @@ const healPackage: HealPackage = {
 			Blur: 25,
 			Bloom: "Hello",
 		},
-	},
-
-	defaults: {
-		debounce: true,
 	},
 
 	onInitialize: function (this) {

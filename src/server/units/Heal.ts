@@ -1,33 +1,20 @@
 import FabricLib, { ThisFabricUnit, UnitDefinition } from "@rbxts/fabric";
 import { RunService } from "@rbxts/services";
 
-declare global {
-	interface FabricUnits {
-		Heal: HealPackage;
-	}
-}
-interface HealPackage extends UnitDefinition<"Heal"> {
-	name: "Heal";
-	tag: "Heal";
-
-	units: {
-		Replicated: {};
-	};
-
-	defaults?: {
-		debounce: true;
-	};
-
-	particle?: ParticleEmitter;
-	onClientHeal?: (this: ThisFabricUnit<"Heal">, _player: Player, amount: number) => void;
-}
-
-const healPackage: HealPackage = {
+const healPackage: FabricUnits["Heal"] = {
 	name: "Heal",
 	tag: "Heal",
 
 	units: {
 		Replicated: {},
+	},
+
+	defaults: {
+		debounce: true,
+		target: undefined!,
+		heal: 0,
+		transparency: 0,
+		particle: true,
 	},
 
 	onInitialize: function (this) {
@@ -61,7 +48,7 @@ const healPackage: HealPackage = {
 	effects: [
 		function (this) {
 			if (this.get("target") !== undefined) {
-				(this.get("target") as Humanoid).Health += (this.get("heal") as number) ?? 0;
+				(this.get("target") as Humanoid).Health += this.get("heal");
 			}
 		},
 
@@ -69,10 +56,9 @@ const healPackage: HealPackage = {
 			const model = this.ref as Model;
 			for (const part of model.GetChildren()) {
 				if (part !== model.PrimaryPart && part.IsA("BasePart")) {
-					part.Transparency = (this.get("transparency") as number) ?? 0;
+					part.Transparency = this.get("transparency");
 				} else {
-					(part.FindFirstChild("Sparkles") as ParticleEmitter).Enabled =
-						(this.get("particle") as boolean) ?? true;
+					(part.FindFirstChild("Sparkles") as ParticleEmitter).Enabled = this.get("particle");
 				}
 			}
 		},

@@ -46,6 +46,8 @@ const gun: FabricUnits["Gun"] = {
 		mouseDown: false,
 		equipped: false,
 		target: undefined!,
+		hit: undefined!,
+		player: undefined!,
 	},
 
 	onInitialize: function (this) {
@@ -53,7 +55,7 @@ const gun: FabricUnits["Gun"] = {
 	},
 
 	onClientShoot: function (this, _player, target) {
-		if ((this.get("debounce") as boolean) === true) {
+		if (this.get("debounce") === true) {
 			const luck = this.fabric.getOrCreateUnitByRef("Luck", this);
 
 			this.addLayer("debounce", {
@@ -76,13 +78,13 @@ const gun: FabricUnits["Gun"] = {
 	effects: [
 		function (this) {
 			const damage = this.get("hit");
-			const target = this.get("target") as BasePart;
-
+			const target = this.get("target");
 			if (damage !== undefined && typeIs(damage, "string") && damage !== "Miss" && target !== undefined) {
-				const player = this.get("player") as Player;
-				const humanoid = target.Parent?.FindFirstChildOfClass("Humanoid");
+				const player = this.get("player");
 
-				if (humanoid) {
+				const humanoid = (target.Parent as Model).FindFirstChildOfClass("Humanoid");
+
+				if (humanoid && player) {
 					humanoid.TakeDamage(tonumber(this.get("hit") as string)!);
 
 					if (humanoid.Health <= 0) addKill(player, target)[roundStore.getState().gameMode];

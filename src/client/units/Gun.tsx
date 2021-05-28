@@ -18,11 +18,13 @@ interface GunDefinition extends UnitDefinition<"Gun"> {
 		Replicated: {};
 	};
 
-	defaults?: {
-		debounce: boolean;
-		mouseDown: boolean;
-		equipped: boolean;
-		target: Model;
+	defaults: {
+		debounce?: boolean;
+		mouseDown?: boolean;
+		equipped?: boolean;
+		target?: BasePart;
+		hit?: string;
+		player?: Player;
 	};
 
 	onClientShoot?: (this: ThisFabricUnit<"Gun">, _player: Player, target: Model) => void;
@@ -48,6 +50,8 @@ const gun: GunDefinition = {
 		mouseDown: false,
 		equipped: false,
 		target: undefined!,
+		hit: undefined!,
+		player: undefined!,
 	},
 
 	onInitialize: function (this) {
