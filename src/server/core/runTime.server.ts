@@ -26,7 +26,6 @@ const fabric = new FabricLib.Fabric("Example");
 	FabricLib.useTags(fabric);
 	FabricLib.useBatching(fabric);
 	fabric.registerUnitsIn(ServerScriptService.TS.units);
-	fabric.DEBUG = true;
 }
 
 function createHealthPack(character: CharacterRigR15) {
