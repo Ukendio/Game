@@ -32,8 +32,6 @@ ServerCreatePistol.Connect((pistol) => {
 	gun.mergeBaseLayer({});
 });
 
-Spirit.bind(Enum.KeyCode.M);
-
 Roact.mount(
 	<screengui Key={"HomeScreen"} IgnoreGuiInset={true} ResetOnSpawn={false}>
 		<Home />

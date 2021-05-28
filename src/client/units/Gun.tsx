@@ -19,12 +19,12 @@ interface GunDefinition extends UnitDefinition<"Gun"> {
 	};
 
 	defaults: {
-		debounce?: boolean;
-		mouseDown?: boolean;
-		equipped?: boolean;
-		target?: BasePart;
-		hit?: string;
-		player?: Player;
+		debounce: boolean;
+		mouseDown: boolean;
+		equipped: boolean;
+		target: BasePart;
+		hit: string;
+		player: Player;
 	};
 
 	onClientShoot?: (this: ThisFabricUnit<"Gun">, _player: Player, target: Model) => void;
