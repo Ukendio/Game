@@ -1,4 +1,4 @@
-import { StarterPlayer, Players } from "@rbxts/services";
+import { StarterPlayer, Players, StarterGui } from "@rbxts/services";
 import FabricLib from "@rbxts/fabric";
 import Remotes from "shared/remotes";
 import Spirit from "shared/Spirit";
@@ -15,6 +15,8 @@ const fabric = new FabricLib.Fabric("Example");
 	FabricLib.useTags(fabric);
 	FabricLib.useBatching(fabric);
 	fabric.registerUnitsIn(StarterPlayer.StarterPlayerScripts.TS.units);
+
+	StarterGui.SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList, false);
 }
 
 const ServerCreateHealthPack = Remotes.Client.Get("ServerCreateHealthPack");
