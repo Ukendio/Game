@@ -11,7 +11,7 @@ const healPackage: FabricUnits["Heal"] = {
 
 	defaults: {
 		debounce: true,
-		target: undefined!,
+		target: undefined,
 		heal: 0,
 		transparency: 0,
 		particle: true,
@@ -34,7 +34,7 @@ const healPackage: FabricUnits["Heal"] = {
 
 		this.addLayer(this, {
 			heal: amount,
-			target: _player.Character?.FindFirstChild("Humanoid"),
+			target: _player.Character?.FindFirstChild("Humanoid") as Humanoid,
 			debounce: false,
 			transparency: 1,
 			particle: false,
