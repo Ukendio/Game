@@ -141,7 +141,7 @@ ClientRequestDeploy.SetCallback((player) => {
 		roundStore.dispatch(deploy(player));
 		if (player.Character) {
 			respawnPlayer(player);
-			return true;
+			return player.Character;
 		}
 	}
 
