@@ -11,7 +11,7 @@ const remotes = Net.Definitions.Create({
 	UIScoreboardUpdate: Net.Definitions.ServerToClientEvent<[string]>(),
 	RoundStarted: Net.Definitions.ServerToClientEvent(),
 
-	ClientRequestDeploy: Net.Definitions.ServerAsyncFunction<Callback>(),
+	ClientRequestDeploy: Net.Definitions.ServerAsyncFunction<() => boolean | Model>(),
 
 	ClientAppendVote: Net.Definitions.ClientToServerEvent<[string]>(),
 	ClientChooseTeam: Net.Definitions.ClientToServerEvent<[Team]>(),
