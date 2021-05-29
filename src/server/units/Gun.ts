@@ -35,7 +35,6 @@ function addKill(player: Player, target: BasePart) {
 
 const gun: FabricUnits["Gun"] = {
 	name: "Gun",
-	tag: "Gun",
 
 	units: {
 		Replicated: {},

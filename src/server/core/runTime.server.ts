@@ -189,7 +189,7 @@ function intermission() {
 			councilStore.dispatch(startVote());
 			CouncilVoteOn.SendToAllPlayers(councilStore.getState().topic);
 
-			await Promise.delay(10).then(() => {
+			await Promise.delay(1).then(() => {
 				const state = councilStore.getState();
 				const vote = getVoteOrDefault(state.votes, state.topic.options);
 				const currentMap = mapLoadAsync(vote);
@@ -215,7 +215,7 @@ function intermission() {
 			councilStore.dispatch(startVote());
 			CouncilVoteOn.SendToAllPlayers(councilStore.getState().topic);
 
-			await Promise.delay(10).then(() => {
+			await Promise.delay(1).then(() => {
 				const state = councilStore.getState();
 				const vote = getVoteOrDefault(state.votes, state.topic.options) as keyof typeof gameModes;
 

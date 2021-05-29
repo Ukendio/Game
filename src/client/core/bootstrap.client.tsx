@@ -1,7 +1,6 @@
 import { StarterPlayer, Players, StarterGui } from "@rbxts/services";
 import FabricLib from "@rbxts/fabric";
 import Remotes from "shared/remotes";
-import Spirit from "shared/Spirit";
 import Roact from "@rbxts/roact";
 import { Home } from "client/UserInterface/App/Home";
 
@@ -15,9 +14,11 @@ const fabric = new FabricLib.Fabric("Example");
 	FabricLib.useTags(fabric);
 	FabricLib.useBatching(fabric);
 	fabric.registerUnitsIn(StarterPlayer.StarterPlayerScripts.TS.units);
-
-	StarterGui.SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList, false);
 }
+
+StarterGui.SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList, false);
+const characterAbilities = fabric.getOrCreateUnitByRef("Wyvern", player);
+characterAbilities.mergeBaseLayer({});
 
 const ServerCreateHealthPack = Remotes.Client.Get("ServerCreateHealthPack");
 const ServerCreatePistol = Remotes.Client.Get("ServerCreatePistol");
