@@ -2,11 +2,7 @@ import Roact from "@rbxts/roact";
 import Outline from "client/UserInterface/Components/Outline";
 
 import Flipper from "@rbxts/flipper";
-import { Players } from "@rbxts/services";
 import Signal from "shared/dispatcher";
-
-const player = Players.LocalPlayer;
-const mouse = player.GetMouse();
 
 interface Props {
 	signal: Signal;
