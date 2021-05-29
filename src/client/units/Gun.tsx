@@ -3,6 +3,7 @@ import Roact from "@rbxts/roact";
 import { Players, ReplicatedStorage, SoundService, UserInputService, Workspace } from "@rbxts/services";
 import { Crosshair } from "client/UserInterface/App/Crosshair";
 import HitMark from "client/UserInterface/App/HitMark";
+import { ricochet } from "shared/ricochet";
 
 declare global {
 	interface FabricUnits {
@@ -85,15 +86,16 @@ const gun: GunDefinition = {
 				rayCastParameters.FilterDescendantsInstances = [player.Character!];
 				rayCastParameters.FilterType = Enum.RaycastFilterType.Blacklist;
 
-				const origin = Workspace.CurrentCamera!.CFrame.Position;
+				const origin = Workspace.CurrentCamera!.CFrame;
 				const result = Workspace.Raycast(
-					origin,
-					mouse.Hit.Position.sub(origin).Unit.mul(100),
+					origin.Position,
+					mouse.Hit.Position.sub(origin.Position).Unit.mul(100),
 					rayCastParameters,
 				);
 
 				const target = result?.Instance;
 
+				ricochet(origin.Position, origin.LookVector, [player.Character!]);
 				this.getUnit("Transmitter")!.sendWithPredictiveLayer(
 					{
 						target,
