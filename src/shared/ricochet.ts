@@ -27,26 +27,25 @@ function step(options: Options) {
 	const laser = options.bullet;
 	laser.Size = new Vector3(0.4, 0.4, position.sub(currentPosition).Magnitude);
 	laser.CFrame = new CFrame(currentPosition.Lerp(position, 0.5), position);
-	print(options.currentPosition, laser.CFrame);
 
 	const oldPosition = currentPosition;
 	currentPosition = position;
 
 	if (result) {
 		const normal = result.Normal;
-		const reflect = currentNormal.sub(currentNormal.mul(currentNormal.Dot(normal)).mul(2));
+		const reflect = currentNormal.sub(normal.mul(currentNormal.Dot(normal)).mul(2));
 		const newOptions = copyShallow<Options>(options);
 		newOptions.currentPosition = position;
 		newOptions.overrideDistance = options.stepDistance - position.sub(oldPosition).Magnitude;
 		newOptions.currentNormal = reflect;
 
-		print(newOptions.currentPosition === options.currentPosition);
 		step(newOptions);
 		return;
 	}
 
 	const newOptions = copyShallow<Options>(options);
 	newOptions.currentDistance += position.sub(oldPosition).Magnitude;
+	newOptions.currentPosition = currentPosition;
 
 	const currentDistance = newOptions.currentDistance;
 	const maximumDistance = newOptions.maximumDistance;
@@ -58,7 +57,6 @@ function step(options: Options) {
 
 	if (currentDistance < maximumDistance) {
 		RunService.RenderStepped.Wait();
-		print(currentDistance);
 		step(newOptions);
 	}
 }
@@ -70,8 +68,7 @@ export function ricochet(startPosition: Vector3, startNormal: Vector3, filter: I
 	laser.Anchored = true;
 	laser.Parent = Workspace;
 	laser.Name = "Laser";
-
-	print("ricochet");
+	laser.Material = Enum.Material.Neon;
 
 	const maximumDistance = 200;
 	const currentDistance = 0;
@@ -87,6 +84,4 @@ export function ricochet(startPosition: Vector3, startNormal: Vector3, filter: I
 		bullet: laser,
 		filter: filter,
 	});
-
-	laser.Destroy();
 }
