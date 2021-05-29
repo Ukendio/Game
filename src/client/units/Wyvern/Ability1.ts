@@ -46,7 +46,6 @@ const wyvernAbility1: WyvernAbility1Definition = {
 	},
 
 	execute: function (this) {
-		print("execute	");
 		const character = player.Character;
 		const humanoidRootPart = character?.WaitForChild("HumanoidRootPart");
 

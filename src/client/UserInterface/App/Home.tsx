@@ -35,7 +35,6 @@ export class Home extends Roact.Component<Props, State> {
 
 	render(): Roact.Element {
 		const DeployUser = Remotes.Client.Get("ClientRequestDeploy");
-		print("state change?");
 		return (
 			<frame
 				Key={"MainFrame"}
