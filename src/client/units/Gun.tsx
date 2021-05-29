@@ -83,7 +83,7 @@ const gun: GunDefinition = {
 		tool.Activated.Connect(() => {
 			if ((this.get("debounce") as boolean) === true) {
 				const rayCastParameters = new RaycastParams();
-				rayCastParameters.FilterDescendantsInstances = [player.Character!];
+				rayCastParameters.FilterDescendantsInstances = [player.Character!, tool];
 				rayCastParameters.FilterType = Enum.RaycastFilterType.Blacklist;
 
 				const origin = Workspace.CurrentCamera!.CFrame;
