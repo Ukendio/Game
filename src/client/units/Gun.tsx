@@ -95,14 +95,17 @@ const gun: GunDefinition = {
 
 				const target = result?.Instance;
 
-				ricochet(origin.Position, origin.LookVector, [player.Character!]);
-				this.getUnit("Transmitter")!.sendWithPredictiveLayer(
-					{
+				if (target && target.Name.find("Shield")[0] !== undefined) {
+					ricochet(origin.Position, origin.LookVector, [player.Character!, tool]);
+				} else {
+					this.getUnit("Transmitter")!.sendWithPredictiveLayer(
+						{
+							target,
+						},
+						"shoot",
 						target,
-					},
-					"shoot",
-					target,
-				);
+					);
+				}
 			}
 		});
 	},
