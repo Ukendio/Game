@@ -12,7 +12,6 @@ declare global {
 
 interface GunDefinition extends UnitDefinition<"Gun"> {
 	name: "Gun";
-	tag: "Gun";
 
 	units: {
 		Replicated: {};
@@ -39,7 +38,6 @@ const SETTINGS = {
 
 const gun: GunDefinition = {
 	name: "Gun",
-	tag: "Gun",
 
 	units: {
 		Replicated: {},
