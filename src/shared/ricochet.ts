@@ -58,6 +58,7 @@ function step(options: Options) {
 
 	if (currentDistance < maximumDistance) {
 		RunService.RenderStepped.Wait();
+		print(currentDistance);
 		step(newOptions);
 	}
 }
@@ -73,7 +74,7 @@ export function ricochet(startPosition: Vector3, startNormal: Vector3, filter: I
 	print("ricochet");
 
 	const maximumDistance = 200;
-	const currentDistance = 4;
+	const currentDistance = 0;
 
 	const stepDistance = 4;
 
