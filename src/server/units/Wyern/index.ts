@@ -17,17 +17,8 @@ const Wyvern: WyvernDefinition = {
 	onInitialize: function (this) {
 		this.fabric.registerUnitsIn(script);
 
-		const abilityHandler = this.getOrCreateUnit("Ability");
-		abilityHandler.mergeBaseLayer({});
-
-		const ability1 = this.getOrCreateUnit("WyvernAbility1");
-		ability1.mergeBaseLayer({});
-
 		const ability2 = this.getOrCreateUnit("WyvernAbility2");
 		ability2.mergeBaseLayer({});
-
-		abilityHandler.bind(ability1.name, () => ability1.execute?.(), Enum.KeyCode.Q, 5);
-		abilityHandler.bind(ability2.name, () => ability2.execute?.(), Enum.KeyCode.E, 25);
 	},
 };
 
