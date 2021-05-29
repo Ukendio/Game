@@ -41,10 +41,6 @@ const wyvernAbility1: WyvernAbility1Definition = {
 		maxForce: new Vector3(),
 	},
 
-	onInitialize: function (this) {
-		print("ability1");
-	},
-
 	execute: function (this) {
 		const character = player.Character;
 		const humanoidRootPart = character?.WaitForChild("HumanoidRootPart");

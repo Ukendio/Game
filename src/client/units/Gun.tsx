@@ -3,7 +3,8 @@ import Roact from "@rbxts/roact";
 import { Players, ReplicatedStorage, SoundService, UserInputService, Workspace } from "@rbxts/services";
 import { Crosshair } from "client/UserInterface/App/Crosshair";
 import HitMark from "client/UserInterface/App/HitMark";
-import { ricochet } from "shared/ricochet";
+import { shoot } from "shared/shoot";
+import dispatcher from "shared/dispatcher";
 
 declare global {
 	interface FabricUnits {
@@ -25,7 +26,10 @@ interface GunDefinition extends UnitDefinition<"Gun"> {
 		target: BasePart;
 		hit: string;
 		player: Player;
+		ricochet: boolean;
 	};
+
+	ref?: Tool;
 
 	onClientShoot?: (this: ThisFabricUnit<"Gun">, _player: Player, target: BasePart) => void;
 }
@@ -35,13 +39,16 @@ const mouse = player.GetMouse();
 const SETTINGS = {
 	fireRate: 1,
 	recoil: 1,
+	maxDistance: 100,
 };
+
+const signal = new dispatcher();
 
 const gun: GunDefinition = {
 	name: "Gun",
 
 	units: {
-		Replicated: {},
+		Replicated: [],
 	},
 
 	defaults: {
@@ -51,6 +58,7 @@ const gun: GunDefinition = {
 		target: undefined!,
 		hit: undefined!,
 		player: undefined!,
+		ricochet: false,
 	},
 
 	onInitialize: function (this) {
@@ -59,6 +67,7 @@ const gun: GunDefinition = {
 			handle = Roact.mount(
 				<screengui ZIndexBehavior="Sibling">
 					<Crosshair
+						signal={signal}
 						mouseOffset={Workspace.CurrentCamera!.ViewportSize.Y / 2 - 36}
 						fireRate={SETTINGS.fireRate}
 						recoil={SETTINGS.recoil}
@@ -82,6 +91,7 @@ const gun: GunDefinition = {
 
 		tool.Activated.Connect(() => {
 			if ((this.get("debounce") as boolean) === true) {
+				signal.fire();
 				const rayCastParameters = new RaycastParams();
 				rayCastParameters.FilterDescendantsInstances = [player.Character!, tool];
 				rayCastParameters.FilterType = Enum.RaycastFilterType.Blacklist;
@@ -89,23 +99,19 @@ const gun: GunDefinition = {
 				const origin = Workspace.CurrentCamera!.CFrame;
 				const result = Workspace.Raycast(
 					origin.Position,
-					mouse.Hit.Position.sub(origin.Position).Unit.mul(100),
+					mouse.Hit.Position.sub(origin.Position).Unit.mul(SETTINGS.maxDistance),
 					rayCastParameters,
 				);
 
 				const target = result?.Instance;
 
-				if (target && target.Name.find("Shield")[0] !== undefined) {
-					ricochet(origin.Position, origin.LookVector, [player.Character!, tool]);
-				} else {
-					this.getUnit("Transmitter")!.sendWithPredictiveLayer(
-						{
-							target,
-						},
-						"shoot",
+				this.getUnit("Transmitter")!.sendWithPredictiveLayer(
+					{
 						target,
-					);
-				}
+					},
+					"shoot",
+					target,
+				);
 			}
 		});
 	},
@@ -132,6 +138,18 @@ const gun: GunDefinition = {
 				pistolShot.Parent = SoundService;
 				pistolShot.Play();
 				pistolShot.Ended.Connect(() => pistolShot.Destroy());
+
+				const origin = Workspace.CurrentCamera!.CFrame;
+				const tool = this.ref;
+
+				shoot({
+					ricochet: this.get("ricochet"),
+					stepDistance: 4,
+					startPosition: origin.Position,
+					startNormal: origin.LookVector,
+					filter: [player.Character!, tool],
+					maxDistance: SETTINGS.maxDistance,
+				});
 			}
 		},
 	],

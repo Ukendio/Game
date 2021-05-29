@@ -10,6 +10,12 @@ declare global {
 interface WyvernAbility2Definition extends UnitDefinition<"WyvernAbility2"> {
 	name: "WyvernAbility2";
 
+	ref?: Player;
+
+	units: {
+		Replicated: [];
+	};
+
 	defaults: {
 		root: CFrame;
 	};
@@ -30,15 +36,16 @@ const wyvernAbility1: WyvernAbility2Definition = {
 		root: CACHE_DISTANCE,
 	},
 
-	onInitialize: function (this) {
-		print("initialized");
+	units: {
+		Replicated: [],
 	},
+
 	execute: function (this) {
 		const character = player.Character;
 		const humanoidRootPart = character?.FindFirstChild("HumanoidRootPart") as BasePart;
 
 		if (character && humanoidRootPart) {
-			this.getUnit("Transmitter")?.sendWithPredictiveLayer(
+			this.getOrCreateUnit("Transmitter").sendWithPredictiveLayer(
 				{
 					root: humanoidRootPart.CFrame,
 				},

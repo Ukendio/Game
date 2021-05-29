@@ -121,6 +121,9 @@ async function handleCharacterAdded(character: Model) {
 }
 
 const onPlayerAdded = (player: Player) => {
+	const wyvernAbilities = fabric.getOrCreateUnitByRef("Wyvern", player);
+	wyvernAbilities.mergeBaseLayer({});
+
 	respawnPlayer(player);
 };
 

@@ -3,11 +3,13 @@ import Outline from "client/UserInterface/Components/Outline";
 
 import Flipper from "@rbxts/flipper";
 import { Players } from "@rbxts/services";
+import Signal from "shared/dispatcher";
 
 const player = Players.LocalPlayer;
 const mouse = player.GetMouse();
 
 interface Props {
+	signal: Signal;
 	mouseOffset: number;
 	fireRate: number;
 	recoil: number;
@@ -19,6 +21,7 @@ export class Crosshair extends Roact.Component<Props> {
 
 	constructor(props: Props) {
 		super({
+			signal: props.signal,
 			mouseOffset: props.mouseOffset,
 			fireRate: props.fireRate,
 			recoil: props.recoil,
@@ -29,28 +32,22 @@ export class Crosshair extends Roact.Component<Props> {
 	}
 
 	didMount() {
-		let debounce = true;
-		mouse.Button1Down.Connect(() => {
-			if (debounce) {
-				debounce = false;
-				this._motor.setGoal(
-					new Flipper.Spring(1, {
-						frequency: 10,
-						dampingRatio: 1,
-					}),
-				);
-
-				Promise.delay(1 / this.props.fireRate).then(() => (debounce = true));
-			}
-		});
-
-		mouse.Button1Up.Connect(() => {
+		this.props.signal.connect(() => {
 			this._motor.setGoal(
-				new Flipper.Spring(0, {
-					frequency: 4,
-					dampingRatio: 0.75,
+				new Flipper.Spring(1, {
+					frequency: 10,
+					dampingRatio: 1,
 				}),
 			);
+
+			Promise.delay(0.075).then(() => {
+				this._motor.setGoal(
+					new Flipper.Spring(0, {
+						frequency: 4,
+						dampingRatio: 0.75,
+					}),
+				);
+			});
 		});
 	}
 	render() {

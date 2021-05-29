@@ -37,7 +37,7 @@ const gun: FabricUnits["Gun"] = {
 	name: "Gun",
 
 	units: {
-		Replicated: {},
+		Replicated: [],
 	},
 
 	defaults: {
@@ -47,6 +47,7 @@ const gun: FabricUnits["Gun"] = {
 		target: undefined!,
 		hit: undefined!,
 		player: undefined!,
+		ricochet: false,
 	},
 
 	onInitialize: function (this) {
@@ -57,11 +58,9 @@ const gun: FabricUnits["Gun"] = {
 		if (this.get("debounce") === true) {
 			const luck = this.fabric.getOrCreateUnitByRef("Luck", this);
 
-			this.addLayer("debounce", {
-				debounce: false,
-			});
-
 			this.addLayer("damage", {
+				ricochet: target.Name.find("Shield")[0] !== undefined,
+				debounce: false,
 				hit: luck.applyLuck(math.random(10, 50)),
 				player: _player,
 				target: target,
@@ -69,7 +68,6 @@ const gun: FabricUnits["Gun"] = {
 
 			Promise.delay(FIRE_RATE).then(() => {
 				this.removeLayer("damage");
-				this.removeLayer("debounce");
 			});
 		}
 	},
