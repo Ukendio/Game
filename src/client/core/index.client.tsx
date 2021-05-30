@@ -1,5 +1,5 @@
 import { registerListenerIn } from "shared/registerListenersIn";
-registerListenerIn(script.FindFirstChild("Listeners")!);
+registerListenerIn(script.FindFirstChild("listeners")!);
 
 import { Players, StarterGui } from "@rbxts/services";
 import Roact from "@rbxts/roact";

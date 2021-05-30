@@ -2,7 +2,7 @@ import Roact from "@rbxts/roact";
 import Outline from "client/UserInterface/Components/Outline";
 
 import Flipper from "@rbxts/flipper";
-import Dispatcher from "shared/Dispatcher";
+import Dispatcher from "shared/dispatcher";
 
 interface Props {
 	signal: Dispatcher;

@@ -4,7 +4,7 @@ import { Players, ReplicatedStorage, SoundService, UserInputService, Workspace }
 import { Crosshair } from "client/UserInterface/App/Crosshair";
 import HitMark from "client/UserInterface/App/HitMark";
 import { shoot } from "shared/shoot";
-import Dispatcher from "shared/Dispatcher";
+import Dispatcher from "shared/dispatcher";
 
 declare global {
 	interface FabricUnits {
