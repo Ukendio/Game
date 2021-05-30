@@ -1,6 +1,5 @@
 /// <reference types="@rbxts/testez/globals" />
-import { RunService } from "@rbxts/services";
-import Dispatcher, { interval, noYield } from "shared/dispatcher";
+import Dispatcher, { interval, noYield } from "shared/Dispatcher";
 
 function now() {
 	return DateTime.now().UnixTimestampMillis / 1000;

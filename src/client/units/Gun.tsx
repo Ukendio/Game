@@ -4,7 +4,7 @@ import { Players, ReplicatedStorage, SoundService, UserInputService, Workspace }
 import { Crosshair } from "client/UserInterface/App/Crosshair";
 import HitMark from "client/UserInterface/App/HitMark";
 import { shoot } from "shared/shoot";
-import dispatcher from "shared/dispatcher";
+import Dispatcher from "shared/Dispatcher";
 
 declare global {
 	interface FabricUnits {
@@ -42,7 +42,7 @@ const SETTINGS = {
 	maxDistance: 100,
 };
 
-const signal = new dispatcher();
+const signal = new Dispatcher();
 
 const gun: GunDefinition = {
 	name: "Gun",
