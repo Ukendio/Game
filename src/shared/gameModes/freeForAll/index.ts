@@ -1,14 +1,26 @@
+import { Store } from "@rbxts/rodux";
 import { Players, Teams } from "@rbxts/services";
-import { addTeammate, enlistTeam, PlayerTeam, removeTeammate, teamStore } from "server/core/Team";
+import { enlistTeam, PlayerTeam, addTeammate, removeTeammate, Actions } from "server/core/store/actions";
+import { State } from "server/core/store/reducer";
 import SETTINGS from "./settings";
 
-{
+function maxKills(store: Store<State, Actions>) {
+	return new Promise((resolve) => {
+		store.changed.connect(() => {
+			store.getState().teams.forEach((team) => {
+				if (team.kills >= SETTINGS.MAX_KILLS) resolve(team.tag);
+			});
+		});
+	});
+}
+
+function winCondition(store: Store<State, Actions>) {
 	SETTINGS.TEAMS.forEach((colour) => {
 		const team = new Instance("Team");
 		team.TeamColor = colour;
 		team.Parent = Teams;
 
-		teamStore.dispatch(
+		store.dispatch(
 			enlistTeam({
 				tag: team,
 				kills: 0,
@@ -18,24 +30,24 @@ import SETTINGS from "./settings";
 		);
 	});
 
-	const availableTeams = [...teamStore.getState().teams];
+	const availableTeams = [...store.getState().teams];
 	const takenTeams = new Array<PlayerTeam>();
 
 	const playerAdded = (player: Player) => {
 		const team = availableTeams.pop()!;
 		takenTeams.push(team);
 
-		teamStore.dispatch(addTeammate(player, team));
+		store.dispatch(addTeammate(player, team));
+		player.Team = team.tag;
 	};
 
-	Players.PlayerAdded.Connect(playerAdded);
 	Players.PlayerRemoving.Connect((player) => {
-		teamStore.getState().teams.forEach((current) => {
+		store.getState().teams.forEach((current) => {
 			if (current && current.tag === player.Team) {
 				const team = takenTeams.pop()!;
 
 				availableTeams.push(team);
-				teamStore.dispatch(removeTeammate(player, team));
+				store.dispatch(removeTeammate(player, team));
 			}
 		});
 	});
@@ -43,27 +55,15 @@ import SETTINGS from "./settings";
 	for (const player of Players.GetPlayers()) {
 		playerAdded(player);
 	}
-}
 
-function maxKills() {
-	return new Promise((resolve) => {
-		teamStore.changed.connect(() => {
-			teamStore.getState().teams.forEach((team) => {
-				if (team.kills >= SETTINGS.MAX_KILLS) resolve(team.tag);
-			});
-		});
-	});
-}
-
-function winCondition() {
 	return Promise.race([
-		maxKills().then((winners) => {
+		maxKills(store).then((winners) => {
 			print(winners);
 		}),
 		Promise.delay(SETTINGS.ROUND_LENGTH).then(() => {
 			let winningTeam = undefined! as PlayerTeam;
 			let mostKills = 0;
-			teamStore.getState().teams.forEach((team) => {
+			store.getState().teams.forEach((team) => {
 				if (team.kills > mostKills) {
 					winningTeam = team;
 					mostKills = team.kills;

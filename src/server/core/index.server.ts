@@ -5,11 +5,17 @@ import Remotes from "shared/remotes";
 import { getKeys } from "shared/tableUtil";
 import { mapNames } from "shared/Architect/maps";
 import store from "./store";
-import { selectGameMode, selectMap, startRound } from "./Store/Round";
-import { createTopic, startVote, stopVote } from "./Store/Council";
 import { mapLoadAsync } from "shared/Architect/Loader";
 import { gameModes } from "shared/gameModes";
-import { setSpawnLocations } from "./Store/Spawn";
+import {
+	startRound,
+	createTopic,
+	startVote,
+	setSpawnLocations,
+	selectMap,
+	stopVote,
+	selectGameMode,
+} from "./store/actions";
 
 const CouncilVoteOn = Remotes.Server.Create("CouncilVoteOn");
 const CouncilStopVote = Remotes.Server.Create("CouncilStopVote");
@@ -27,9 +33,10 @@ function getVoteOrDefault(votes: string[], options: string[]) {
 async function startGame() {
 	store.dispatch(startRound());
 	RoundStarted.SendToAllPlayers();
+
 	return store
 		.getState()
-		.Round.winCondition()
+		.winCondition(store)
 		.andThenCall(Promise.delay, 5)
 		.then(() => {
 			//prompt MVP
@@ -50,10 +57,10 @@ function intermission() {
 				}),
 			);
 			store.dispatch(startVote());
-			CouncilVoteOn.SendToAllPlayers(store.getState().Council.topic);
+			CouncilVoteOn.SendToAllPlayers(store.getState().topic);
 
 			await Promise.delay(1).then(() => {
-				const state = store.getState().Council;
+				const state = store.getState();
 				const vote = getVoteOrDefault(state.votes, state.topic.options);
 				const currentMap = mapLoadAsync(vote);
 				const spawnLocations = new Set<SpawnLocation>();
@@ -76,10 +83,10 @@ function intermission() {
 			);
 
 			store.dispatch(startVote());
-			CouncilVoteOn.SendToAllPlayers(store.getState().Council.topic);
+			CouncilVoteOn.SendToAllPlayers(store.getState().topic);
 
 			await Promise.delay(1).then(() => {
-				const state = store.getState().Council;
+				const state = store.getState();
 				const vote = getVoteOrDefault(state.votes, state.topic.options) as keyof typeof gameModes;
 
 				store.dispatch(selectGameMode(vote));

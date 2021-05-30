@@ -1,5 +1,5 @@
 /// <reference types="@rbxts/testez/globals" />
-import Dispatcher, { interval, noYield } from "shared/Dispatcher";
+import Dispatcher, { interval, noYield } from "shared/dispatcher";
 
 function now() {
 	return DateTime.now().UnixTimestampMillis / 1000;
@@ -74,7 +74,7 @@ export = () => {
 
 			const [ok, result] = xpcall(() => {
 				noYield(() => {
-					error("Hello");
+					signal.fire();
 				});
 			}, tracebackReporter);
 

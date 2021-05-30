@@ -33,7 +33,7 @@ export function interval(duration: number, callback: Callback) {
 		callback: callback,
 	};
 }
-
+/* Unstable
 export function spreadInterval(duration: number, callbackCreator: () => Callback) {
 	let isReady = true;
 	let needsRestart = false;
@@ -129,6 +129,7 @@ export function spreadInterval(duration: number, callbackCreator: () => Callback
 		},
 	};
 }
+*/
 export { noYield } from "./noYield";
 
 export default Signal;
