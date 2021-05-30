@@ -9,6 +9,8 @@ interface HealPackage extends UnitDefinition<"Heal"> {
 	name: "Heal";
 	tag: "Heal";
 
+	ref?: Model;
+
 	units: {
 		Replicated: {};
 	};
