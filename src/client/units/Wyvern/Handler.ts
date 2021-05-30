@@ -9,13 +9,20 @@ declare global {
 interface WyvernDefinition extends UnitDefinition<"Wyvern"> {
 	name: "Wyvern";
 	ref?: Player;
+
+	units: {
+		Replicated: [];
+	};
 }
 
 const Wyvern: WyvernDefinition = {
 	name: "Wyvern",
 
+	units: {
+		Replicated: [],
+	},
+
 	onInitialize: function (this) {
-		print("initialize class");
 		const abilityHandler = this.getOrCreateUnit("Ability");
 		abilityHandler.mergeBaseLayer({});
 

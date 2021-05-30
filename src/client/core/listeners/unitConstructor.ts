@@ -17,8 +17,7 @@ const fabric = new FabricLib.Fabric("Game");
 
 const ServerCreateHealthPack = Remotes.Client.Get("ServerCreateHealthPack");
 const ServerCreateGun = Remotes.Client.Get("ServerCreateGun");
-
-createHero(fabric, player);
+const ServerCreateHero = Remotes.Client.Get("ServerCreateHero");
 
 ServerCreateHealthPack.Connect((healthPack) => {
 	createHealthPack(fabric, healthPack);
@@ -26,4 +25,8 @@ ServerCreateHealthPack.Connect((healthPack) => {
 
 ServerCreateGun.Connect((pistol) => {
 	createGun(fabric, pistol);
+});
+
+ServerCreateHero.Connect(() => {
+	createHero(fabric, player);
 });

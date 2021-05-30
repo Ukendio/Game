@@ -16,7 +16,7 @@ interface GunDefinition extends UnitDefinition<"Gun"> {
 	name: "Gun";
 
 	units: {
-		Replicated: {};
+		Replicated: [];
 	};
 
 	defaults: {
@@ -97,6 +97,7 @@ const gun: GunDefinition = {
 
 				const rayCastParameters = new RaycastParams();
 				rayCastParameters.FilterDescendantsInstances = [player.Character!, tool];
+
 				rayCastParameters.FilterType = Enum.RaycastFilterType.Blacklist;
 
 				const origin = Workspace.CurrentCamera!.CFrame;
@@ -107,6 +108,8 @@ const gun: GunDefinition = {
 				);
 
 				const target = result?.Instance;
+
+				print(result);
 
 				this.getUnit("Transmitter")!.sendWithPredictiveLayer(
 					{
@@ -144,13 +147,15 @@ const gun: GunDefinition = {
 
 				const origin = Workspace.CurrentCamera!.CFrame;
 
-				shoot({
-					ricochet: this.get("ricochet"),
-					stepDistance: 4,
-					startPosition: origin.Position,
-					startNormal: origin.LookVector,
-					filter: this.get("filter"),
-					maxDistance: SETTINGS.maxDistance,
+				Promise.defer(() => {
+					shoot({
+						ricochet: this.get("ricochet"),
+						stepDistance: 4,
+						startPosition: origin.Position,
+						startNormal: origin.LookVector,
+						filter: this.get("filter"),
+						maxDistance: SETTINGS.maxDistance,
+					});
 				});
 			}
 		},
