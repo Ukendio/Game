@@ -2,14 +2,15 @@ import { ServerScriptService, Workspace, Players, ReplicatedStorage } from "@rbx
 import { CharacterRigR15, yieldForR15CharacterDescendants } from "@rbxts/yield-for-character";
 import FabricLib from "@rbxts/fabric";
 import Remotes from "shared/remotes";
-import { setSpawnLocations, spawnStore } from "./Spawn";
-import { castVote, councilStore, createTopic, startVote, stopVote } from "server/core/Council";
-import { mapLoadAsync } from "shared/Architect/Loader";
-import { selectGameMode, selectMap } from "./Round/actions";
-import { gameModes } from "shared/gameModes";
-import { roundStore, deploy, startRound } from "./Round";
 import { getKeys } from "shared/tableUtil";
 import { mapNames } from "shared/Architect/maps";
+
+import store from "./store";
+import { deploy, selectGameMode, selectMap, startRound } from "./Store/Round";
+import { castVote, createTopic, startVote, stopVote } from "./Store/Council";
+import { mapLoadAsync } from "shared/Architect/Loader";
+import { gameModes } from "shared/gameModes";
+import { setSpawnLocations } from "./Store/Spawn";
 
 const ServerCreateHealthPack = Remotes.Server.Create("ServerCreateHealthPack");
 const ServerCreatePistol = Remotes.Server.Create("ServerCreatePistol");
@@ -70,7 +71,7 @@ function createPistol(character: CharacterRigR15) {
 function respawnPlayer(currentPlayer?: Player) {
 	if (currentPlayer === undefined) return;
 
-	const state = spawnStore.getState();
+	const state = store.getState().Spawn;
 
 	let closestSpawn = undefined! as SpawnLocation;
 
@@ -137,11 +138,11 @@ Players.PlayerRemoving.Connect((player) => {
 });
 
 ClientRequestDeploy.SetCallback((player) => {
-	const state = roundStore.getState();
+	const state = store.getState().Round;
 	if (state.sequence === "started") {
-		if (roundStore.getState().deployedPlayers.find((val) => val === player)) return false;
+		if (state.deployedPlayers.find((val) => val === player)) return false;
 
-		roundStore.dispatch(deploy(player));
+		store.dispatch(deploy(player));
 		if (player.Character) {
 			respawnPlayer(player);
 			return player.Character;
@@ -152,7 +153,7 @@ ClientRequestDeploy.SetCallback((player) => {
 });
 
 ClientAppendVote.Connect((player, vote) => {
-	councilStore.dispatch(castVote(player, vote));
+	store.dispatch(castVote(player, vote));
 });
 
 function getVoteOrDefault(votes: string[], options: string[]) {
@@ -165,11 +166,11 @@ function getVoteOrDefault(votes: string[], options: string[]) {
 }
 
 async function startGame() {
-	roundStore.dispatch(startRound());
+	store.dispatch(startRound());
 	RoundStarted.SendToAllPlayers();
-	return roundStore
+	return store
 		.getState()
-		.winCondition()
+		.Round.winCondition()
 		.andThenCall(Promise.delay, 5)
 		.then(() => {
 			//prompt MVP
@@ -183,17 +184,17 @@ function intermission() {
 
 	return Promise.delay(5)
 		.then(async () => {
-			councilStore.dispatch(
+			store.dispatch(
 				createTopic({
 					name: "Map",
 					options: mapNames,
 				}),
 			);
-			councilStore.dispatch(startVote());
-			CouncilVoteOn.SendToAllPlayers(councilStore.getState().topic);
+			store.dispatch(startVote());
+			CouncilVoteOn.SendToAllPlayers(store.getState().Council.topic);
 
 			await Promise.delay(1).then(() => {
-				const state = councilStore.getState();
+				const state = store.getState().Council;
 				const vote = getVoteOrDefault(state.votes, state.topic.options);
 				const currentMap = mapLoadAsync(vote);
 				const spawnLocations = new Set<SpawnLocation>();
@@ -201,29 +202,29 @@ function intermission() {
 					spawnLocations.add(smartSpawn.FindFirstChildOfClass("SpawnLocation")!);
 				}
 
-				spawnStore.dispatch(setSpawnLocations(spawnLocations));
-				roundStore.dispatch(selectMap(vote));
-				councilStore.dispatch(stopVote());
+				store.dispatch(setSpawnLocations(spawnLocations));
+				store.dispatch(selectMap(vote));
+				store.dispatch(stopVote());
 				CouncilStopVote.SendToAllPlayers();
 			});
 		})
 		.then(async () => {
-			councilStore.dispatch(
+			store.dispatch(
 				createTopic({
 					name: "Gamemode",
 					options: [...getKeys(gameModes)],
 				}),
 			);
 
-			councilStore.dispatch(startVote());
-			CouncilVoteOn.SendToAllPlayers(councilStore.getState().topic);
+			store.dispatch(startVote());
+			CouncilVoteOn.SendToAllPlayers(store.getState().Council.topic);
 
 			await Promise.delay(1).then(() => {
-				const state = councilStore.getState();
+				const state = store.getState().Council;
 				const vote = getVoteOrDefault(state.votes, state.topic.options) as keyof typeof gameModes;
 
-				roundStore.dispatch(selectGameMode(vote));
-				councilStore.dispatch(stopVote());
+				store.dispatch(selectGameMode(vote));
+				store.dispatch(stopVote());
 
 				CouncilStopVote.SendToAllPlayers();
 			});
