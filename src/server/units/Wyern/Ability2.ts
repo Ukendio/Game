@@ -1,4 +1,4 @@
-import { Players, Workspace } from "@rbxts/services";
+import { Workspace } from "@rbxts/services";
 
 const CACHE_DISTANCE = new CFrame(new Vector3(math.huge, math.huge, math.huge));
 
@@ -22,8 +22,7 @@ const wyvernAbility1: FabricUnits["WyvernAbility2"] = {
 	},
 
 	onInitialize: function (this) {
-		print(this.name);
-		newShield.Name = this.ref!.UserId + "Shield";
+		newShield.Name = `${this.ref.UserId}_shield`;
 	},
 
 	onClientExecute: function (this, _player, root) {

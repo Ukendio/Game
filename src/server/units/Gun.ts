@@ -1,32 +1,32 @@
 import { Players } from "@rbxts/services";
-import { addDeathToPlayer, addKillToPlayer, competitorStore } from "server/core/Competitor";
-import { roundStore } from "server/core/Round";
-import { addKillToTeam, addDeathToTeam, teamStore } from "server/core/Team";
+import store from "server/core/store";
+import { addKillToPlayer, addDeathToPlayer } from "server/core/Store/Competitor";
+import { addKillToTeam, addDeathToTeam } from "server/core/store/Team";
 
 const FIRE_RATE = 1;
 
 function addKill(player: Player, target: BasePart) {
 	const killMap = {
 		["Team Deathmatch"]: () => {
-			if (roundStore.getState().sequence === "intermission") return;
+			if (store.getState().Round.sequence === "intermission") return;
 
-			competitorStore.dispatch(addKillToPlayer(player));
-			competitorStore.dispatch(addDeathToPlayer(player));
+			store.dispatch(addKillToPlayer(player));
+			store.dispatch(addDeathToPlayer(player));
 
-			teamStore.getState().teams.forEach((team) => {
+			store.getState().Team.teams.forEach((team) => {
 				if (team.tag === player.Team) {
-					teamStore.dispatch(addKillToTeam(team));
+					store.dispatch(addKillToTeam(team));
 				} else if (team.tag === Players.GetPlayerFromCharacter(target.Parent)!.Team) {
-					teamStore.dispatch(addDeathToTeam(team));
+					store.dispatch(addDeathToTeam(team));
 				}
 			});
 		},
 
 		["Free For All"]: () => {
-			if (roundStore.getState().sequence === "intermission") return;
+			if (store.getState().Round.sequence === "intermission") return;
 
-			competitorStore.dispatch(addKillToPlayer(player));
-			competitorStore.dispatch(addDeathToPlayer(player));
+			store.dispatch(addKillToPlayer(player));
+			store.dispatch(addDeathToPlayer(player));
 		},
 	};
 
@@ -48,6 +48,7 @@ const gun: FabricUnits["Gun"] = {
 		hit: undefined!,
 		player: undefined!,
 		ricochet: false,
+		filter: [],
 	},
 
 	onInitialize: function (this) {
@@ -56,12 +57,23 @@ const gun: FabricUnits["Gun"] = {
 
 	onClientShoot: function (this, _player, target) {
 		if (this.get("debounce") === true) {
-			const luck = this.fabric.getOrCreateUnitByRef("Luck", this);
+			const luck = this.getUnit("Luck");
+
+			const filter = [...this.defaults.filter, this.ref, _player, _player.Team!];
+			const substrings = target.Parent?.Name.split("_");
+
+			let ricochet = false;
+			if (substrings && substrings[1] === "shield") {
+				const findPlayer = Players.GetPlayerByUserId(tonumber(substrings[0])!);
+				if (findPlayer && findPlayer.Team === _player.Team) {
+					filter.push(target.Parent!);
+				} else ricochet = true;
+			}
 
 			this.addLayer("damage", {
-				ricochet: target.Name.find("Shield")[0] !== undefined,
+				ricochet: ricochet,
 				debounce: false,
-				hit: luck.applyLuck(math.random(10, 50)),
+				hit: luck?.applyLuck(math.random(10, 50)),
 				player: _player,
 				target: target,
 			});
@@ -76,7 +88,7 @@ const gun: FabricUnits["Gun"] = {
 		function (this) {
 			const damage = this.get("hit");
 			const target = this.get("target");
-			if (damage !== undefined && typeIs(damage, "string") && damage !== "Miss" && target !== undefined) {
+			if (damage !== undefined && damage !== "Miss" && target !== undefined) {
 				const player = this.get("player");
 
 				const humanoid = (target.Parent as Model).FindFirstChildOfClass("Humanoid");
@@ -84,7 +96,7 @@ const gun: FabricUnits["Gun"] = {
 				if (humanoid && player) {
 					humanoid.TakeDamage(tonumber(this.get("hit") as string)!);
 
-					if (humanoid.Health <= 0) addKill(player, target)[roundStore.getState().gameMode];
+					if (humanoid.Health <= 0) addKill(player, target)[store.getState().Round.gameMode];
 				}
 			}
 		},

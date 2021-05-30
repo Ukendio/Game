@@ -1,4 +1,3 @@
-import FabricLib, { ThisFabricUnit, UnitDefinition } from "@rbxts/fabric";
 import { RunService } from "@rbxts/services";
 
 const healPackage: FabricUnits["Heal"] = {
@@ -40,7 +39,10 @@ const healPackage: FabricUnits["Heal"] = {
 			particle: false,
 		});
 
-		Promise.delay(30).then(() => this.removeLayer(this));
+		Promise.delay(30).then(() => {
+			this.removeLayer(this);
+			this.ref!.Destroy();
+		});
 	},
 
 	onDestroy: function (this) {},
