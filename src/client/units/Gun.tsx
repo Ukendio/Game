@@ -27,6 +27,7 @@ interface GunDefinition extends UnitDefinition<"Gun"> {
 		hit: string;
 		player: Player;
 		ricochet: boolean;
+		filter: Instance[];
 	};
 
 	ref?: Tool;
@@ -59,6 +60,7 @@ const gun: GunDefinition = {
 		hit: undefined!,
 		player: undefined!,
 		ricochet: false,
+		filter: [],
 	},
 
 	onInitialize: function (this) {
@@ -92,6 +94,7 @@ const gun: GunDefinition = {
 		tool.Activated.Connect(() => {
 			if ((this.get("debounce") as boolean) === true) {
 				signal.fire();
+
 				const rayCastParameters = new RaycastParams();
 				rayCastParameters.FilterDescendantsInstances = [player.Character!, tool];
 				rayCastParameters.FilterType = Enum.RaycastFilterType.Blacklist;
@@ -140,14 +143,13 @@ const gun: GunDefinition = {
 				pistolShot.Ended.Connect(() => pistolShot.Destroy());
 
 				const origin = Workspace.CurrentCamera!.CFrame;
-				const tool = this.ref;
 
 				shoot({
 					ricochet: this.get("ricochet"),
 					stepDistance: 4,
 					startPosition: origin.Position,
 					startNormal: origin.LookVector,
-					filter: [player.Character!, tool],
+					filter: this.get("filter"),
 					maxDistance: SETTINGS.maxDistance,
 				});
 			}
