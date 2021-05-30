@@ -1,5 +1,5 @@
 import Net from "@rbxts/net";
-import { TopicFormat } from "server/core/Council";
+import { TopicFormat } from "server/core/Store/Council/actions";
 
 const remotes = Net.Definitions.Create({
 	ServerCreateHealthPack: Net.Definitions.ServerToClientEvent<[Model]>(),
