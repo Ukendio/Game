@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@rbxts/fabric": "^1.1.6",
+    "@rbxts/fastcast": "^1.4.0",
     "@rbxts/flipper": "^2.0.0",
     "@rbxts/janitor": "^1.1.2",
     "@rbxts/net": "^2.1.3",
