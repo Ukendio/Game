@@ -40,7 +40,7 @@ const mouse = player.GetMouse();
 const SETTINGS = {
 	fireRate: 1,
 	recoil: 1,
-	maxDistance: 100,
+	maxDistance: 400,
 };
 
 const signal = new Dispatcher();
@@ -148,6 +148,9 @@ const gun: GunDefinition = {
 				const origin = Workspace.CurrentCamera!.CFrame;
 
 				Promise.defer(() => {
+					print(this.get("ricochet"));
+					print(SETTINGS.maxDistance);
+					print(this.get("filter"));
 					shoot({
 						ricochet: this.get("ricochet"),
 						stepDistance: 4,

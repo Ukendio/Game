@@ -56,7 +56,7 @@ function step(options: Required<Options>) {
 	}
 
 	if (currentDistance < maximumDistance) {
-		RunService.RenderStepped.Wait();
+		RunService.Heartbeat.Wait();
 		step(newOptions);
 	}
 }
@@ -98,17 +98,17 @@ export function shoot(options: BulletConstructor) {
 		let currentPosition = options.startPosition;
 		const direction = options.startNormal.Unit.mul(options.stepDistance);
 
-		Promise.defer(() => {
-			while (traversed < options.maxDistance) {
-				const position = currentPosition.add(direction);
-				laser.CFrame = new CFrame(currentPosition.Lerp(position, 0.5), position);
-				const oldPosition = currentPosition;
-				currentPosition = position;
+		while (traversed < options.maxDistance) {
+			const position = currentPosition.add(direction);
+			laser.CFrame = new CFrame(currentPosition.Lerp(position, 0.5), position);
+			const oldPosition = currentPosition;
+			currentPosition = position;
 
-				traversed += position.sub(oldPosition).Magnitude;
+			traversed += position.sub(oldPosition).Magnitude;
 
-				RunService.Heartbeat.Wait();
-			}
-		}).then(() => laser.Destroy());
+			RunService.Heartbeat.Wait();
+		}
+
+		laser.Destroy();
 	}
 }

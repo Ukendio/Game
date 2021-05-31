@@ -2,10 +2,10 @@ import { RunService } from "@rbxts/services";
 import Signal from "./signal";
 import SingleEvent from "./singleEvent";
 
-const dt: number = 1 / 60;
+let dt: number = 1 / 60;
 
-RunService.Heartbeat.Connect((dt) => {
-	dt = dt;
+RunService.Heartbeat.Connect((step) => {
+	dt = step;
 });
 
 export function interval(duration: number, callback: Callback) {

@@ -79,6 +79,7 @@ const gun: FabricUnits["Gun"] = {
 				hit: luck?.applyLuck(math.random(10, 50)),
 				player: _player,
 				target: target,
+				filter: filter,
 			});
 
 			Promise.delay(FIRE_RATE).then(() => {
