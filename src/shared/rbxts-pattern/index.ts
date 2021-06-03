@@ -196,6 +196,7 @@ const matchPattern = <a, p extends Pattern<a>>(
 			return true;
 		}
 
+		print(pattern, pattern["@ts-pattern/__kind" as never], ANONYMOUS_SELECT_KEY);
 		if (isAnonymousSelectPattern(pattern)) {
 			_select(ANONYMOUS_SELECT_KEY, value);
 			return true;
@@ -218,7 +219,7 @@ const matchPattern = <a, p extends Pattern<a>>(
 					selected[key] = [...(selected[key] || []), value];
 				};
 
-				const doesMatch = (value as unknown as []).every((v) =>
+				const doesMatch = ((value as unknown) as []).every((v) =>
 					matchPattern((pattern as never)[0], v, listSelect),
 				);
 
@@ -231,8 +232,8 @@ const matchPattern = <a, p extends Pattern<a>>(
 
 			// Tuple pattern
 			return pattern.size() === value.size()
-				? (pattern as unknown as []).every((subPattern, i) =>
-						matchPattern(subPattern, (value as unknown as [])[i], _select),
+				? ((pattern as unknown) as []).every((subPattern, i) =>
+						matchPattern(subPattern, ((value as unknown) as [])[i], _select),
 				  )
 				: false;
 		}
