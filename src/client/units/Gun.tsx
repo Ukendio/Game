@@ -12,6 +12,53 @@ declare global {
 	}
 }
 
+interface ClientShootEffectsOptions {
+	target: BasePart | undefined;
+	filter: Instance[];
+	origin: Vector3;
+	direction: Vector3;
+}
+
+function clientShootEffects(options: ClientShootEffectsOptions) {
+	const pistolShot = ReplicatedStorage.TS.assets.PistolShot.Clone();
+
+	pistolShot.Parent = SoundService;
+	pistolShot.Play();
+	pistolShot.Ended.Connect(() => pistolShot.Destroy());
+
+	const target = options.target;
+	const filter = options.filter;
+	const origin = options.origin;
+	const direction = options.direction;
+
+	let ricochet = false;
+	if (target !== undefined && target.Parent?.FindFirstChild("Humanoid") !== undefined) {
+		const substrings = target.Name.split("_");
+
+		if (substrings && substrings[1] === "shield") {
+			const findPlayer = Players.GetPlayerByUserId(tonumber(substrings[0])!);
+			if (findPlayer && findPlayer.Team === player.Team) {
+				print(findPlayer.Team, player.Team);
+				filter.push(target.Parent!);
+			} else {
+				ricochet = true;
+				print(ricochet);
+			}
+		}
+	}
+
+	Promise.defer(() =>
+		shoot({
+			ricochet: ricochet,
+			stepDistance: 4,
+			startPosition: origin,
+			startNormal: direction,
+			filter: filter,
+			maxDistance: SETTINGS.maxDistance,
+		}),
+	);
+}
+
 interface GunDefinition extends UnitDefinition<"Gun"> {
 	name: "Gun";
 
@@ -23,16 +70,25 @@ interface GunDefinition extends UnitDefinition<"Gun"> {
 		debounce: boolean;
 		mouseDown: boolean;
 		equipped: boolean;
-		target: BasePart;
+		target: BasePart | undefined;
 		hit: string;
 		player: Player;
 		ricochet: boolean;
 		filter: Instance[];
+		origin: undefined | Vector3;
+		direction: undefined | Vector3;
 	};
 
 	ref?: Tool;
 
-	onClientShoot?: (this: ThisFabricUnit<"Gun">, _player: Player, target: BasePart) => void;
+	onClientShoot?: (
+		this: ThisFabricUnit<"Gun">,
+		_player: Player,
+		data: {
+			target: BasePart;
+			hit: string;
+		},
+	) => void;
 }
 
 const player = Players.LocalPlayer;
@@ -56,14 +112,18 @@ const gun: GunDefinition = {
 		debounce: true,
 		mouseDown: false,
 		equipped: false,
-		target: undefined!,
-		hit: undefined!,
+		target: undefined,
+		hit: "Miss",
 		player: undefined!,
 		ricochet: false,
 		filter: [],
+		origin: undefined,
+		direction: undefined,
 	},
 
 	onInitialize: function (this) {
+		this.fabric.getOrCreateUnitByRef("Luck", this);
+
 		let handle: Roact.Tree;
 		const onEquipped = () => {
 			handle = Roact.mount(
@@ -91,8 +151,10 @@ const gun: GunDefinition = {
 		tool.Equipped.Connect(onEquipped);
 		tool.Unequipped.Connect(onUnequipped);
 
+		let debounce = true;
 		tool.Activated.Connect(() => {
-			if ((this.get("debounce") as boolean) === true) {
+			if (debounce === true) {
+				debounce = false;
 				signal.fire();
 
 				const rayCastParameters = new RaycastParams();
@@ -101,64 +163,43 @@ const gun: GunDefinition = {
 				rayCastParameters.FilterType = Enum.RaycastFilterType.Blacklist;
 
 				const origin = Workspace.CurrentCamera!.CFrame;
-				const result = Workspace.Raycast(
-					origin.Position,
-					mouse.Hit.Position.sub(origin.Position).Unit.mul(SETTINGS.maxDistance),
-					rayCastParameters,
-				);
+				const direction = mouse.Hit.Position.sub(origin.Position).Unit.mul(SETTINGS.maxDistance);
+				const result = Workspace.Raycast(origin.Position, direction, rayCastParameters);
 
 				const target = result?.Instance;
+				const luck = this.getUnit("Luck");
+				const hit = luck?.applyLuck(math.random(10, 50));
+				const packet = {
+					target: target,
+					hit: hit,
+				};
+				print(hit);
+				print(packet, "client");
 
-				print(result);
+				clientShootEffects({
+					target: target,
+					filter: [this.ref, player.Character!],
+					origin: origin.Position,
+					direction: direction,
+				});
 
-				this.getUnit("Transmitter")!.sendWithPredictiveLayer(
-					{
-						target,
-					},
-					"shoot",
-					target,
-				);
+				this.getUnit("Transmitter")!.sendWithPredictiveLayer(packet, "shoot", packet);
+
+				Promise.delay(SETTINGS.fireRate).then(() => (debounce = true));
 			}
 		});
 	},
 
 	effects: [
 		function (this) {
-			if (
-				this.get("target") !== undefined &&
-				(this.get("target") as Instance).Parent?.FindFirstChild("Humanoid") !== undefined &&
-				this.get("debounce") === false
-			) {
+			const target = this.get("target");
+			print(target);
+
+			if (target !== undefined && target.Parent?.FindFirstChild("Humanoid") !== undefined) {
 				const handle = Roact.mount(<HitMark hit={this.get("hit") as string} />, this.get("target") as Instance);
 
 				Promise.delay(0.75).then(() => {
 					Roact.unmount(handle);
-				});
-			}
-		},
-
-		function (this) {
-			if (this.get("debounce") === false) {
-				const pistolShot = ReplicatedStorage.TS.assets.PistolShot.Clone();
-
-				pistolShot.Parent = SoundService;
-				pistolShot.Play();
-				pistolShot.Ended.Connect(() => pistolShot.Destroy());
-
-				const origin = Workspace.CurrentCamera!.CFrame;
-
-				Promise.defer(() => {
-					print(this.get("ricochet"));
-					print(SETTINGS.maxDistance);
-					print(this.get("filter"));
-					shoot({
-						ricochet: this.get("ricochet"),
-						stepDistance: 4,
-						startPosition: origin.Position,
-						startNormal: origin.LookVector,
-						filter: this.get("filter"),
-						maxDistance: SETTINGS.maxDistance,
-					});
 				});
 			}
 		},
