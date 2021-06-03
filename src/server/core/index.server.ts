@@ -1,4 +1,4 @@
-import { registerListenerIn } from "../../shared/registerListenersIn";
+import { registerListenerIn } from "shared/registerListenersIn";
 registerListenerIn(script.FindFirstChild("listeners")!);
 
 import Remotes from "shared/remotes";
