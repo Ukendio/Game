@@ -50,7 +50,6 @@ const healPackage: HealPackage = {
 	onInitialize: function (this) {
 		const model = this.ref as Model;
 		const part = model.PrimaryPart!;
-		part.BrickColor = new BrickColor("Teal");
 		part.Touched.Connect((hit) => {
 			if (hit.Parent?.FindFirstChild("Humanoid")) {
 				const amount = math.random(10, 50);

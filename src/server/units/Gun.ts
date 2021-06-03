@@ -48,43 +48,20 @@ const gun: FabricUnits["Gun"] = {
 		player: undefined!,
 		ricochet: false,
 		filter: [],
+		origin: undefined,
+		direction: undefined,
 	},
 
-	onInitialize: function (this) {
-		this.fabric.getOrCreateUnitByRef("Luck", this);
-	},
-
-	onClientShoot: function (this, _player, target) {
+	onClientShoot: function (this, _player, packet) {
 		if (this.get("debounce") === true) {
-			const luck = this.getUnit("Luck");
-
-			const filter = [this.ref, _player, _player.Team!] as Instance[];
-			let ricochet = false;
-
-			if (target) {
-				const substrings = target.Name.split("_");
-
-				if (substrings && substrings[1] === "shield") {
-					const findPlayer = Players.GetPlayerByUserId(tonumber(substrings[0])!);
-					if (findPlayer && findPlayer.Team === _player.Team) {
-						filter.push(target.Parent!);
-					} else ricochet = true;
-				}
-			}
-
-			print(ricochet);
 			this.addLayer("damage", {
-				ricochet: ricochet,
 				debounce: false,
-				hit: luck?.applyLuck(math.random(10, 50)),
-				player: _player,
-				target: target,
-				filter: filter,
+				target: packet.target,
+				hit: packet.hit,
 			});
 
-			Promise.delay(FIRE_RATE).then(() => {
-				this.removeLayer("damage");
-			});
+			print(packet);
+			Promise.delay(FIRE_RATE).then(() => this.removeLayer("damage"));
 		}
 	},
 
@@ -92,7 +69,6 @@ const gun: FabricUnits["Gun"] = {
 		function (this) {
 			const damage = this.get("hit");
 			const target = this.get("target");
-			print(damage, target);
 			if (damage !== undefined && damage !== "Miss" && target !== undefined) {
 				const humanoid = (target.Parent as Model).FindFirstChildOfClass("Humanoid");
 

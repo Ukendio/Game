@@ -9,10 +9,6 @@ declare global {
 interface LuckDefinition extends UnitDefinition<"Luck"> {
 	name: "Luck";
 
-	units: {
-		Replicated: {};
-	};
-
 	defaults?: {
 		debounce: true;
 	};
@@ -25,14 +21,14 @@ interface LuckDefinition extends UnitDefinition<"Luck"> {
 const Luck: LuckDefinition = {
 	name: "Luck",
 
-	units: {
-		Replicated: {},
+	onInitialize: function (this) {
+		print("initialize");
 	},
 
-	onInitialize: function (this) {},
-
 	applyLuck: function (this, layerData) {
+		print(layerData);
 		const rng = math.random(0, layerData);
+		print(rng);
 		if (rng < 25) {
 			return tostring(layerData);
 		}
