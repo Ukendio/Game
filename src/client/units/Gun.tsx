@@ -1,16 +1,9 @@
-import { ThisFabricUnit, UnitDefinition } from "@rbxts/fabric";
 import Roact from "@rbxts/roact";
 import { Players, ReplicatedStorage, SoundService, UserInputService, Workspace } from "@rbxts/services";
 import { Crosshair } from "client/UserInterface/App/Crosshair";
 import HitMark from "client/UserInterface/App/HitMark";
 import { shoot } from "shared/shoot";
 import Dispatcher from "shared/dispatcher";
-
-declare global {
-	interface FabricUnits {
-		Gun: GunDefinition;
-	}
-}
 
 interface ClientShootEffectsOptions {
 	target: BasePart | undefined;
@@ -59,38 +52,6 @@ function clientShootEffects(options: ClientShootEffectsOptions) {
 	);
 }
 
-interface GunDefinition extends UnitDefinition<"Gun"> {
-	name: "Gun";
-
-	units: {
-		Replicated: [];
-	};
-
-	defaults: {
-		debounce: boolean;
-		mouseDown: boolean;
-		equipped: boolean;
-		target: BasePart | undefined;
-		hit: string;
-		player: Player;
-		ricochet: boolean;
-		filter: Instance[];
-		origin: undefined | Vector3;
-		direction: undefined | Vector3;
-	};
-
-	ref?: Tool;
-
-	onClientShoot?: (
-		this: ThisFabricUnit<"Gun">,
-		_player: Player,
-		data: {
-			target: BasePart;
-			hit: string;
-		},
-	) => void;
-}
-
 const player = Players.LocalPlayer;
 const mouse = player.GetMouse();
 const SETTINGS = {
@@ -101,7 +62,7 @@ const SETTINGS = {
 
 const signal = new Dispatcher();
 
-const gun: GunDefinition = {
+const gun: FabricUnits["Gun"] = {
 	name: "Gun",
 
 	units: {
@@ -114,7 +75,7 @@ const gun: GunDefinition = {
 		equipped: false,
 		target: undefined,
 		hit: "Miss",
-		player: undefined!,
+		player: undefined,
 		ricochet: false,
 		filter: [],
 		origin: undefined,

@@ -6,7 +6,7 @@ import { getKeys } from "shared/tableUtil";
 import { mapNames } from "shared/Architect/maps";
 import store from "./store";
 import { mapLoadAsync } from "shared/Architect/Loader";
-import { gameModes } from "shared/gameModes";
+import { gameModes } from "server/core/gameModes";
 import {
 	startRound,
 	createTopic,
