@@ -1,5 +1,5 @@
 import Rodux, { Store } from "@rbxts/rodux";
-import { gameModes } from "shared/gameModes";
+import { gameModes } from "server/core/gameModes";
 import { copyShallow } from "shared/tableUtil";
 import { Actions, PlayerTeam, TopicFormat } from "./actions";
 

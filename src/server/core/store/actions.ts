@@ -1,5 +1,5 @@
 import Rodux from "@rbxts/rodux";
-import { gameModes } from "shared/gameModes";
+import { gameModes } from "server/core/gameModes";
 import { PlayerScore } from "./reducer";
 
 interface AddKillAction extends Rodux.Action<"AddKillToPlayer"> {
