@@ -196,7 +196,6 @@ const matchPattern = <a, p extends Pattern<a>>(
 			return true;
 		}
 
-		print(pattern, pattern["@ts-pattern/__kind" as never], ANONYMOUS_SELECT_KEY);
 		if (isAnonymousSelectPattern(pattern)) {
 			_select(ANONYMOUS_SELECT_KEY, value);
 			return true;
