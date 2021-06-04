@@ -1,5 +1,6 @@
 /// <reference types="@rbxts/testez/globals" />
-import { match } from "shared/rbxts-pattern";
+import { Option } from "@rbxts/rust-classes";
+import { match, _select } from "shared/rbxts-pattern";
 
 type Data = { type: "text"; content: string } | { type: "img"; src: string };
 
@@ -7,7 +8,7 @@ type Result = { type: "ok"; data: Data } | { type: "error"; errorMessage: string
 
 export = () => {
 	describe("pattern", () => {
-		it("should return hello", () => {
+		it("return hello", () => {
 			const value = {
 				type: "ok",
 				data: {
@@ -41,7 +42,7 @@ export = () => {
 
 			expect(result).to.equal(15);
 		});
-		it("should throw", () => {
+		it("throw when input is of error type", () => {
 			const value = {
 				type: "error",
 				errorMessage: "something went wrong",
@@ -53,6 +54,27 @@ export = () => {
 					.with({ type: "error" }, (result) => error(`Error://${result.errorMessage}`))
 					.run(),
 			).to.throw;
+		});
+		it("return 1", () => {
+			function checkOptional(optional: Option<number>) {
+				return match(optional)
+					.with(Option.some(2), () => 2)
+					.with(Option.some(1), () => 1)
+					.with(Option.none<number>(), () => error("No numbers were put"))
+					.run();
+			}
+
+			expect(checkOptional(Option.some(1))).to.equal(1);
+		});
+		it("throw when optional is None", () => {
+			function checkOptional(optional: Option<number>) {
+				return match(optional)
+					.with(Option.some(10), () => print("this shouldn't ever happen"))
+					.with(Option.none<number>(), () => error("No numbers were put"))
+					.run();
+			}
+
+			expect(() => checkOptional(Option.none())).to.throw;
 		});
 	});
 };
