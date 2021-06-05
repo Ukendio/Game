@@ -72,7 +72,7 @@ const builder = <a, b>(
 ) => {
 	const run = () => {
 		const entry = cases.find(({ test }) => {
-			return test(value) === true;
+			return test(value);
 		});
 
 		if (!entry) {
@@ -135,7 +135,7 @@ const builder = <a, b>(
 		) =>
 			builder<a, PickReturnValue<b, c>>(value, [
 				...cases,
-				[{ test: predicate, handler, _select: (value: a) => value }],
+				{ test: predicate, handler, _select: (value: a) => value },
 			] as never),
 
 		otherwise: <c>(handler: () => PickReturnValue<b, c>): PickReturnValue<b, c> =>
