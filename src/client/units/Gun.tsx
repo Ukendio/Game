@@ -12,46 +12,6 @@ interface ClientShootEffectsOptions {
 	direction: Vector3;
 }
 
-function clientShootEffects(options: ClientShootEffectsOptions) {
-	const pistolShot = ReplicatedStorage.TS.assets.PistolShot.Clone();
-
-	pistolShot.Parent = SoundService;
-	pistolShot.Play();
-	pistolShot.Ended.Connect(() => pistolShot.Destroy());
-
-	const target = options.target;
-	const filter = options.filter;
-	const origin = options.origin;
-	const direction = options.direction;
-
-	let ricochet = false;
-	if (target !== undefined && target.Parent?.FindFirstChild("Humanoid") !== undefined) {
-		const substrings = target.Name.split("_");
-
-		if (substrings && substrings[1] === "shield") {
-			const findPlayer = Players.GetPlayerByUserId(tonumber(substrings[0])!);
-			if (findPlayer && findPlayer.Team === player.Team) {
-				print(findPlayer.Team, player.Team);
-				filter.push(target.Parent!);
-			} else {
-				ricochet = true;
-				print(ricochet);
-			}
-		}
-	}
-
-	Promise.defer(() =>
-		shoot({
-			ricochet: ricochet,
-			stepDistance: 4,
-			startPosition: origin,
-			startNormal: direction,
-			filter: filter,
-			maxDistance: SETTINGS.maxDistance,
-		}),
-	);
-}
-
 const player = Players.LocalPlayer;
 const mouse = player.GetMouse();
 const SETTINGS = {
@@ -133,16 +93,9 @@ const gun: FabricUnits["Gun"] = {
 				const packet = {
 					target: target,
 					hit: hit,
-				};
-				print(hit);
-				print(packet, "client");
-
-				clientShootEffects({
-					target: target,
-					filter: [this.ref, player.Character!],
-					origin: origin.Position,
+					origin: origin,
 					direction: direction,
-				});
+				};
 
 				this.getUnit("Transmitter")!.sendWithPredictiveLayer(packet, "shoot", packet);
 
@@ -162,6 +115,48 @@ const gun: FabricUnits["Gun"] = {
 				Promise.delay(0.75).then(() => {
 					Roact.unmount(handle);
 				});
+			}
+		},
+		function (this) {
+			const target = this.get("target");
+			const filter = this.get("filter");
+			const origin = this.get("origin");
+			const direction = this.get("direction");
+
+			if (origin && direction) {
+				print(origin, direction);
+				const pistolShot = ReplicatedStorage.TS.assets.PistolShot.Clone();
+
+				pistolShot.Parent = SoundService;
+				pistolShot.Play();
+				pistolShot.Ended.Connect(() => pistolShot.Destroy());
+
+				let ricochet = false;
+				if (target !== undefined && target.Parent?.FindFirstChild("Humanoid") !== undefined) {
+					const substrings = target.Name.split("_");
+
+					if (substrings && substrings[1] === "shield") {
+						const findPlayer = Players.GetPlayerByUserId(tonumber(substrings[0])!);
+						if (findPlayer && findPlayer.Team === player.Team) {
+							print(findPlayer.Team, player.Team);
+							filter.push(target.Parent!);
+						} else {
+							ricochet = true;
+							print(ricochet);
+						}
+					}
+				}
+
+				Promise.defer(() =>
+					shoot({
+						ricochet: ricochet,
+						stepDistance: 4,
+						startPosition: origin,
+						startNormal: direction,
+						filter: filter,
+						maxDistance: SETTINGS.maxDistance,
+					}),
+				);
 			}
 		},
 	],
