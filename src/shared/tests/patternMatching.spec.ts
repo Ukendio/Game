@@ -158,7 +158,6 @@ export = () => {
 				.numberRange([13, 19], (value) => `${value} is a teen number`)
 				.run();
 
-			print(result);
 			expect(result).to.equal("13 is a teen number");
 		});
 
