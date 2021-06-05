@@ -169,16 +169,5 @@ export = () => {
 
 			expect(deepEquals(plusOne(Option.none()), Option.none())).to.be.ok;
 		});
-
-		it("exhaustive", () => {
-			const exhaustiveArray = [1, 2, 3, 4, 5];
-			const lastIndex = exhaustiveArray[exhaustiveArray.size()];
-			print(lastIndex);
-			const result = match(lastIndex)
-				.with(1, () => 1)
-				.with(2, () => 2).exhaustive;
-
-			expect(result).to.be.ok;
-		});
 	});
 };
