@@ -160,22 +160,5 @@ export = () => {
 
 			expect(result).to.equal("13 is a teen number");
 		});
-
-		it("returns none", () => {
-			function plusOne(x: Option<number>): Option<number> {
-				return match(x)
-					.when(
-						() => x.isSome(),
-						() => Option.some(x.value! + 1),
-					)
-					.when(
-						() => x.isNone(),
-						() => Option.none<number>(),
-					)
-					.run();
-			}
-
-			expect(deepEquals(plusOne(Option.none()), Option.none())).to.be.ok;
-		});
 	});
 };
