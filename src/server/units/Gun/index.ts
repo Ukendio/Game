@@ -1,8 +1,8 @@
 import { ThisFabricUnit, UnitDefinition } from "@rbxts/fabric";
 import { Players } from "@rbxts/services";
+import { ConfigurableSettings } from "server/core/factory/createGun";
+import Mode from "shared/Mode";
 import matchModeForKill from "./matchModeForKill";
-
-const FIRE_RATE = 1;
 
 declare global {
 	interface FabricUnits {
@@ -28,6 +28,8 @@ interface GunDefinition extends UnitDefinition<"Gun"> {
 		filter: Instance[];
 		origin: undefined | Vector3;
 		direction: undefined | Vector3;
+
+		configurableSettings: ConfigurableSettings;
 	};
 
 	ref?: Tool;
@@ -40,6 +42,8 @@ interface GunDefinition extends UnitDefinition<"Gun"> {
 			hit: string;
 		},
 	) => void;
+
+	configureSettings?: (this: ThisFabricUnit<"Gun">, configurableSettings: ConfigurableSettings) => void;
 }
 
 const gun: GunDefinition = {
@@ -60,9 +64,17 @@ const gun: GunDefinition = {
 		filter: [],
 		origin: undefined,
 		direction: undefined,
+
+		configurableSettings: {
+			fireRate: 1,
+			recoil: 1,
+			maxDistance: 400,
+			mode: Mode.Semi,
+		},
 	},
 
 	onClientShoot: function (this, _player, packet) {
+		const settings = this.get("configurableSettings");
 		if (this.get("debounce") === true) {
 			this.addLayer("damage", {
 				debounce: false,
@@ -71,9 +83,14 @@ const gun: GunDefinition = {
 				player: _player,
 			});
 
-			print(packet);
-			Promise.delay(FIRE_RATE).then(() => this.removeLayer("damage"));
+			Promise.delay(settings.fireRate).then(() => this.removeLayer("damage"));
 		}
+	},
+
+	configureSettings: function (this, settings) {
+		this.addLayer("settings", {
+			configurableSettings: settings,
+		});
 	},
 
 	effects: [

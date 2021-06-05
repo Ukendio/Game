@@ -3,22 +3,12 @@ import { Players, ReplicatedStorage, SoundService, UserInputService, Workspace }
 import { Crosshair } from "client/UserInterface/App/Crosshair";
 import HitMark from "client/UserInterface/App/HitMark";
 import { shoot } from "shared/shoot";
-import Dispatcher from "shared/dispatcher";
-
-interface ClientShootEffectsOptions {
-	target: BasePart | undefined;
-	filter: Instance[];
-	origin: Vector3;
-	direction: Vector3;
-}
+import Dispatcher, { interval } from "shared/dispatcher";
+import { match } from "shared/rbxts-pattern";
+import Mode from "shared/Mode";
 
 const player = Players.LocalPlayer;
 const mouse = player.GetMouse();
-const SETTINGS = {
-	fireRate: 1,
-	recoil: 1,
-	maxDistance: 400,
-};
 
 const signal = new Dispatcher();
 
@@ -40,9 +30,17 @@ const gun: FabricUnits["Gun"] = {
 		filter: [],
 		origin: undefined,
 		direction: undefined,
+
+		configurableSettings: {
+			fireRate: 1,
+			recoil: 1,
+			maxDistance: 400,
+			mode: Mode.Semi,
+		},
 	},
 
 	onInitialize: function (this) {
+		const settings = this.get("configurableSettings");
 		this.fabric.getOrCreateUnitByRef("Luck", this);
 
 		let handle: Roact.Tree;
@@ -52,8 +50,8 @@ const gun: FabricUnits["Gun"] = {
 					<Crosshair
 						signal={signal}
 						mouseOffset={Workspace.CurrentCamera!.ViewportSize.Y / 2 - 36}
-						fireRate={SETTINGS.fireRate}
-						recoil={SETTINGS.recoil}
+						fireRate={settings.fireRate}
+						recoil={settings.recoil}
 					/>
 				</screengui>,
 				player.WaitForChild("PlayerGui"),
@@ -73,33 +71,50 @@ const gun: FabricUnits["Gun"] = {
 		tool.Unequipped.Connect(onUnequipped);
 
 		let debounce = true;
-		tool.Activated.Connect(() => {
-			if (debounce === true) {
+
+		const raycast = () => {
+			const rayCastParameters = new RaycastParams();
+			rayCastParameters.FilterDescendantsInstances = [player.Character!, tool];
+			rayCastParameters.FilterType = Enum.RaycastFilterType.Blacklist;
+
+			const origin = Workspace.CurrentCamera!.CFrame;
+			const direction = mouse.Hit.Position.sub(origin.Position).Unit.mul(settings.maxDistance);
+			const result = Workspace.Raycast(origin.Position, direction, rayCastParameters);
+
+			const target = result?.Instance;
+			const luck = this.getUnit("Luck");
+			const hit = luck?.applyLuck(math.random(10, 50));
+
+			const packet = {
+				target: target,
+				hit: hit,
+				origin: origin,
+				direction: direction,
+			};
+
+			this.getUnit("Transmitter")!.sendWithPredictiveLayer(packet, "shoot", packet);
+		};
+
+		mouse.Button1Down.Connect(() => {
+			if (debounce) {
 				debounce = false;
-				signal.fire();
+				match(settings.mode)
+					.with(Mode.Semi, () => {
+						raycast();
+						Promise.delay(settings.fireRate).then(() => (debounce = true));
+					})
+					.with(Mode.Auto, () => {
+						const listener = interval(settings.fireRate, raycast);
+						const connection = listener.event.connect(() => {
+							listener.callback();
+						});
 
-				const rayCastParameters = new RaycastParams();
-				rayCastParameters.FilterDescendantsInstances = [player.Character!, tool];
-
-				rayCastParameters.FilterType = Enum.RaycastFilterType.Blacklist;
-
-				const origin = Workspace.CurrentCamera!.CFrame;
-				const direction = mouse.Hit.Position.sub(origin.Position).Unit.mul(SETTINGS.maxDistance);
-				const result = Workspace.Raycast(origin.Position, direction, rayCastParameters);
-
-				const target = result?.Instance;
-				const luck = this.getUnit("Luck");
-				const hit = luck?.applyLuck(math.random(10, 50));
-				const packet = {
-					target: target,
-					hit: hit,
-					origin: origin,
-					direction: direction,
-				};
-
-				this.getUnit("Transmitter")!.sendWithPredictiveLayer(packet, "shoot", packet);
-
-				Promise.delay(SETTINGS.fireRate).then(() => (debounce = true));
+						mouse.Button1Up.Connect(() => {
+							connection.disconnect();
+							Promise.delay(settings.fireRate).then(() => (debounce = true));
+						});
+					})
+					.run();
 			}
 		});
 	},
@@ -122,9 +137,9 @@ const gun: FabricUnits["Gun"] = {
 			const filter = this.get("filter");
 			const origin = this.get("origin");
 			const direction = this.get("direction");
+			const settings = this.get("configurableSettings");
 
 			if (origin && direction) {
-				print(origin, direction);
 				const pistolShot = ReplicatedStorage.TS.assets.PistolShot.Clone();
 
 				pistolShot.Parent = SoundService;
@@ -154,7 +169,7 @@ const gun: FabricUnits["Gun"] = {
 						startPosition: origin,
 						startNormal: direction,
 						filter: filter,
-						maxDistance: SETTINGS.maxDistance,
+						maxDistance: settings.maxDistance,
 					}),
 				);
 			}
