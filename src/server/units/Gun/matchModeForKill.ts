@@ -22,7 +22,8 @@ function matchModeForKill(player: Player, enemyPlayer: Player) {
 			if (store.getState().sequence === "intermission") return;
 
 			return;
-		});
+		})
+		.run();
 }
 
 export = matchModeForKill;
