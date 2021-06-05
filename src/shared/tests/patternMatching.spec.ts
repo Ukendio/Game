@@ -140,17 +140,26 @@ export = () => {
 
 			expect(version.isOk()).to.be.ok;
 		});
-		it("Equal teen!", () => {
+
+		it("it is a prime", () => {
+			const number = 5;
+
+			const result = match(number)
+				.numberSet([1, 3, 5, 7, 11], (value) => `${value} is a prime number`)
+				.run();
+
+			expect(result).to.equal(`5 is a prime number`);
+		});
+
+		it("it is a Teen", () => {
 			const number = 13;
 
 			const result = match(number)
-				.with(1, () => "One!")
-				.with(1 || 3 | 5 || 7 || 11, () => "This is a prime!")
-				.with(13 || 14 || 14 || 15 || 16 || 17 || 18 || 19, () => "Teen!")
-				.otherwise(() => "Ain't special!");
+				.numberRange([13, 19], (value) => `${value} is a teen number`)
+				.run();
 
-			print(`Tell me about ${result}`);
-			expect(result).to.equal("Teen!");
+			print(result);
+			expect(result).to.equal("13 is a teen number");
 		});
 
 		it("returns none", () => {

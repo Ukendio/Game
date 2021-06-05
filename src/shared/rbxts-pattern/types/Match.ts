@@ -116,6 +116,16 @@ export type Match<i, o, patternValueTuples extends [any, any] = never, inferredO
 	 * Runs the pattern matching expression and return the result.
 	 * */
 	run: () => PickReturnValue<o, inferredOutput>;
+
+	numberSet<p extends number[], c, value = MatchedValue<i, InvertPattern<p>>>(
+		pattern: p,
+		handler: (value: MatchedValue<i, InvertPattern<p>>) => PickReturnValue<o, c>,
+	): Match<i, o, patternValueTuples | [p, value], Union<inferredOutput, c>>;
+
+	numberRange<p extends number[], c, value = MatchedValue<i, InvertPattern<p>>>(
+		pattern: p,
+		handler: (value: MatchedValue<i, InvertPattern<p>>) => PickReturnValue<o, c>,
+	): Match<i, o, patternValueTuples | [p, value], Union<inferredOutput, c>>;
 };
 
 type DeepExcludeAll<a, tuple extends [any, any]> = DeepExclude<

@@ -128,6 +128,49 @@ const builder = <a, b>(
 				},
 			] as never);
 		},
+		numberSet<p extends number[], c>(set: p, handler: (value: GuardValue<p>) => PickReturnValue<b, c>) {
+			const selected: Record<string, unknown> = {};
+			const doesMatch = (value: number) => set.includes(value);
+
+			return builder(value, [
+				...cases,
+				{
+					test: doesMatch,
+					handler,
+					_select: () =>
+						Object.keys(selected).size() !== 0
+							? selected[ANONYMOUS_SELECT_KEY] !== undefined
+								? selected[ANONYMOUS_SELECT_KEY]
+								: selected
+							: value,
+				},
+			] as never);
+		},
+		numberRange<p extends number[], c>(range: p, handler: (value: GuardValue<p>) => PickReturnValue<b, c>) {
+			const selected: Record<string, unknown> = {};
+			const rangeLength = range[1] - range[0];
+			const getFullRange = new Array<number>(rangeLength);
+
+			for (let i = range[0]; i < range[1]; i++) {
+				getFullRange.push(i);
+			}
+
+			const doesMatch = (value: number) => range.includes(value);
+
+			return builder(value, [
+				...cases,
+				{
+					test: doesMatch,
+					handler,
+					_select: () =>
+						Object.keys(selected).size() !== 0
+							? selected[ANONYMOUS_SELECT_KEY] !== undefined
+								? selected[ANONYMOUS_SELECT_KEY]
+								: selected
+							: value,
+				},
+			] as never);
+		},
 
 		when: <p extends (value: a) => unknown, c>(
 			predicate: p,
