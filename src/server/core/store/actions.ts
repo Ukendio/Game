@@ -1,5 +1,6 @@
 import Rodux from "@rbxts/rodux";
 import { gameModes } from "server/core/gameModes";
+import { TopicFormat } from "shared/Types";
 import { PlayerScore } from "./reducer";
 
 interface AddKillAction extends Rodux.Action<"AddKillToPlayer"> {
@@ -38,11 +39,6 @@ export function stopVote(): StopVoteAction {
 	return {
 		type: "StopVote",
 	};
-}
-
-export interface TopicFormat {
-	name: string;
-	options: string[];
 }
 
 interface CreateTopicAction extends Rodux.Action<"CreateTopic"> {

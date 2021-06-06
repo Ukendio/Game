@@ -1,7 +1,8 @@
 import Rodux, { Store } from "@rbxts/rodux";
 import { gameModes } from "server/core/gameModes";
 import { copyShallow } from "shared/tableUtil";
-import { Actions, PlayerTeam, TopicFormat } from "./actions";
+import { TopicFormat } from "shared/Types";
+import { Actions, PlayerTeam } from "./actions";
 
 export interface PlayerScore {
 	player: Player;

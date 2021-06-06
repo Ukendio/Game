@@ -1,7 +1,6 @@
 import { ThisFabricUnit, UnitDefinition } from "@rbxts/fabric";
 import { Players } from "@rbxts/services";
-import { ConfigurableSettings } from "server/core/factory/createGun";
-import Mode from "shared/Mode";
+import { ConfigurableSettings, Mode } from "shared/Types";
 import matchModeForKill from "./matchModeForKill";
 
 declare global {
@@ -17,7 +16,7 @@ interface GunDefinition extends UnitDefinition<"Gun"> {
 		Replicated: [];
 	};
 
-	defaults: {
+	defaults?: {
 		debounce: boolean;
 		mouseDown: boolean;
 		equipped: boolean;
@@ -28,7 +27,6 @@ interface GunDefinition extends UnitDefinition<"Gun"> {
 		filter: Instance[];
 		origin: undefined | Vector3;
 		direction: undefined | Vector3;
-
 		configurableSettings: ConfigurableSettings;
 	};
 
