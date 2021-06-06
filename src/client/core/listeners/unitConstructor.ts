@@ -24,8 +24,8 @@ ServerCreateHealthPack.Connect((healthPack) => {
 	createHealthPack(fabric, healthPack);
 });
 
-ServerCreateGun.Connect((pistol) => {
-	createGun(fabric, pistol);
+ServerCreateGun.Connect((pistol, settings) => {
+	createGun(fabric, pistol, settings);
 });
 
 ServerCreateHero.Connect(() => {

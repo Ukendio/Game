@@ -5,7 +5,7 @@ import HitMark from "client/UserInterface/App/HitMark";
 import { shoot } from "shared/shoot";
 import Dispatcher, { interval } from "shared/dispatcher";
 import { match } from "shared/rbxts-pattern";
-import Mode from "shared/Mode";
+import { Mode } from "shared/Types";
 
 const player = Players.LocalPlayer;
 const mouse = player.GetMouse();
@@ -41,7 +41,7 @@ const gun: FabricUnits["Gun"] = {
 	},
 
 	onInitialize: function (this) {
-		const settings = this.get("configurableSettings");
+		const settings = this.defaults!.configurableSettings;
 		this.fabric.getOrCreateUnitByRef("Luck", this);
 
 		let handle: Roact.Tree;
@@ -85,11 +85,10 @@ const gun: FabricUnits["Gun"] = {
 			const target = result?.Instance;
 			const luck = this.getUnit("Luck");
 			const hit = luck?.applyLuck(math.random(10, settings.damage));
-
 			const packet = {
 				target: target,
 				hit: hit,
-				origin: origin,
+				origin: origin.Position,
 				direction: direction,
 			};
 

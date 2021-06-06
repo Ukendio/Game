@@ -6,6 +6,7 @@ import { createGun } from "server/core/factory/createGun";
 import { createHealthPack } from "server/core/factory/createHealthPack";
 
 import store from "server/core/store";
+import { Mode } from "shared/Types";
 
 const fabric = new FabricLib.Fabric("Game");
 {
@@ -57,7 +58,13 @@ async function handleCharacterAdded(character: Model) {
 	const rig = await yieldForR15CharacterDescendants(character);
 	rig.Humanoid.Health = 20;
 	const player = Players.GetPlayerFromCharacter(rig)!;
-	createGun(fabric, player);
+	createGun(fabric, player, {
+		fireRate: 1,
+		recoil: 1,
+		maxDistance: 400,
+		mode: Mode.Semi,
+		damage: 15,
+	});
 	createHero(fabric, player);
 
 	rig.Humanoid.Died.Connect(() => {
