@@ -10,6 +10,7 @@ export interface ConfigurableSettings {
 	recoil: number;
 	maxDistance: number;
 	mode: Mode;
+	damage: number;
 }
 
 export function createGun(fabric: Fabric, player: Player, settings?: ConfigurableSettings) {

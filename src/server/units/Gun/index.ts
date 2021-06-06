@@ -58,7 +58,7 @@ const gun: GunDefinition = {
 		mouseDown: false,
 		equipped: false,
 		target: undefined,
-		hit: undefined,
+		hit: "Miss",
 		player: undefined,
 		ricochet: false,
 		filter: [],
@@ -70,6 +70,7 @@ const gun: GunDefinition = {
 			recoil: 1,
 			maxDistance: 400,
 			mode: Mode.Semi,
+			damage: 15,
 		},
 	},
 
@@ -95,17 +96,17 @@ const gun: GunDefinition = {
 
 	effects: [
 		function (this) {
-			const damage = this.get("hit");
+			const hit = this.get("hit");
 			const target = this.get("target");
 			const player = this.get("player");
 
-			if (damage !== undefined && damage !== "Miss" && target !== undefined) {
+			if (hit !== undefined && hit !== "Miss" && target !== undefined) {
 				const enemyCharacter = target.Parent as Model;
 				const enemyPlayer = Players.GetPlayerFromCharacter(enemyCharacter);
 				const humanoid = enemyCharacter.FindFirstChildOfClass("Humanoid");
 
 				if (player && enemyPlayer && humanoid) {
-					humanoid.TakeDamage(tonumber(damage)!);
+					humanoid.TakeDamage(tonumber(hit)!);
 
 					if (humanoid.Health <= 0) matchModeForKill(player, enemyPlayer);
 				}

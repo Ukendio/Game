@@ -36,6 +36,7 @@ const gun: FabricUnits["Gun"] = {
 			recoil: 1,
 			maxDistance: 400,
 			mode: Mode.Semi,
+			damage: 15,
 		},
 	},
 
@@ -83,7 +84,7 @@ const gun: FabricUnits["Gun"] = {
 
 			const target = result?.Instance;
 			const luck = this.getUnit("Luck");
-			const hit = luck?.applyLuck(math.random(10, 50));
+			const hit = luck?.applyLuck(math.random(10, settings.damage));
 
 			const packet = {
 				target: target,
