@@ -2,7 +2,6 @@ import { RunService } from "@rbxts/services";
 
 const healPackage: FabricUnits["Heal"] = {
 	name: "Heal",
-	tag: "Heal",
 
 	units: {
 		Replicated: {},
@@ -18,7 +17,7 @@ const healPackage: FabricUnits["Heal"] = {
 
 	onInitialize: function (this) {
 		const model = this.ref as Model;
-		RunService.Heartbeat.Connect((dt) => {
+		this.connection = RunService.Heartbeat.Connect((dt) => {
 			for (const part of model.GetChildren()) {
 				if (part !== model.PrimaryPart) {
 					const Part = part as Part;
@@ -45,7 +44,10 @@ const healPackage: FabricUnits["Heal"] = {
 		});
 	},
 
-	onDestroy: function (this) {},
+	onDestroy: function (this) {
+		this.connection?.Disconnect();
+		this.connection = undefined!;
+	},
 
 	effects: [
 		function (this) {
