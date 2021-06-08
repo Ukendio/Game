@@ -8,6 +8,14 @@ import { createHealthPack } from "server/core/factory/createHealthPack";
 
 import store from "server/core/store";
 import { weaponsFolder } from "server/gunsFolder";
+
+import Remotes from "shared/remotes";
+Remotes.Server.Create("ServerCreateGun");
+Remotes.Server.Create("ServerCreateHealthPack");
+Remotes.Server.Create("ServerCreateHero");
+Remotes.Server.Create("ServerCreateTag");
+Remotes.Server.Create("ServerCreateMelee");
+
 const fabric = new FabricLib.Fabric("Game");
 {
 	FabricLib.useReplication(fabric);
