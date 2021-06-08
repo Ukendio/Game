@@ -1,22 +1,67 @@
 import Roact from "@rbxts/roact";
 import { Players, ReplicatedStorage, SoundService, UserInputService, Workspace } from "@rbxts/services";
+import { ConfigurableSettings, Mode } from "shared/Types";
 import { Crosshair } from "client/UserInterface/App/Crosshair";
 import HitMark from "client/UserInterface/App/HitMark";
 import { shoot } from "shared/shoot";
 import Dispatcher, { interval } from "shared/dispatcher";
 import { match } from "shared/rbxts-pattern";
-import { Mode } from "shared/Types";
+import { ThisFabricUnit, UnitDefinition } from "@rbxts/fabric";
 
 const player = Players.LocalPlayer;
 const mouse = player.GetMouse();
 
 const signal = new Dispatcher();
 
-const gun: FabricUnits["Gun"] = {
+declare global {
+	interface FabricUnits {
+		Gun: GunDefinition;
+	}
+}
+
+interface GunDefinition extends UnitDefinition<"Gun"> {
+	name: "Gun";
+
+	units: {
+		Replicated: {};
+		Luck: {};
+	};
+
+	defaults?: {
+		debounce: boolean;
+		mouseDown: boolean;
+		equipped: boolean;
+		target: BasePart | undefined;
+		hit: string | undefined;
+		player: Player | undefined;
+		ricochet: boolean;
+		filter: Instance[];
+		origin: undefined | Vector3;
+		direction: undefined | Vector3;
+		configurableSettings: ConfigurableSettings;
+	};
+
+	ref?: Tool;
+
+	onClientShoot?: (
+		this: ThisFabricUnit<"Gun">,
+		_player: Player,
+		data: {
+			target: BasePart;
+			hit: string;
+		},
+	) => void;
+
+	configureSettings?: (this: ThisFabricUnit<"Gun">, configurableSettings: ConfigurableSettings) => void;
+
+	connections?: RBXScriptConnection[];
+}
+const gun: GunDefinition = {
 	name: "Gun",
 
 	units: {
-		Replicated: [],
+		Replicated: {},
+		Luck: {},
 	},
 
 	defaults: {
@@ -42,10 +87,11 @@ const gun: FabricUnits["Gun"] = {
 
 	onInitialize: function (this) {
 		const settings = this.defaults!.configurableSettings;
-		this.fabric.getOrCreateUnitByRef("Luck", this);
 
 		let handle: Roact.Tree;
+		let equipped = false;
 		const onEquipped = () => {
+			equipped = true;
 			handle = Roact.mount(
 				<screengui ZIndexBehavior="Sibling">
 					<Crosshair
@@ -62,14 +108,12 @@ const gun: FabricUnits["Gun"] = {
 		};
 
 		const onUnequipped = () => {
+			equipped = false;
 			UserInputService.MouseIconEnabled = true;
 			Roact.unmount(handle);
 		};
 
 		const tool = this.ref as Tool;
-
-		tool.Equipped.Connect(onEquipped);
-		tool.Unequipped.Connect(onUnequipped);
 
 		let debounce = true;
 
@@ -84,39 +128,53 @@ const gun: FabricUnits["Gun"] = {
 
 			const target = result?.Instance;
 			const luck = this.getUnit("Luck");
-			const hit = luck?.applyLuck(math.random(10, settings.damage));
-			const packet = {
-				target: target,
-				hit: hit,
-				origin: origin.Position,
-				direction: direction,
-			};
+			const hit = luck!.applyLuck(math.random(10, settings.damage));
 
-			this.getUnit("Transmitter")!.sendWithPredictiveLayer(packet, "shoot", packet);
+			this.getUnit("Transmitter")!.sendWithPredictiveLayer(
+				{
+					origin: origin.Position,
+					direction: direction,
+				},
+				"shoot",
+				{ target: target, hit: hit },
+			);
 		};
 
-		mouse.Button1Down.Connect(() => {
-			if (debounce) {
-				debounce = false;
-				match(settings.mode)
-					.with(Mode.Semi, () => {
-						raycast();
-						Promise.delay(settings.fireRate).then(() => (debounce = true));
-					})
-					.with(Mode.Auto, () => {
-						const listener = interval(settings.fireRate, raycast);
-						const connection = listener.event.connect(() => {
-							listener.callback();
-						});
-
-						mouse.Button1Up.Connect(() => {
-							connection.disconnect();
+		this.connections = [
+			tool.Equipped.Connect(onEquipped),
+			tool.Unequipped.Connect(onUnequipped),
+			mouse.Button1Down.Connect(() => {
+				if (debounce && equipped) {
+					debounce = false;
+					match(settings.mode)
+						.with(Mode.Semi, () => {
+							raycast();
 							Promise.delay(settings.fireRate).then(() => (debounce = true));
-						});
-					})
-					.run();
+						})
+						.with(Mode.Auto, () => {
+							const listener = interval(settings.fireRate, raycast);
+							const connection = listener.event.connect(() => {
+								listener.callback();
+							});
+
+							mouse.Button1Up.Connect(() => {
+								connection.disconnect();
+								Promise.delay(settings.fireRate).then(() => (debounce = true));
+							});
+						})
+						.run();
+				}
+			}),
+		];
+	},
+
+	onDestroy: function (this) {
+		for (let connection of this.connections!) {
+			if (connection.Connected) {
+				connection.Disconnect();
+				connection = undefined!;
 			}
-		});
+		}
 	},
 
 	effects: [
@@ -140,7 +198,7 @@ const gun: FabricUnits["Gun"] = {
 			const settings = this.get("configurableSettings");
 
 			if (origin && direction) {
-				const pistolShot = ReplicatedStorage.TS.assets.PistolShot.Clone();
+				const pistolShot = ReplicatedStorage.assets.PistolShot.Clone();
 
 				pistolShot.Parent = SoundService;
 				pistolShot.Play();
