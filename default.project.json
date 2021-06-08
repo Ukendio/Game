@@ -23,6 +23,9 @@
 			},
 			"TS": {
 				"$path": "out/shared"
+			},
+			"assets": {
+				"$path": "assets"
 			}
 		},
 		"StarterPlayer": {
