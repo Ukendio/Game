@@ -1,4 +1,4 @@
-import FabricLib, { ThisFabricUnit, UnitDefinition } from "@rbxts/fabric";
+import { ThisFabricUnit, UnitDefinition } from "@rbxts/fabric";
 
 declare global {
 	interface FabricUnits {
@@ -7,7 +7,6 @@ declare global {
 }
 interface HealPackage extends UnitDefinition<"Heal"> {
 	name: "Heal";
-	tag: "Heal";
 
 	ref?: Model;
 
@@ -25,18 +24,16 @@ interface HealPackage extends UnitDefinition<"Heal"> {
 
 	particle?: ParticleEmitter;
 
+	connection?: RBXScriptConnection;
+
 	onClientHeal?: (this: ThisFabricUnit<"Heal">, _player: Player, amount: number) => void;
 }
 
 const healPackage: HealPackage = {
 	name: "Heal",
-	tag: "Heal",
 
 	units: {
-		Replicated: {
-			Blur: 25,
-			Bloom: "Hello",
-		},
+		Replicated: {},
 	},
 
 	defaults: {
