@@ -8,7 +8,7 @@ const ServerCreateGun = Remotes.Server.Create("ServerCreateGun");
 export function createGun(fabric: Fabric, player: Player, settings: ConfigurableSettings) {
 	const backpack = player.WaitForChild("Backpack");
 
-	const gunTool = ReplicatedStorage.TS.assets.FindFirstChild("Pistol")?.Clone() as Tool;
+	const gunTool = ReplicatedStorage.assets.FindFirstChild("Pistol")?.Clone() as Tool;
 	gunTool.Parent = backpack;
 
 	const gun = fabric.getOrCreateUnitByRef("Gun", gunTool);
