@@ -41,22 +41,7 @@ function deepEquals(a: object, b: object) {
 }
 
 export = () => {
-	describe("pattern", () => {
-		it("return hello", () => {
-			const value = {
-				type: "ok",
-				data: {
-					type: "text",
-					content: "hello",
-				},
-			};
-
-			const result = match(value as Input)
-				.with({ type: "ok", data: { type: "text", content: "hello" } }, (result) => result.data.content)
-				.run();
-
-			expect(result).to.equal("hello");
-		});
+	describe("enum expressions", () => {
 		it("adds to 15", () => {
 			enum Expressions {
 				Add,
@@ -76,19 +61,8 @@ export = () => {
 
 			expect(result).to.equal(15);
 		});
-		it("throw when input is of error type", () => {
-			const value = {
-				type: "error",
-				errorMessage: "something went wrong",
-			};
-
-			expect(() =>
-				match(value as Input)
-					.with({ type: "ok", data: { type: "text", content: "hello" } }, (result) => result.data.content)
-					.with({ type: "error" }, (result) => error(`Error://${result.errorMessage}`))
-					.run(),
-			).to.throw;
-		});
+	});
+	describe("Match with Option", () => {
 		it("return 1", () => {
 			function checkOptional(optional: Option<number>) {
 				return match(optional)
@@ -110,6 +84,8 @@ export = () => {
 
 			expect(() => checkOptional(Option.none())).to.throw;
 		});
+	});
+	describe("Match with Result", () => {
 		it("unwrapped result as 1", () => {
 			function checkOptional(optional: Option<number>) {
 				return match(optional)
@@ -140,7 +116,8 @@ export = () => {
 
 			expect(version.isOk()).to.be.ok;
 		});
-
+	});
+	describe("match number utility", () => {
 		it("it is a prime", () => {
 			const number = 5;
 
@@ -159,6 +136,22 @@ export = () => {
 				.run();
 
 			expect(result).to.equal("13 is a teen number");
+		});
+		it("fizzBuzz", () => {
+			const fizzBuzzArray = new Array<string>(100);
+
+			for (let i = 0; i < 100; i++) {
+				const truthTable = [i % 3 === 0, i % 5 === 0];
+				const result = match(truthTable)
+					.with([true, true], () => "FizzBuzz")
+					.with([true, false], () => "Fizz")
+					.with([false, true], () => "Buzz")
+					.otherwise(() => tostring(i));
+
+				fizzBuzzArray.push(result);
+			}
+
+			expect(fizzBuzzArray[5]).to.equal("Buzz");
 		});
 	});
 };
