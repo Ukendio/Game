@@ -5,6 +5,8 @@ const remotes = Net.Definitions.Create({
 	ServerCreateHealthPack: Net.Definitions.ServerToClientEvent<[Model]>(),
 	ServerCreateGun: Net.Definitions.ServerToClientEvent<[Tool, ConfigurableSettings]>(),
 	ServerCreateHero: Net.Definitions.ServerToClientEvent<[Player]>(),
+	ServerCreateMelee: Net.Definitions.ServerToClientEvent<[Tool]>(),
+	ServerCreateTag: Net.Definitions.ServerToClientEvent<[Model]>(),
 
 	CouncilVoteOn: Net.Definitions.ServerToClientEvent<[TopicFormat]>(),
 	CouncilStopVote: Net.Definitions.ServerToClientEvent(),

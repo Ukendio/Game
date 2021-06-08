@@ -15,7 +15,7 @@ const fabric = new FabricLib.Fabric("Game");
 const ServerCreateHealthPack = Remotes.Client.Get("ServerCreateHealthPack");
 const ServerCreateGun = Remotes.Client.Get("ServerCreateGun");
 const ServerCreateHero = Remotes.Client.Get("ServerCreateHero");
-const ServerCreateKnife = Remotes.Client.Get("ServerCreateKnife");
+const ServerCreateMelee = Remotes.Client.Get("ServerCreateMelee");
 const ServerCreateTag = Remotes.Client.Get("ServerCreateTag");
 
 ServerCreateHealthPack.Connect((healthPack) => {
@@ -33,8 +33,8 @@ ServerCreateHero.Connect(() => {
 	c.mergeBaseLayer({});
 });
 
-ServerCreateKnife.Connect((knife) => {
-	const c = fabric.getOrCreateUnitByRef("Melee", knife);
+ServerCreateMelee.Connect((melee) => {
+	const c = fabric.getOrCreateUnitByRef("Melee", melee);
 	c.mergeBaseLayer({});
 });
 
