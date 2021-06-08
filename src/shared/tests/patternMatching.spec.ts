@@ -41,6 +41,41 @@ function deepEquals(a: object, b: object) {
 }
 
 export = () => {
+	describe("complex patterns", () => {
+		it("fizzBuzz", () => {
+			const fizzBuzzArray = new Array<string>(100);
+			const fizzBuzzArray2 = new Array<string>(100);
+
+			for (let current = 0; current < 100; current++) {
+				const i = current + 1;
+				const truthTable = [i % 3 === 0, i % 5 === 0];
+				const result = match(truthTable)
+					.with([true, true], () => "FizzBuzz")
+					.with([true, false], () => "Fizz")
+					.with([false, true], () => "Buzz")
+					.otherwise(() => tostring(current));
+
+				fizzBuzzArray.push(result);
+			}
+
+			for (let current = 0; current < 100; current++) {
+				const i = current + 1;
+				let result = tostring(i);
+				if (i % 3 === 0 && i % 5 === 0) {
+					result = "FizzBuzz";
+				} else if (i % 3 === 0 && i % 5 !== 0) {
+					result = "Fizz";
+				} else if (i % 3 !== 0 && i % 5 === 0) {
+					result = "Buzz";
+				}
+
+				fizzBuzzArray2.push(result);
+			}
+
+			const randomIndex = math.random(0, 100);
+			expect(fizzBuzzArray[randomIndex] === fizzBuzzArray2[randomIndex]);
+		});
+	});
 	describe("enum expressions", () => {
 		it("adds to 15", () => {
 			enum Expressions {
@@ -136,22 +171,6 @@ export = () => {
 				.run();
 
 			expect(result).to.equal("13 is a teen number");
-		});
-		it("fizzBuzz", () => {
-			const fizzBuzzArray = new Array<string>(100);
-
-			for (let i = 0; i < 100; i++) {
-				const truthTable = [i % 3 === 0, i % 5 === 0];
-				const result = match(truthTable)
-					.with([true, true], () => "FizzBuzz")
-					.with([true, false], () => "Fizz")
-					.with([false, true], () => "Buzz")
-					.otherwise(() => tostring(i));
-
-				fizzBuzzArray.push(result);
-			}
-
-			expect(fizzBuzzArray[5]).to.equal("Buzz");
 		});
 	});
 };
