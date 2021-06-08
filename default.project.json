@@ -40,7 +40,9 @@
 		"Workspace": {
 			"$className": "Workspace",
 			"$properties": {
-				"FilteringEnabled": true
+				"FilteringEnabled": true,
+				"MeshPartHeadsAndAccessories": "Disabled",
+				"SignalBehavior": "Deferred"
 			}
 		},
 		"HttpService": {
