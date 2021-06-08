@@ -1,13 +1,13 @@
 import FabricLib from "@rbxts/fabric";
-import { ServerScriptService, Players } from "@rbxts/services";
+import { ServerScriptService, Players, ReplicatedStorage } from "@rbxts/services";
 import yieldForR15CharacterDescendants from "@rbxts/yield-for-character";
+import { createMelee } from "server/core/factory/createMelee";
 import { createHero } from "server/core/factory/createClass";
 import { createGun } from "server/core/factory/createGun";
 import { createHealthPack } from "server/core/factory/createHealthPack";
 
 import store from "server/core/store";
-import { Mode } from "shared/Types";
-
+import { weaponsFolder } from "server/gunsFolder";
 const fabric = new FabricLib.Fabric("Game");
 {
 	FabricLib.useReplication(fabric);
@@ -58,15 +58,10 @@ async function handleCharacterAdded(character: Model) {
 	const rig = await yieldForR15CharacterDescendants(character);
 	rig.Humanoid.Health = 20;
 	const player = Players.GetPlayerFromCharacter(rig)!;
-	createGun(fabric, player, {
-		fireRate: 1,
-		recoil: 1,
-		maxDistance: 400,
-		mode: Mode.Semi,
-		damage: 15,
-	});
+	createGun(fabric, player, weaponsFolder.m16_settings);
 	createHero(fabric, player);
-
+	const knife = ReplicatedStorage.assets.FindFirstChild("Knife")?.Clone() as Tool;
+	createMelee(fabric, player, knife);
 	rig.Humanoid.Died.Connect(() => {
 		createHealthPack(fabric, player);
 		respawnPlayer(player);
