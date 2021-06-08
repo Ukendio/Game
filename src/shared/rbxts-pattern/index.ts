@@ -184,14 +184,13 @@ const builder = <a, b>(
 		otherwise: <c>(handler: () => PickReturnValue<b, c>): PickReturnValue<b, c> =>
 			builder<a, PickReturnValue<b, c>>(value, [
 				...cases,
-				[
-					{
-						test: () => true,
-						handler,
-						_select: (value: a) => value,
-					},
-				] as never,
-			]).run(),
+
+				{
+					test: () => true,
+					handler,
+					_select: (value: a) => value,
+				},
+			] as never).run(),
 
 		exhaustive: () => run(),
 
