@@ -78,7 +78,7 @@ export = () => {
 				});
 			}, tracebackReporter);
 
-			//warn(result); silence the warning
+			if (!ok) warn(result);
 			expect(ok).to.equal(false);
 		});
 	});
