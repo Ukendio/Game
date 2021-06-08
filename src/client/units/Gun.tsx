@@ -24,7 +24,7 @@ interface GunDefinition extends UnitDefinition<"Gun"> {
 
 	units: {
 		Replicated: {};
-		Luck: {};
+		Luck?: {};
 	};
 
 	defaults?: {

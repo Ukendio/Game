@@ -7,7 +7,6 @@ const gun: FabricUnits["Gun"] = {
 
 	units: {
 		Replicated: {},
-		Luck: {},
 	},
 
 	defaults: {
