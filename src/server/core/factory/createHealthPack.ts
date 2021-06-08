@@ -5,14 +5,14 @@ import Remotes from "shared/remotes";
 const ServerCreateHealthPack = Remotes.Server.Create("ServerCreateHealthPack");
 
 export function createHealthPack(fabric: Fabric, player: Player) {
-	const healthPack = ReplicatedStorage.TS.assets.Heal.Clone();
-	healthPack.Parent = Workspace;
+	const healthPack = ReplicatedStorage.assets.Heal.Clone();
 	healthPack.SetPrimaryPartCFrame(
 		healthPack
 			.GetPrimaryPartCFrame()
 			.sub(healthPack.PrimaryPart!.Position)
 			.add((player.Character!.FindFirstChild("HumanoidRootPart") as BasePart).Position),
 	);
+	healthPack.Parent = Workspace;
 
 	const c = fabric.getOrCreateUnitByRef("Heal", healthPack);
 	c.mergeBaseLayer({});
