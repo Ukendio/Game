@@ -9,10 +9,6 @@ declare global {
 interface LuckDefinition extends UnitDefinition<"Luck"> {
 	name: "Luck";
 
-	defaults?: {
-		debounce: true;
-	};
-
 	ref?: ThisFabricUnit<keyof FabricUnits>;
 
 	applyLuck: (this: ThisFabricUnit<"Luck">, layerData: number) => string;
@@ -26,9 +22,7 @@ const Luck: LuckDefinition = {
 	},
 
 	applyLuck: function (this, layerData) {
-		print(layerData);
 		const rng = math.random(0, layerData);
-		print(rng);
 		if (rng < 25) {
 			return tostring(layerData);
 		}
