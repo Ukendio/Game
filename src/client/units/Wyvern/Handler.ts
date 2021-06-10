@@ -12,6 +12,7 @@ interface WyvernDefinition extends UnitDefinition<"Wyvern"> {
 
 	units: {
 		Replicated: {};
+		Ability: {};
 		WyvernAbility1?: {
 			host: Instance | undefined;
 			velocity: Vector3;
@@ -29,6 +30,7 @@ const Wyvern: WyvernDefinition = {
 
 	units: {
 		Replicated: {},
+		Ability: {},
 		WyvernAbility1: {
 			host: undefined,
 			velocity: new Vector3(),
@@ -37,10 +39,10 @@ const Wyvern: WyvernDefinition = {
 		WyvernAbility2: {},
 	},
 
-	onInitialize: function (this) {
+	onLoaded: function (this) {
 		const abilityHandler = this.getUnit("Ability")!;
-		const ability1 = abilityHandler.getUnit("WyvernAbility1")!;
-		const ability2 = abilityHandler.getUnit("WyvernAbility2")!;
+		const ability1 = this.getUnit("WyvernAbility1")!;
+		const ability2 = this.getUnit("WyvernAbility2")!;
 
 		abilityHandler.bind(ability1.name, () => ability1.execute(), Enum.KeyCode.Q, 5);
 		abilityHandler.bind(ability2.name, () => ability2.execute?.(), Enum.KeyCode.E, 5);
