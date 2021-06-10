@@ -2,44 +2,6 @@
 import { Option, Result } from "@rbxts/rust-classes";
 import { match, _select } from "shared/rbxts-pattern";
 
-type Data = { type: "text"; content: string } | { type: "img"; src: string };
-
-type Input = { type: "ok"; data: Data } | { type: "error"; errorMessage: string };
-
-function deepEquals(a: object, b: object) {
-	if (typeOf(a) !== typeOf(b)) {
-		return false;
-	}
-
-	if (typeOf(a) === "table") {
-		const visitedKeys = new Map<unknown, boolean>();
-
-		for (const [k, v] of pairs(a)) {
-			visitedKeys.set(k, true);
-
-			const ok = deepEquals(v, b[k as never]);
-			if (!ok) {
-				return false;
-			}
-		}
-
-		for (const [k, v] of pairs(b)) {
-			if (!visitedKeys.get(k)) {
-				const ok = deepEquals(v, a[k as never]);
-				if (!ok) {
-					return false;
-				}
-			}
-		}
-
-		return true;
-	}
-
-	if (a === b) return true;
-
-	return false;
-}
-
 export = () => {
 	describe("complex patterns", () => {
 		it("fizzBuzz", () => {
@@ -95,6 +57,23 @@ export = () => {
 				.otherwise(() => error("This shouldn't happen"));
 
 			expect(result).to.equal(15);
+		});
+		it("inspect enum function members", () => {
+			const WebEvent = {
+				PageLoad: "1",
+				PageUnload: "2",
+				KeyPress: (character: string) => character,
+			};
+
+			function inspect(event: typeof WebEvent[keyof typeof WebEvent]) {
+				return match(event)
+					.with(WebEvent.PageLoad, () => print("page loaded"))
+					.with(WebEvent.PageUnload, () => print("page unloaded"))
+					.with(WebEvent.KeyPress("S"), () => print("Pressed S"))
+					.otherwise(() => "Invalid event");
+			}
+
+			expect(inspect(WebEvent.KeyPress("1"))).to.equal("Invalid event");
 		});
 	});
 	describe("Match with Option", () => {
