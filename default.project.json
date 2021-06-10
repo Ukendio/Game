@@ -26,6 +26,9 @@
 			},
 			"assets": {
 				"$path": "assets"
+			},
+			"tests": {
+				"$path": "tests"
 			}
 		},
 		"StarterPlayer": {

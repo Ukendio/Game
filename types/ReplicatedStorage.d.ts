@@ -7,9 +7,10 @@ interface ReplicatedStorage extends Instance {
 		Knife: Tool;
 	};
 	TS: Folder & {
-		tests: Folder;
 		Architect: Folder & {
 			maps: Folder;
 		};
 	};
+
+	tests: Folder;
 }
