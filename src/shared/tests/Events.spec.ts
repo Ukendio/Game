@@ -1,9 +1,6 @@
 /// <reference types="@rbxts/testez/globals" />
 import Dispatcher, { interval, noYield } from "shared/dispatcher";
 
-function now() {
-	return DateTime.now().UnixTimestampMillis / 1000;
-}
 export = () => {
 	describe("interval", () => {
 		it("Should not run", () => {
@@ -20,12 +17,11 @@ export = () => {
 		});
 
 		it("Should fire every interval", () => {
-			Promise.delay(2.5).await(); // yield til after player loaded
 			let testValue = 0;
 			const times = new Array<number>();
 			const listener = interval(1 / 6, () => {
 				testValue += 1;
-				times.push(now());
+				times.push(os.clock());
 			});
 			const connection = listener.event.connect(() => {
 				listener.callback();

@@ -1,6 +1,5 @@
 import { ThisFabricUnit, UnitDefinition } from "@rbxts/fabric";
 import { ContextActionService } from "@rbxts/services";
-import { now } from "shared/now";
 
 declare global {
 	interface FabricUnits {
@@ -27,9 +26,9 @@ const ability: AbilityDefinition = {
 
 		const createHandler = (action: string, state: Enum.UserInputState, inputObject: InputObject) => {
 			if (action === name && state === Enum.UserInputState.Begin && inputObject.KeyCode === key) {
-				if (now() > nextExecute) {
+				if (os.clock() > nextExecute) {
 					handler();
-					nextExecute = now() + cooldown;
+					nextExecute = os.clock() + cooldown;
 				}
 			}
 		};
