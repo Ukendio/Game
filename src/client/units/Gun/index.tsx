@@ -3,7 +3,7 @@ import { Players, ReplicatedStorage, SoundService, UserInputService, Workspace }
 import { ConfigurableSettings, Mode } from "shared/Types";
 import { Crosshair } from "client/UserInterface/App/Crosshair";
 import HitMark from "client/UserInterface/App/HitMark";
-import { shoot } from "shared/shoot";
+import { shoot } from "client/units/Gun/shoot";
 import Dispatcher, { interval } from "shared/dispatcher";
 import { match } from "shared/rbxts-pattern";
 import { ThisFabricUnit, UnitDefinition } from "@rbxts/fabric";

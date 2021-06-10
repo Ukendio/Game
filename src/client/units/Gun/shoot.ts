@@ -1,5 +1,5 @@
 import { RunService, Workspace } from "@rbxts/services";
-import { copyShallow } from "./tableUtil";
+import { copyShallow } from "../../../shared/tableUtil";
 
 interface Options {
 	overrideDistance?: number;
