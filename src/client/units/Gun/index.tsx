@@ -25,9 +25,7 @@ interface GunDefinition extends UnitDefinition<"Gun"> {
 
 	units: {
 		Replicated: {};
-		Luck?: {
-			foo: string;
-		};
+		Luck?: {};
 	};
 
 	defaults?: {
@@ -64,9 +62,7 @@ const gun: GunDefinition = {
 
 	units: {
 		Replicated: {},
-		Luck: {
-			foo: "bar",
-		},
+		Luck: {},
 	},
 
 	defaults: {
@@ -135,7 +131,7 @@ const gun: GunDefinition = {
 
 			const target = result?.Instance;
 			const luck = this.getUnit("Luck");
-			const hit = luck!.applyLuck(math.random(10, settings.damage));
+			const hit = luck?.applyLuck(math.random(10, settings.damage));
 
 			this.getUnit("Transmitter")!.sendWithPredictiveLayer(
 				{
@@ -147,9 +143,9 @@ const gun: GunDefinition = {
 			);
 		};
 
-		this.janitor?.Add([
-			tool.Equipped.Connect(onEquipped),
-			tool.Unequipped.Connect(onUnequipped),
+		this.janitor?.Add(tool.Equipped.Connect(onEquipped));
+		this.janitor?.Add(tool.Unequipped.Connect(onUnequipped));
+		this.janitor?.Add(
 			mouse.Button1Down.Connect(() => {
 				if (debounce && equipped) {
 					debounce = false;
@@ -172,7 +168,7 @@ const gun: GunDefinition = {
 						.run();
 				}
 			}),
-		]);
+		);
 	},
 
 	onDestroy: function (this) {
@@ -182,7 +178,6 @@ const gun: GunDefinition = {
 	effects: [
 		function (this) {
 			const target = this.get("target");
-			print(target);
 
 			if (target !== undefined && target.Parent?.FindFirstChild("Humanoid") !== undefined) {
 				const handle = Roact.mount(<HitMark hit={this.get("hit") as string} />, this.get("target") as Instance);
