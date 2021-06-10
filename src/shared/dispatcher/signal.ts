@@ -1,7 +1,7 @@
 interface Listener {
 	handler: Callback;
 	disconnected: boolean;
-	connectTraceback: Callback;
+	connectTraceback: string;
 	disconnectTraceback: string;
 	next: Listener;
 }
@@ -13,7 +13,7 @@ class Signal {
 		const listener: Listener = {
 			handler: handler,
 			disconnected: false,
-			connectTraceback: debug.traceback,
+			connectTraceback: debug.traceback(),
 			disconnectTraceback: undefined!,
 			next: this._currentListHead,
 		};
