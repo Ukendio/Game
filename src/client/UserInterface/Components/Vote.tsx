@@ -5,10 +5,12 @@ interface Props {
 }
 interface State {}
 
-export class VotingOption extends Roact.Component<Props, State> {
+class Vote extends Roact.Component<Props, State> {
 	render() {
 		return (
 			<imagebutton Key={"VotingOption"} Size={new UDim2(1 / 3, 0, 1, 0)} Image={this.props.image}></imagebutton>
 		);
 	}
 }
+
+export = Vote;

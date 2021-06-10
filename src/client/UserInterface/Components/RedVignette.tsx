@@ -1,8 +1,5 @@
 import Roact from "@rbxts/roact";
 import { Indicator } from "client/UserInterface/Components/Indicator";
-import { Janitor } from "@rbxts/janitor";
-import Rodux from "@rbxts/rodux";
-
 import { Players } from "@rbxts/services";
 interface ImageLabelState {
 	transparency: number;
@@ -37,12 +34,13 @@ export class RedVignette extends Roact.Component<Props, ImageLabelState> {
 	};
 
 	didMount() {
-		const humanoid = player.Character?.WaitForChild("Humanoid") as Humanoid;
+		const character = player.Character;
+		const humanoid = character?.WaitForChild("Humanoid") as Humanoid;
 		const sound = this.state.sound;
 		sound.Parent = player.Character;
 
-		if (humanoid !== undefined) {
-			(player.Character as Model).ChildAdded.Connect((child) => {
+		if (character && humanoid) {
+			character.ChildAdded.Connect((child) => {
 				if (child.IsA("ObjectValue") && child.Name === "creator") {
 					const element = <Indicator source={(child.Value as Player).Character!} visible={true} />;
 					const index = this.state.indicators.push(element);
