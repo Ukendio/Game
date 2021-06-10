@@ -1,3 +1,4 @@
+import { Janitor } from "@rbxts/janitor";
 import { RunService } from "@rbxts/services";
 
 const healPackage: FabricUnits["Heal"] = {
@@ -15,16 +16,20 @@ const healPackage: FabricUnits["Heal"] = {
 		particle: true,
 	},
 
+	janitor: new Janitor(),
+
 	onInitialize: function (this) {
 		const model = this.ref as Model;
-		this.connection = RunService.Heartbeat.Connect((dt) => {
-			for (const part of model.GetChildren()) {
-				if (part !== model.PrimaryPart) {
-					const Part = part as Part;
-					Part.CFrame = Part.CFrame.mul(CFrame.Angles(0, math.rad(dt * 37.5), 0));
+		this.janitor?.Add(
+			RunService.Heartbeat.Connect((dt) => {
+				for (const part of model.GetChildren()) {
+					if (part !== model.PrimaryPart) {
+						const Part = part as Part;
+						Part.CFrame = Part.CFrame.mul(CFrame.Angles(0, math.rad(dt * 37.5), 0));
+					}
 				}
-			}
-		});
+			}),
+		);
 	},
 
 	onClientHeal: function (this, _player, amount) {
@@ -45,8 +50,7 @@ const healPackage: FabricUnits["Heal"] = {
 	},
 
 	onDestroy: function (this) {
-		this.connection?.Disconnect();
-		this.connection = undefined!;
+		this.janitor?.Destroy();
 	},
 
 	effects: [

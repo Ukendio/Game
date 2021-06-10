@@ -1,4 +1,5 @@
-import { Players, RunService } from "@rbxts/services";
+import { Janitor } from "@rbxts/janitor";
+import { RunService } from "@rbxts/services";
 import store from "server/core/store";
 import { addDeathToPlayer, addKillToPlayer } from "server/core/store/actions";
 
@@ -16,6 +17,8 @@ export = identity<FabricUnits["Tag"]>({
 		finder: undefined,
 	},
 
+	janitor: new Janitor(),
+
 	onClientTag: function (this, _player, packet) {
 		if (this.get("debounce")) {
 			this.addLayer(this, {
@@ -30,16 +33,18 @@ export = identity<FabricUnits["Tag"]>({
 		const primaryPart = model.PrimaryPart;
 		let current = 0;
 
-		this.connection = RunService.Heartbeat.Connect((dt) => {
-			current += dt;
+		this.janitor.Add(
+			RunService.Heartbeat.Connect((dt) => {
+				current += dt;
 
-			if (primaryPart) model.SetPrimaryPartCFrame(primaryPart.CFrame.mul(CFrame.Angles(math.rad(current), 0, 0)));
-		});
+				if (primaryPart)
+					model.SetPrimaryPartCFrame(primaryPart.CFrame.mul(CFrame.Angles(math.rad(current), 0, 0)));
+			}),
+		);
 	},
 
 	onDestroy: function (this) {
-		this.connection?.Disconnect();
-		this.connection = undefined!;
+		this.janitor?.Destroy();
 		this.removeLayer(this);
 	},
 

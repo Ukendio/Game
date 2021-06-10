@@ -7,6 +7,7 @@ import { shoot } from "shared/shoot";
 import Dispatcher, { interval } from "shared/dispatcher";
 import { match } from "shared/rbxts-pattern";
 import { ThisFabricUnit, UnitDefinition } from "@rbxts/fabric";
+import { Janitor } from "@rbxts/janitor";
 
 const player = Players.LocalPlayer;
 const mouse = player.GetMouse();
@@ -24,7 +25,9 @@ interface GunDefinition extends UnitDefinition<"Gun"> {
 
 	units: {
 		Replicated: {};
-		Luck?: {};
+		Luck?: {
+			foo: string;
+		};
 	};
 
 	defaults?: {
@@ -54,14 +57,16 @@ interface GunDefinition extends UnitDefinition<"Gun"> {
 
 	configureSettings?: (this: ThisFabricUnit<"Gun">, configurableSettings: ConfigurableSettings) => void;
 
-	connections?: RBXScriptConnection[];
+	janitor?: Janitor;
 }
 const gun: GunDefinition = {
 	name: "Gun",
 
 	units: {
 		Replicated: {},
-		Luck: {},
+		Luck: {
+			foo: "bar",
+		},
 	},
 
 	defaults: {
@@ -84,6 +89,8 @@ const gun: GunDefinition = {
 			damage: 15,
 		},
 	},
+
+	janitor: new Janitor(),
 
 	onInitialize: function (this) {
 		const settings = this.defaults!.configurableSettings;
@@ -140,7 +147,7 @@ const gun: GunDefinition = {
 			);
 		};
 
-		this.connections = [
+		this.janitor?.Add([
 			tool.Equipped.Connect(onEquipped),
 			tool.Unequipped.Connect(onUnequipped),
 			mouse.Button1Down.Connect(() => {
@@ -165,16 +172,11 @@ const gun: GunDefinition = {
 						.run();
 				}
 			}),
-		];
+		]);
 	},
 
 	onDestroy: function (this) {
-		for (let connection of this.connections!) {
-			if (connection.Connected) {
-				connection.Disconnect();
-				connection = undefined!;
-			}
-		}
+		this.janitor?.Destroy();
 	},
 
 	effects: [

@@ -1,4 +1,5 @@
 import { ThisFabricUnit, UnitDefinition } from "@rbxts/fabric";
+import { Janitor } from "@rbxts/janitor";
 import Roact from "@rbxts/roact";
 import { Players, Workspace } from "@rbxts/services";
 import HitMark from "client/UserInterface/App/HitMark";
@@ -26,6 +27,8 @@ interface MeleeDefinition extends UnitDefinition<"Melee"> {
 			hit: string;
 		},
 	) => void;
+
+	janitor?: Janitor;
 }
 
 declare global {
@@ -52,6 +55,8 @@ const melee: MeleeDefinition = {
 		direction: undefined,
 		player: undefined,
 	},
+
+	janitor: new Janitor(),
 
 	onInitialize: function (this) {
 		this.fabric.getOrCreateUnitByRef("Luck", this);
@@ -82,18 +87,23 @@ const melee: MeleeDefinition = {
 		};
 
 		let debounce = true;
-		tool.Activated.Connect(() => {
-			print("activated");
-			if (debounce) {
-				debounce = false;
+		this.janitor?.Add(
+			tool.Activated.Connect(() => {
+				if (debounce) {
+					debounce = false;
 
-				raycast();
+					raycast();
 
-				Promise.delay(5).then(() => {
-					debounce = true;
-				});
-			}
-		});
+					Promise.delay(5).then(() => {
+						debounce = true;
+					});
+				}
+			}),
+		);
+	},
+
+	onDestroy: function (this) {
+		this.janitor?.Destroy();
 	},
 
 	effects: [

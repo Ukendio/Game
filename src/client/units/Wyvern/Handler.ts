@@ -1,4 +1,4 @@
-import FabricLib, { UnitDefinition } from "@rbxts/fabric";
+import { UnitDefinition } from "@rbxts/fabric";
 
 declare global {
 	interface FabricUnits {
@@ -11,7 +11,16 @@ interface WyvernDefinition extends UnitDefinition<"Wyvern"> {
 	ref?: Player;
 
 	units: {
-		Replicated: [];
+		Replicated: {};
+		WyvernAbility1?: {
+			host: Instance | undefined;
+			velocity: Vector3;
+			maxForce: Vector3;
+		};
+		WyvernAbility2: {
+			root?: CFrame;
+			name?: string | undefined;
+		};
 	};
 }
 
@@ -19,18 +28,19 @@ const Wyvern: WyvernDefinition = {
 	name: "Wyvern",
 
 	units: {
-		Replicated: [],
+		Replicated: {},
+		WyvernAbility1: {
+			host: undefined,
+			velocity: new Vector3(),
+			maxForce: new Vector3(),
+		},
+		WyvernAbility2: {},
 	},
 
 	onInitialize: function (this) {
-		const abilityHandler = this.getOrCreateUnit("Ability");
-		abilityHandler.mergeBaseLayer({});
-
-		const ability1 = this.getOrCreateUnit("WyvernAbility1");
-		ability1.mergeBaseLayer({});
-
-		const ability2 = this.getOrCreateUnit("WyvernAbility2");
-		ability2.mergeBaseLayer({});
+		const abilityHandler = this.getUnit("Ability")!;
+		const ability1 = abilityHandler.getUnit("WyvernAbility1")!;
+		const ability2 = abilityHandler.getUnit("WyvernAbility2")!;
 
 		abilityHandler.bind(ability1.name, () => ability1.execute(), Enum.KeyCode.Q, 5);
 		abilityHandler.bind(ability2.name, () => ability2.execute?.(), Enum.KeyCode.E, 5);

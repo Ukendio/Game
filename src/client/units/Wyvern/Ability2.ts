@@ -11,12 +11,12 @@ interface WyvernAbility2Definition extends UnitDefinition<"WyvernAbility2"> {
 	name: "WyvernAbility2";
 
 	units: {
-		Replicated: [];
+		Replicated: {};
 	};
 
-	defaults: {
-		root: CFrame;
-		name: string;
+	defaults?: {
+		root?: CFrame;
+		name?: string | undefined;
 	};
 
 	execute?: (this: ThisFabricUnit<"WyvernAbility2">) => void;
@@ -26,18 +26,11 @@ interface WyvernAbility2Definition extends UnitDefinition<"WyvernAbility2"> {
 
 const player = Players.LocalPlayer;
 
-const CACHE_DISTANCE = new CFrame(new Vector3(math.huge, math.huge, math.huge));
-
 const wyvernAbility1: WyvernAbility2Definition = {
 	name: "WyvernAbility2",
 
-	defaults: {
-		root: CACHE_DISTANCE,
-		name: undefined!,
-	},
-
 	units: {
-		Replicated: [],
+		Replicated: {},
 	},
 
 	execute: function (this) {

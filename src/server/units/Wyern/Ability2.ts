@@ -1,25 +1,17 @@
-import { Players, Workspace } from "@rbxts/services";
-
-const CACHE_DISTANCE = new CFrame(new Vector3(math.huge, math.huge, math.huge));
+import { Workspace } from "@rbxts/services";
 
 const newShield = new Instance("Part");
 newShield.Anchored = true;
 newShield.CanCollide = false;
 newShield.Transparency = 0.5;
 newShield.Size = new Vector3(30, 15, 30);
-newShield.CFrame = CACHE_DISTANCE;
 newShield.Parent = Workspace;
 
 const wyvernAbility1: FabricUnits["WyvernAbility2"] = {
 	name: "WyvernAbility2",
 
-	defaults: {
-		root: CACHE_DISTANCE,
-		name: undefined!,
-	},
-
 	units: {
-		Replicated: [],
+		Replicated: {},
 	},
 
 	onClientExecute: function (this, _player, root) {
@@ -39,8 +31,11 @@ const wyvernAbility1: FabricUnits["WyvernAbility2"] = {
 	effects: [
 		function (this) {
 			const root = this.get("root");
-			newShield.CFrame = root;
-			newShield.Name = `${this.get("name") ?? ""}_shield`;
+			const name = this.get("name");
+			if (root && name) {
+				newShield.CFrame = root;
+				newShield.Name = `${name}_shield`;
+			}
 		},
 	],
 };

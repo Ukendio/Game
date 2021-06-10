@@ -1,4 +1,5 @@
 import { ThisFabricUnit, UnitDefinition } from "@rbxts/fabric";
+import { Janitor } from "@rbxts/janitor";
 
 interface TagDefinition extends UnitDefinition<"Tag"> {
 	name: "Tag";
@@ -18,7 +19,7 @@ interface TagDefinition extends UnitDefinition<"Tag"> {
 		finder: Player | undefined;
 	};
 
-	connection?: RBXScriptConnection;
+	janitor: Janitor;
 
 	onClientTag?: (this: ThisFabricUnit<"Tag">, _player: Player, packet: { transparency: number }) => void;
 }
@@ -34,24 +35,27 @@ export = identity<TagDefinition>({
 
 	units: { Replicated: {} },
 
+	janitor: new Janitor(),
+
 	onInitialize: function (this) {
 		const model = this.ref as Model;
 		const part = model.PrimaryPart!;
 
-		this.connection = part.Touched.Connect((hit) => {
-			if (hit.Parent?.FindFirstChild("Humanoid")) {
-				this.getUnit("Transmitter")!.sendWithPredictiveLayer(
-					{
-						transparency: 1,
-					},
-					"tag",
-				);
-			}
-		});
+		this.janitor.Add(
+			part.Touched.Connect((hit) => {
+				if (hit.Parent?.FindFirstChild("Humanoid")) {
+					this.getUnit("Transmitter")!.sendWithPredictiveLayer(
+						{
+							transparency: 1,
+						},
+						"tag",
+					);
+				}
+			}),
+		);
 	},
 
 	onDestroy: function (this) {
-		this.connection?.Disconnect();
-		this.connection = undefined!;
+		this.janitor.Destroy();
 	},
 });

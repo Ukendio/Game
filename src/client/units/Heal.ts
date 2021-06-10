@@ -1,4 +1,5 @@
 import { ThisFabricUnit, UnitDefinition } from "@rbxts/fabric";
+import { Janitor } from "@rbxts/janitor";
 
 declare global {
 	interface FabricUnits {
@@ -24,7 +25,7 @@ interface HealPackage extends UnitDefinition<"Heal"> {
 
 	particle?: ParticleEmitter;
 
-	connection?: RBXScriptConnection;
+	janitor?: Janitor;
 
 	onClientHeal?: (this: ThisFabricUnit<"Heal">, _player: Player, amount: number) => void;
 }
@@ -47,19 +48,25 @@ const healPackage: HealPackage = {
 	onInitialize: function (this) {
 		const model = this.ref as Model;
 		const part = model.PrimaryPart!;
-		part.Touched.Connect((hit) => {
-			if (hit.Parent?.FindFirstChild("Humanoid")) {
-				const amount = math.random(10, 50);
-				this.getUnit("Transmitter")!.sendWithPredictiveLayer(
-					{
-						transparency: 1,
-						heal: amount,
-					},
-					"heal",
-					amount,
-				);
-			}
-		});
+		this.janitor?.Add(
+			part.Touched.Connect((hit) => {
+				if (hit.Parent?.FindFirstChild("Humanoid")) {
+					const amount = math.random(10, 50);
+					this.getUnit("Transmitter")!.sendWithPredictiveLayer(
+						{
+							transparency: 1,
+							heal: amount,
+						},
+						"heal",
+						amount,
+					);
+				}
+			}),
+		);
+	},
+
+	onDestroy: function (this) {
+		this.janitor?.Cleanup();
 	},
 };
 

@@ -10,7 +10,7 @@ declare global {
 interface WyvernAbility1Definition extends UnitDefinition<"WyvernAbility1"> {
 	name: "WyvernAbility1";
 
-	defaults: {
+	defaults?: {
 		host: Instance | undefined;
 		velocity: Vector3;
 		maxForce: Vector3;
@@ -34,12 +34,6 @@ const bodyVelocity = new Instance("BodyVelocity");
 
 const wyvernAbility1: WyvernAbility1Definition = {
 	name: "WyvernAbility1",
-
-	defaults: {
-		host: undefined,
-		velocity: new Vector3(),
-		maxForce: new Vector3(),
-	},
 
 	execute: function (this) {
 		const character = player.Character;
