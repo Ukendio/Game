@@ -1,3 +1,5 @@
+import { noYield } from "./noYield";
+
 interface Listener {
 	handler: Callback;
 	disconnected: boolean;
@@ -5,6 +7,8 @@ interface Listener {
 	disconnectTraceback: string;
 	next: Listener;
 }
+
+const tracebackReporter = (message: unknown) => debug.traceback(tostring(message));
 
 class Signal {
 	private _currentListHead = undefined! as Listener;
@@ -50,9 +54,14 @@ class Signal {
 
 	fire(...args: unknown[]) {
 		let listener = this._currentListHead;
+
 		while (listener !== undefined) {
 			if (!listener.disconnected) {
-				listener.handler(...args);
+				const [ok, result] = xpcall(() => {
+					noYield(listener.handler, ...args);
+				}, tracebackReporter);
+
+				if (!ok) warn(result);
 			}
 			listener = listener.next;
 		}
