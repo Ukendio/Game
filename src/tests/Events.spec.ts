@@ -1,5 +1,5 @@
 /// <reference types="@rbxts/testez/globals" />
-import Dispatcher, { interval, noYield } from "shared/dispatcher";
+import Dispatcher, { interval } from "shared/dispatcher";
 
 export = () => {
 	describe("interval", () => {
@@ -66,16 +66,7 @@ export = () => {
 				wait(5);
 			});
 
-			const tracebackReporter = (message: unknown) => debug.traceback(tostring(message));
-
-			const [ok, result] = xpcall(() => {
-				noYield(() => {
-					signal.fire();
-				});
-			}, tracebackReporter);
-
-			//if (!ok) warn(result); silence the warn
-			expect(ok).to.equal(false);
+			expect(() => signal.fire()).to.throw;
 		});
 	});
 };

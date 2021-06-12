@@ -28,7 +28,7 @@
 				"$path": "assets"
 			},
 			"tests": {
-				"$path": "tests"
+				"$path": "out/tests"
 			}
 		},
 		"StarterPlayer": {
