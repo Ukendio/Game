@@ -12,7 +12,7 @@ interface WyvernDefinition extends UnitDefinition<"Wyvern"> {
 
 	units: {
 		Replicated: {};
-		Ability: {};
+		Ability?: {};
 		WyvernAbility1?: {
 			host: Instance | undefined;
 			velocity: Vector3;
