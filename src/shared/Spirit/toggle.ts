@@ -51,12 +51,12 @@ function getFocusDistance(cameraFrame: CFrame) {
 
 const velSpring = new Spring(SPIRIT_SETTINGS.VEL_STIFFNESS, new Vector3());
 const panSpring = new Spring(SPIRIT_SETTINGS.PAN_STIFFNESS, new Vector2());
-const fovSpring = new Spring(SPIRIT_SETTINGS.FOV_STIFFNESS, 0);
+const fovSpring = new Spring(SPIRIT_SETTINGS.FOV_STIFFNESS, 0 as number);
 
 function stepFreeCamera(dt: number) {
-	const vel = velSpring.Update(dt, Input.vel(dt));
-	const pan = panSpring.Update(dt, Input.pan(dt));
-	const fov = fovSpring.Update(dt, Input.fov(dt));
+	const vel = velSpring.update(dt, Input.vel(dt));
+	const pan = panSpring.update(dt, Input.pan(dt));
+	const fov = fovSpring.update(dt, Input.fov(dt));
 
 	const zoomFactor = math.sqrt(math.tan(math.rad(70 / 20)) / math.tan(math.rad(cameraFieldOfView / 2)));
 
@@ -88,9 +88,9 @@ export function startFreeCamera() {
 	cameraPosition = cameraCFrame.Position;
 	cameraFieldOfView = camera.FieldOfView;
 
-	velSpring.Reset(new Vector3());
-	panSpring.Reset(new Vector2());
-	fovSpring.Reset(0);
+	velSpring.reset(new Vector3());
+	panSpring.reset(new Vector2());
+	fovSpring.reset(0);
 
 	PlayerState.push(camera);
 	RunService.BindToRenderStep("FreeCamera", Enum.RenderPriority.Camera.Value, stepFreeCamera);
