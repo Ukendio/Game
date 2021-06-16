@@ -3,7 +3,7 @@ export enum Mode {
 	Auto,
 }
 
-export interface ConfigurableSettings {
+export interface Config {
 	fireRate: number;
 	recoil: number;
 	maxDistance: number;
