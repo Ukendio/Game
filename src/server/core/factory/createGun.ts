@@ -1,11 +1,11 @@
 import { Fabric } from "@rbxts/fabric";
 import { ReplicatedStorage } from "@rbxts/services";
-import { ConfigurableSettings } from "shared/Types";
+import { Config } from "shared/Types";
 import Remotes from "shared/remotes";
 
 const ServerCreateGun = Remotes.Server.Create("ServerCreateGun");
 
-export function createGun(fabric: Fabric, player: Player, settings: ConfigurableSettings) {
+export function createGun(fabric: Fabric, player: Player, settings: Config) {
 	const backpack = player.WaitForChild("Backpack");
 
 	const gunTool = ReplicatedStorage.assets.FindFirstChild("Pistol")?.Clone() as Tool;
