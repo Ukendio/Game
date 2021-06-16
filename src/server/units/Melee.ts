@@ -19,7 +19,6 @@ const melee: FabricUnits["Melee"] = {
 
 	onClientSlash: function (this, _player, packet) {
 		if (this.get("debounce")) {
-			print(packet);
 			this.addLayer("damage", {
 				debounce: false,
 				hit: packet.hit,
