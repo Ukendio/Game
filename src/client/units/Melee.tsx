@@ -8,7 +8,8 @@ interface MeleeDefinition extends UnitDefinition<"Melee"> {
 	ref?: Tool;
 
 	units: {
-		Replicated: [];
+		Replicated: {};
+		Luck?: {};
 	};
 
 	defaults: {
@@ -44,7 +45,8 @@ const melee: MeleeDefinition = {
 	name: "Melee",
 
 	units: {
-		Replicated: [],
+		Replicated: {},
+		Luck: {},
 	},
 
 	defaults: {
@@ -58,12 +60,10 @@ const melee: MeleeDefinition = {
 
 	janitor: new Janitor(),
 
-	onInitialize: function (this) {
-		this.fabric.getOrCreateUnitByRef("Luck", this);
+	onLoaded: function (this) {
 		const tool = this.ref;
 
 		const raycast = () => {
-			print("slash");
 			const rayCastParameters = new RaycastParams();
 			rayCastParameters.FilterDescendantsInstances = [player.Character!, tool];
 			rayCastParameters.FilterType = Enum.RaycastFilterType.Blacklist;
