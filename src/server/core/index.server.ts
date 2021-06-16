@@ -5,7 +5,7 @@ import Remotes from "shared/remotes";
 import { getKeys } from "shared/tableUtil";
 import { mapNames } from "shared/Architect/maps";
 import store from "./store";
-import { loadMapOption } from "shared/Architect/Loader";
+import { loadMap } from "shared/Architect/Loader";
 import { gameModes } from "server/core/gameModes";
 import {
 	startRound,
@@ -16,7 +16,6 @@ import {
 	stopVote,
 	selectGameMode,
 } from "./store/actions";
-import { Option } from "@rbxts/rust-classes";
 
 const CouncilVoteOn = Remotes.Server.Create("CouncilVoteOn");
 const CouncilStopVote = Remotes.Server.Create("CouncilStopVote");
@@ -29,7 +28,7 @@ function getVoteOrDefault(votes: string[], options: string[]) {
 		.sort((a, b) => result.filter((v) => v === a).size() < result.filter((v) => v === b).size())
 		.pop();
 
-	return Option.wrap<string>(getHighestVote).unwrapOrElse(() => options[options.size() - 1]);
+	return getHighestVote ?? options[options.size() - 1];
 }
 
 async function startGame() {
@@ -64,7 +63,7 @@ function intermission() {
 			await Promise.delay(1).then(() => {
 				const state = store.getState();
 				const vote = getVoteOrDefault(state.votes, state.topic.options);
-				const currentMap = loadMapOption(vote);
+				const currentMap = loadMap(vote);
 
 				const spawnLocations = new Set<SpawnLocation>();
 				for (const smartSpawn of currentMap.FindFirstChild("Spawns")!.GetChildren()) {

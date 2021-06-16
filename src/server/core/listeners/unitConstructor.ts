@@ -11,7 +11,6 @@ import { getWeaponSettings } from "server/core/gameModes/getWeaponSettings";
 
 import Remotes from "shared/remotes";
 
-import { Result } from "@rbxts/rust-classes";
 Remotes.Server.Create("ServerCreateGun");
 Remotes.Server.Create("ServerCreateHealthPack");
 Remotes.Server.Create("ServerCreateHero");
@@ -66,21 +65,14 @@ export function respawnPlayer(currentPlayer: Player) {
 
 async function handleCharacterAdded(character: Model) {
 	const rig = await yieldForR15CharacterDescendants(character);
-	rig.Humanoid.Health = 20;
-	const player = Players.GetPlayerFromCharacter(rig)!;
-	getWeaponSettings("AK47")
-		.match(
-			(weaponSettings) => {
-				createGun(fabric, player, weaponSettings);
-				return Result.ok("Success");
-			},
-			() => Result.err("No weapons created"),
-		)
-		.unwrap();
-
-	createHero(fabric, player);
 	const knife = ReplicatedStorage.assets.FindFirstChild("Knife")?.Clone() as Tool;
+	const player = Players.GetPlayerFromCharacter(rig)!;
+
+	createGun(fabric, player, getWeaponSettings("AK47"));
+	createHero(fabric, player);
 	createMelee(fabric, player, knife);
+
+	rig.Humanoid.Health = 20;
 	rig.Humanoid.Died.Connect(() => {
 		createHealthPack(fabric, player);
 		respawnPlayer(player);
