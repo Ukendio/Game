@@ -1,6 +1,6 @@
 import Roact from "@rbxts/roact";
 import { Players, ReplicatedStorage, SoundService, UserInputService, Workspace } from "@rbxts/services";
-import { ConfigurableSettings, Mode } from "shared/Types";
+import { Config, Mode } from "shared/Types";
 import { Crosshair } from "client/UserInterface/App/Crosshair";
 import HitMark from "client/UserInterface/App/HitMark";
 import { shoot } from "client/units/Gun/shoot";
@@ -39,7 +39,7 @@ interface GunDefinition extends UnitDefinition<"Gun"> {
 		filter: Instance[];
 		origin: undefined | Vector3;
 		direction: undefined | Vector3;
-		configurableSettings: ConfigurableSettings;
+		configurableSettings: Config;
 	};
 
 	ref?: Tool;
@@ -53,7 +53,7 @@ interface GunDefinition extends UnitDefinition<"Gun"> {
 		},
 	) => void;
 
-	configureSettings?: (this: ThisFabricUnit<"Gun">, configurableSettings: ConfigurableSettings) => void;
+	configureSettings?: (this: ThisFabricUnit<"Gun">, configurableSettings: Config) => void;
 
 	janitor?: Janitor;
 }
@@ -204,16 +204,11 @@ const gun: GunDefinition = {
 				let ricochet = false;
 				if (target !== undefined && target.Parent?.FindFirstChild("Humanoid") !== undefined) {
 					const substrings = target.Name.split("_");
-
 					if (substrings && substrings[1] === "shield") {
 						const findPlayer = Players.GetPlayerByUserId(tonumber(substrings[0])!);
 						if (findPlayer && findPlayer.Team === player.Team) {
-							print(findPlayer.Team, player.Team);
 							filter.push(target.Parent!);
-						} else {
-							ricochet = true;
-							print(ricochet);
-						}
+						} else ricochet = true;
 					}
 				}
 
