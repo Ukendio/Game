@@ -47,6 +47,10 @@ class Signal {
 
 		this._currentListHead = listener;
 		return {
+			/**
+			 * @hidden
+			 * We don't want to expose the listener property
+			 */
 			listener: listener,
 			disconnect: disconnect,
 		};
@@ -61,7 +65,7 @@ class Signal {
 					noYield(listener.handler, ...args);
 				}, tracebackReporter);
 
-				if (!ok) warn(result);
+				if (!ok) throw result;
 			}
 			listener = listener.next;
 		}
