@@ -1,9 +1,9 @@
 import Net from "@rbxts/net";
-import { ConfigurableSettings, TopicFormat } from "shared/Types";
+import { Config, TopicFormat } from "shared/Types";
 
 const remotes = Net.Definitions.Create({
 	ServerCreateHealthPack: Net.Definitions.ServerToClientEvent<[Model]>(),
-	ServerCreateGun: Net.Definitions.ServerToClientEvent<[Tool, ConfigurableSettings]>(),
+	ServerCreateGun: Net.Definitions.ServerToClientEvent<[Tool, Config]>(),
 	ServerCreateHero: Net.Definitions.ServerToClientEvent<[Player]>(),
 	ServerCreateMelee: Net.Definitions.ServerToClientEvent<[Tool]>(),
 	ServerCreateTag: Net.Definitions.ServerToClientEvent<[Model]>(),
