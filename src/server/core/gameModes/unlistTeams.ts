@@ -1,6 +1,6 @@
 import { Teams } from "@rbxts/services";
 
-export = function () {
+export = async function () {
 	for (const team of Teams.GetChildren()) {
 		team.Destroy();
 	}
