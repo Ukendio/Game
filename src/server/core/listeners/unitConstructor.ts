@@ -7,7 +7,7 @@ import { createGun } from "server/core/factory/createGun";
 import { createHealthPack } from "server/core/factory/createHealthPack";
 
 import store from "server/core/store";
-import { getWeaponSettings } from "server/gunsFolder";
+import { getWeaponSettings } from "server/core/gameModes/getWeaponSettings";
 
 import Remotes from "shared/remotes";
 
@@ -76,9 +76,7 @@ async function handleCharacterAdded(character: Model) {
 			},
 			() => Result.err("No weapons created"),
 		)
-		.orElse((errorMessage) => {
-			throw errorMessage;
-		});
+		.unwrap();
 
 	createHero(fabric, player);
 	const knife = ReplicatedStorage.assets.FindFirstChild("Knife")?.Clone() as Tool;
