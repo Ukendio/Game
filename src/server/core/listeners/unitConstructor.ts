@@ -7,9 +7,11 @@ import { createGun } from "server/core/factory/createGun";
 import { createHealthPack } from "server/core/factory/createHealthPack";
 
 import store from "server/core/store";
-import { weaponsFolder } from "server/gunsFolder";
+import { getWeaponSettings } from "server/gunsFolder";
 
 import Remotes from "shared/remotes";
+
+import { Result } from "@rbxts/rust-classes";
 Remotes.Server.Create("ServerCreateGun");
 Remotes.Server.Create("ServerCreateHealthPack");
 Remotes.Server.Create("ServerCreateHero");
@@ -66,7 +68,18 @@ async function handleCharacterAdded(character: Model) {
 	const rig = await yieldForR15CharacterDescendants(character);
 	rig.Humanoid.Health = 20;
 	const player = Players.GetPlayerFromCharacter(rig)!;
-	createGun(fabric, player, weaponsFolder.m16_settings);
+	getWeaponSettings("AK47")
+		.match(
+			(weaponSettings) => {
+				createGun(fabric, player, weaponSettings);
+				return Result.ok("Success");
+			},
+			() => Result.err("No weapons created"),
+		)
+		.orElse((errorMessage) => {
+			throw errorMessage;
+		});
+
 	createHero(fabric, player);
 	const knife = ReplicatedStorage.assets.FindFirstChild("Knife")?.Clone() as Tool;
 	createMelee(fabric, player, knife);
