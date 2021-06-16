@@ -1,4 +1,4 @@
-import { Option, Result } from "@rbxts/rust-classes";
+import { Option } from "@rbxts/rust-classes";
 import { Config, Mode } from "shared/Types";
 
 type WeaponsTable = "AK47" | "M16";
