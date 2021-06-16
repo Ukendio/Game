@@ -1,7 +1,7 @@
 import { Option } from "@rbxts/rust-classes";
 import { Config, Mode } from "shared/Types";
 
-const weaponsTable = {
+const weaponsTable: Record<string, Config> = {
 	"AK47": {
 		fireRate: 1,
 		recoil: 1,
