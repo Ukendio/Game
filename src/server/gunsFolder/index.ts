@@ -1,19 +1,25 @@
-import { ConfigurableSettings, Mode } from "shared/Types";
+import { Option, Result } from "@rbxts/rust-classes";
+import { Config, Mode } from "shared/Types";
 
-export const weaponsFolder = {
-	ak47_settings: identity<ConfigurableSettings>({
+type WeaponsTable = "AK47" | "M16";
+
+export const weaponsTable: Record<WeaponsTable, Config> = {
+	AK47: identity<Config>({
 		fireRate: 1,
 		recoil: 1,
 		maxDistance: 100,
 		mode: Mode.Semi,
 		damage: 1,
 	}),
-
-	m16_settings: identity<ConfigurableSettings>({
+	M16: identity<Config>({
 		fireRate: 1,
-		recoil: 2,
+		recoil: 1,
 		maxDistance: 100,
 		mode: Mode.Semi,
 		damage: 1,
 	}),
+};
+
+export const getWeaponSettings = (weaponName: WeaponsTable): Option<Config> => {
+	return Option.wrap(weaponsTable[weaponName]);
 };
