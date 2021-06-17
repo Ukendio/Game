@@ -97,4 +97,14 @@ export = () => {
 			expect(result).to.equal("13 is a teen number");
 		});
 	});
+
+	describe("Option", () => {
+		it("", () => {
+			type Option<T> = { _tag: "None" } | { _tag: "Some"; value: T };
+
+			const value: Option<string> = { _tag: "Some", value: "Hello" };
+
+			expect(match(value).with({ _tag: "Some" }, () => {}));
+		});
+	});
 };
