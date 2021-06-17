@@ -103,7 +103,7 @@ export = () => {
 
 			const value: Option<string> = { _tag: "Some", value: "Hello" };
 
-			expect(match(value).with({ _tag: "Some" }, () => {}));
+			expect(match(value).with({ _tag: "Some" }, () => true)).to.be.ok();
 		});
 	});
 };
