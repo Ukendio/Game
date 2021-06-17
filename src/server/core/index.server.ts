@@ -21,14 +21,9 @@ const CouncilVoteOn = Remotes.Server.Create("CouncilVoteOn");
 const CouncilStopVote = Remotes.Server.Create("CouncilStopVote");
 const RoundStarted = Remotes.Server.Create("RoundStarted");
 
-function getVoteOrDefault(votes: string[], options: string[]) {
-	const result = [...votes];
-
-	const getHighestVote = result
-		.sort((a, b) => result.filter((v) => v === a).size() < result.filter((v) => v === b).size())
-		.pop();
-
-	return getHighestVote ?? options[options.size() - 1];
+function getVoteOrDefault(votes: Vec<string>, options: Vec<string>) {
+	table.sort(votes.asPtr(), (a, b) => votes.iter().filter((v) => v === a).count() < result.iter().filter((v) => v === b).count())
+	return votes.last().or(options.last()).unwrap();
 }
 
 async function startGame() {
@@ -62,7 +57,7 @@ function intermission() {
 
 			await Promise.delay(1).then(() => {
 				const state = store.getState();
-				const vote = getVoteOrDefault(state.votes, state.topic.options);
+				const vote = getVoteOrDefault(Vec.vec(...state.votes), Vec.vec(...state.topic.options));
 				const currentMap = loadMap(vote);
 
 				const spawnLocations = new Set<SpawnLocation>();
