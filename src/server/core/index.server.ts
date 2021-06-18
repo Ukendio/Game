@@ -16,14 +16,29 @@ import {
 	stopVote,
 	selectGameMode,
 } from "./store/actions";
+import { Vec } from "@rbxts/rust-classes";
 
 const CouncilVoteOn = Remotes.Server.Create("CouncilVoteOn");
 const CouncilStopVote = Remotes.Server.Create("CouncilStopVote");
 const RoundStarted = Remotes.Server.Create("RoundStarted");
 
-function getVoteOrDefault(votes: Vec<string>, options: Vec<string>) {
-	table.sort(votes.asPtr(), (a, b) => votes.iter().filter((v) => v === a).count() < result.iter().filter((v) => v === b).count())
-	return votes.last().or(options.last()).unwrap();
+function getVoteOrDefault(votes: Vec<string>, options: Vec<string>): string {
+	return votes
+		.iter()
+		.map(
+			(a) =>
+				[
+					a,
+					votes
+						.iter()
+						.filter((v) => v === a)
+						.count(),
+				] as const,
+		)
+		.maxBy(([_a, aCount], [_b, bCount]) => aCount - bCount)
+		.map(([name]) => name)
+		.or(options.last())
+		.unwrap();
 }
 
 async function startGame() {
@@ -84,7 +99,10 @@ function intermission() {
 
 			await Promise.delay(1).then(() => {
 				const state = store.getState();
-				const vote = getVoteOrDefault(state.votes, state.topic.options) as keyof typeof gameModes;
+				const vote = getVoteOrDefault(
+					Vec.vec(...state.votes),
+					Vec.vec(...state.topic.options),
+				) as keyof typeof gameModes;
 
 				store.dispatch(selectGameMode(vote));
 				store.dispatch(stopVote());
