@@ -1,0 +1,29 @@
+{
+	"version": 1,
+	"flameworkVersion": "0.0.5",
+	"identifiers": {
+		"game:out/client/UserInterface/Components/Vote@Vote": "NR",
+		"game:out/client/UserInterface/App/Ballot@Ballot": "AP",
+		"game:out/client/UserInterface/Components/Outline@Outline": "Dy",
+		"game:out/shared/dispatcher/signal@Signal": "Yw",
+		"game:out/shared/dispatcher/singleEvent@SingleEvent": "wj",
+		"game:out/client/UserInterface/App/Crosshair@Crosshair": "Or",
+		"game:out/client/UserInterface/App/HitMark@HitMark": "vw",
+		"game:out/client/UserInterface/Components/camera@UserCamera": "K0",
+		"game:out/client/UserInterface/App/Home@Home": "XP",
+		"game:out/client/UserInterface/Components/Indicator@Indicator": "0Z",
+		"game:out/client/UserInterface/Components/RedVignette@RedVignette": "G5",
+		"game:out/client/controllers/unitController@UnitController": "Q8",
+		"game:out/server/services/roundCoordinator@RoundCoordinator": "dG",
+		"game:out/server/services/unitConstructor@UnitConstructor": "rD",
+		"game:out/server/services/characterHandler/init.server@characterHandler": "jY",
+		"game:out/server/services/election/init.server@Election": "yZ",
+		"game:out/shared/Spirit/spring@Spring": "7a",
+		"game:out/server/services/roundCoordinator/roundCoordinator@RoundCoordinator": "1n",
+		"game:out/server/services/roundCoordinator/init.server@RoundCoordinator": "4Q",
+		"game:out/server/services/roundCoordinator/init@RoundCoordinator": "5D",
+		"game:out/server/services/election/init@Election": "nl",
+		"game:out/server/services/characterHandler/init@characterHandler": "ar"
+	},
+	"salt": "7c5c47f013b98fe8a5b7c61c711d0b9ee306cc4ffe77419e4a36c2e146c912f43cf72c892e130df9f466aa5c9a39fc01730d01dcc4a99e6f8ab4a4da90d258cf"
+}
