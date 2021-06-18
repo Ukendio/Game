@@ -1,5 +1,6 @@
 {
 	"compilerOptions": {
+		"experimentalDecorators": true,
 		// required
 		"allowSyntheticDefaultImports": true,
 		"downlevelIteration": true,
@@ -14,6 +15,7 @@
 		"target": "ESNext",
 		"typeRoots": ["node_modules/@rbxts"],
 		"plugins": [
+			{ "transform": "rbxts-transformer-flamework" }
 		],
 
 		// configurable
