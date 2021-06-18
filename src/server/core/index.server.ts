@@ -16,25 +16,16 @@ import {
 	stopVote,
 	selectGameMode,
 } from "./store/actions";
-import { Vec } from "@rbxts/rust-classes";
+import { Iterator, Vec } from "@rbxts/rust-classes";
+import { State } from "./store/reducer";
+import Object from "@rbxts/object-utils";
 
 const CouncilVoteOn = Remotes.Server.Create("CouncilVoteOn");
 const CouncilStopVote = Remotes.Server.Create("CouncilStopVote");
 const RoundStarted = Remotes.Server.Create("RoundStarted");
 
-function getVoteOrDefault(votes: Vec<string>, options: Vec<string>): string {
-	return votes
-		.iter()
-		.map(
-			(a) =>
-				[
-					a,
-					votes
-						.iter()
-						.filter((v) => v === a)
-						.count(),
-				] as const,
-		)
+function getVoteOrDefault<T extends string>(votes: Record<T, number>, options: Vec<T>): T {
+	return Iterator.fromItems(...pairs(votes))
 		.maxBy(([_a, aCount], [_b, bCount]) => aCount - bCount)
 		.map(([name]) => name)
 		.or(options.last())
@@ -72,7 +63,7 @@ function intermission() {
 
 			await Promise.delay(1).then(() => {
 				const state = store.getState();
-				const vote = getVoteOrDefault(Vec.vec(...state.votes), Vec.vec(...state.topic.options));
+				const vote = getVoteOrDefault(state.votes, Vec.vec(...state.topic.options));
 				const currentMap = loadMap(vote);
 
 				const spawnLocations = new Set<SpawnLocation>();
@@ -99,10 +90,7 @@ function intermission() {
 
 			await Promise.delay(1).then(() => {
 				const state = store.getState();
-				const vote = getVoteOrDefault(
-					Vec.vec(...state.votes),
-					Vec.vec(...state.topic.options),
-				) as keyof typeof gameModes;
+				const vote = getVoteOrDefault(state.votes, Vec.vec(...state.topic.options)) as keyof typeof gameModes;
 
 				store.dispatch(selectGameMode(vote));
 				store.dispatch(stopVote());

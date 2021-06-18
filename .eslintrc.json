@@ -7,11 +7,7 @@
 		"sourceType": "module",
 		"project": "./tsconfig.json"
 	},
-	"plugins": [
-		"@typescript-eslint",
-		"roblox-ts",
-		"prettier"
-	],
+	"plugins": ["@typescript-eslint", "roblox-ts", "prettier"],
 	"extends": [
 		"plugin:@typescript-eslint/recommended",
 		"plugin:roblox-ts/recommended",
@@ -29,6 +25,7 @@
 				"useTabs": true,
 				"endOfLine": "auto"
 			}
-		]
+		],
+		"roblox-ts/no-any": "off"
 	}
 }

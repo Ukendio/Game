@@ -15,7 +15,7 @@ export interface State {
 	ranking: PlayerScore[];
 	voting: boolean;
 	topic: TopicFormat;
-	votes: string[];
+	votes: Record<string, number>;
 	hasVoted: Player[];
 	sequence: "started" | "intermission";
 	deployedPlayers: Player[];
@@ -30,7 +30,10 @@ const initialState: State = {
 	ranking: [],
 	voting: false,
 	topic: undefined!,
-	votes: [],
+	votes: {
+		"Free For All": 0,
+		"Kill Confirmed": 0,
+	},
 	hasVoted: [],
 	sequence: "intermission",
 	deployedPlayers: new Array<Player>(),
@@ -77,8 +80,8 @@ export const reducer = Rodux.createReducer<State, Actions>(initialState, {
 		const newState = copyShallow<State>(state);
 		newState.voting = false;
 		newState.topic = undefined!;
-		newState.votes = [];
-		newState.hasVoted = [];
+		newState.votes = initialState.votes;
+		newState.hasVoted = initialState.hasVoted;
 
 		return newState;
 	},
@@ -90,7 +93,7 @@ export const reducer = Rodux.createReducer<State, Actions>(initialState, {
 		);
 
 		const newState = copyShallow<State>(state);
-		newState.votes.push(action.vote);
+		newState.votes[action.vote]++;
 		newState.hasVoted.push(action.player);
 		return state;
 	},
