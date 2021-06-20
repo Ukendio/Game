@@ -5,10 +5,10 @@ import { createTag } from "server/core/unitFactory/createTag";
 import { match } from "shared/rbxts-pattern";
 
 function matchModeForKill(fabric: Fabric, player: Player, enemyPlayer: Player) {
+	if (store.getState().sequence === "intermission") return;
+
 	return match(store.getState().gameMode)
 		.with("Team Deathmatch", () => {
-			if (store.getState().sequence === "intermission") return;
-
 			store.dispatch(addKillToPlayer(player));
 			store.dispatch(addDeathToPlayer(enemyPlayer));
 
@@ -16,22 +16,26 @@ function matchModeForKill(fabric: Fabric, player: Player, enemyPlayer: Player) {
 				.getState()
 				.teams.iter()
 				.forEach((team) => {
-					if (team.tag === player.Team) {
-						store.dispatch(addKillToTeam(team));
-					} else if (team.tag === enemyPlayer.Team) {
-						store.dispatch(addDeathToTeam(team));
-					}
+					match(team.tag)
+						.with({ TeamColor: player.TeamColor }, () => {
+							store.dispatch(addKillToTeam(team));
+						})
+						.with({ TeamColor: enemyPlayer.TeamColor }, () => {
+							store.dispatch(addDeathToTeam(team));
+						})
+						.run();
 				});
 		})
 		.with("Free For All", () => {
-			if (store.getState().sequence === "intermission") return;
 			store.dispatch(addKillToPlayer(player));
 			store.dispatch(addDeathToPlayer(enemyPlayer));
 		})
 		.with("Kill Confirmed", () => {
 			createTag(fabric, enemyPlayer);
 		})
-		.run();
+		.otherwise(() => {
+			error("Invalid gamemode");
+		});
 }
 
 export = matchModeForKill;
