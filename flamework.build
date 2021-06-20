@@ -23,7 +23,8 @@
 		"game:out/server/services/roundCoordinator/init.server@RoundCoordinator": "4Q",
 		"game:out/server/services/roundCoordinator/init@RoundCoordinator": "5D",
 		"game:out/server/services/election/init@Election": "nl",
-		"game:out/server/services/characterHandler/init@characterHandler": "ar"
+		"game:out/server/services/characterHandler/init@characterHandler": "ar",
+		"game:out/server/services/referee@Referee": "lJ"
 	},
 	"salt": "7c5c47f013b98fe8a5b7c61c711d0b9ee306cc4ffe77419e4a36c2e146c912f43cf72c892e130df9f466aa5c9a39fc01730d01dcc4a99e6f8ab4a4da90d258cf"
 }
