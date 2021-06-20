@@ -1,8 +1,6 @@
 import { Fabric } from "@rbxts/fabric";
 import { ReplicatedStorage, Workspace } from "@rbxts/services";
-import { Events } from "shared/remotes";
-
-const events = Events.server;
+import { serverEvents } from "shared/remotes";
 
 export function createTag(fabric: Fabric, player: Player) {
 	const dogTag = ReplicatedStorage.assets.FindFirstChild("Tag")?.Clone() as Model;
@@ -17,5 +15,5 @@ export function createTag(fabric: Fabric, player: Player) {
 	const tag = fabric.getOrCreateUnitByRef("Tag", dogTag);
 	tag.mergeBaseLayer({ owner: player });
 
-	events.unitConstructTag.except(player, dogTag);
+	serverEvents.unitConstructTag.except(player, dogTag);
 }

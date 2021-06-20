@@ -12,7 +12,7 @@ import { findSpawn } from "./findSpawn";
 @Service({
 	loadOrder: 2,
 })
-export class characterHandler implements OnStart {
+export class CharacterHandler implements OnStart {
 	private stateContainer = store;
 
 	constructor(private UnitConstructor: UnitConstructor) {}

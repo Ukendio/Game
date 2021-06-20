@@ -1,7 +1,5 @@
 import { Fabric } from "@rbxts/fabric";
-import { Events } from "shared/remotes";
-
-const events = Events.server;
+import { serverEvents } from "shared/remotes";
 
 export function createMelee(fabric: Fabric, player: Player, melee: Tool) {
 	const backpack = player.WaitForChild("Backpack");
@@ -11,5 +9,5 @@ export function createMelee(fabric: Fabric, player: Player, melee: Tool) {
 	const c = fabric.getOrCreateUnitByRef("Melee", melee);
 	c.mergeBaseLayer({});
 
-	events.unitConstructMelee.fire(player, melee);
+	serverEvents.unitConstructMelee.fire(player, melee);
 }

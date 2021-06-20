@@ -1,7 +1,9 @@
 import Roact from "@rbxts/roact";
 import Remotes from "shared/remotes";
 import UserCamera from "client/UserInterface/Components/camera";
-import { ContextActionService, Players, UserInputService, Workspace } from "@rbxts/services";
+import { Players, UserInputService } from "@rbxts/services";
+
+const RoundStarted = Remotes.Client.Get("RoundStarted");
 
 interface State {
 	status: Color3;
@@ -20,8 +22,6 @@ export class Home extends Roact.Component<Props, State> {
 	};
 
 	didMount() {
-		const RoundStarted = Remotes.Client.Get("RoundStarted");
-
 		RoundStarted.Connect(() => this.setState({ status: new Color3(0, 1, 0), visible: this.state.visible }));
 		UserCamera.setActorNone();
 		UserCamera.addBlur(1);

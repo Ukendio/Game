@@ -1,6 +1,6 @@
 import { Flamework } from "@rbxts/flamework";
 import Net from "@rbxts/net";
-import { Config, TopicFormat } from "shared/Types";
+import { Config } from "shared/Types";
 
 const remotes = Net.Definitions.Create({
 	UICountdown: Net.Definitions.ServerToClientEvent<[number, string, string]>(),

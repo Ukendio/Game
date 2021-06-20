@@ -1,8 +1,10 @@
 import { OnStart, Service } from "@rbxts/flamework";
 import store from "server/core/store";
 import { startRound } from "server/core/store/actions";
-import { serverEvents } from "shared/remotes";
 import { Election } from "../election";
+import remotes from "shared/Remotes";
+
+const RoundStarted = remotes.Server.Create("RoundStarted");
 
 @Service({
 	loadOrder: 3,
@@ -13,8 +15,7 @@ export class RoundCoordinator implements OnStart {
 	onStart() {
 		const roundBuilder = async () => {
 			store.dispatch(startRound());
-			serverEvents.roundStarted.broadcast();
-
+			RoundStarted.SendToAllPlayers();
 			return store
 				.getState()
 				.winCondition(store)

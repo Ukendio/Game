@@ -44,9 +44,9 @@ const initialState: State = {
 export const reducer = Rodux.createReducer<State, Actions>(initialState, {
 	AddKillToPlayer: (state, action) => {
 		const newState = copyShallow<State>(state);
-		newState.ranking.iter().map((current) => {
+		newState.ranking.iter().forEach((current) => {
 			if (current.player === action.player) {
-				current.kills += 1;
+				current.kills++;
 			}
 		});
 
@@ -55,9 +55,9 @@ export const reducer = Rodux.createReducer<State, Actions>(initialState, {
 
 	AddDeathToPlayer: (state, action) => {
 		const newState = copyShallow<State>(state);
-		newState.ranking.iter().map((current) => {
+		newState.ranking.iter().forEach((current) => {
 			if (current.player === action.player) {
-				current.deaths += 1;
+				current.deaths++;
 			}
 		});
 
@@ -125,7 +125,10 @@ export const reducer = Rodux.createReducer<State, Actions>(initialState, {
 	},
 	Depart: (state, action) => {
 		const newState = copyShallow<State>(state);
-		newState.deployedPlayers.iter().filter((player) => player !== action.player);
+		newState.deployedPlayers
+			.iter()
+			.filter((player) => player !== action.player)
+			.collect();
 
 		return newState;
 	},
@@ -175,7 +178,7 @@ export const reducer = Rodux.createReducer<State, Actions>(initialState, {
 	AddKillToTeam: (state, action) => {
 		const newState = copyShallow<State>(state);
 		const team = newState.teams.iter().find((team) => team === action.team);
-		team.map((playerTeam) => (playerTeam.kills += 1));
+		team.map((playerTeam) => playerTeam.kills++);
 
 		return newState;
 	},
@@ -183,7 +186,7 @@ export const reducer = Rodux.createReducer<State, Actions>(initialState, {
 	AddDeathToTeam: (state, action) => {
 		const newState = copyShallow<State>(state);
 		const team = newState.teams.iter().find((team) => team === action.team);
-		team.map((playerTeam) => (playerTeam.kills += 1));
+		team.map((playerTeam) => playerTeam.kills++);
 
 		return newState;
 	},

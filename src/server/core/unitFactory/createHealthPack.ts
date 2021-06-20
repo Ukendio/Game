@@ -1,9 +1,7 @@
 import { Fabric } from "@rbxts/fabric";
 import { Option, Result } from "@rbxts/rust-classes";
 import { ReplicatedStorage, Workspace } from "@rbxts/services";
-import { Events } from "shared/remotes";
-
-const events = Events.server;
+import { serverEvents } from "shared/remotes";
 
 type HealthPack = Model & {
 	PrimaryPart: BasePart;
@@ -24,7 +22,7 @@ export function createHealthPack(fabric: Fabric, playerOptional: Option<Player>)
 			const c = fabric.getOrCreateUnitByRef("Heal", healthPack);
 			c.mergeBaseLayer({});
 
-			events.unitConstructHealthPack.fire(player, healthPack);
+			serverEvents.unitConstructHealthPack.fire(player, healthPack);
 			return Result.ok("healthPack created");
 		},
 		() => Result.err("player argument was nil"),
