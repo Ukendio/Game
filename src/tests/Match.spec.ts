@@ -66,13 +66,13 @@ export = () => {
 
 			function inspect(event: typeof WebEvent[keyof typeof WebEvent]) {
 				return match(event)
-					.with(WebEvent.PageLoad, () => print("page loaded"))
-					.with(WebEvent.PageUnload, () => print("page unloaded"))
-					.with(WebEvent.KeyPress("S"), () => print("Pressed S"))
+					.with(WebEvent.PageLoad, () => "page loaded")
+					.with(WebEvent.PageUnload, () => "page unloaded")
+					.with(WebEvent.KeyPress("S"), () => "Pressed S")
 					.otherwise(() => "Invalid event");
 			}
 
-			expect(inspect(WebEvent.KeyPress("1"))).to.equal("Invalid event");
+			expect(inspect(WebEvent.KeyPress("h"))).to.equal("Invalid event");
 		});
 	});
 
@@ -104,6 +104,14 @@ export = () => {
 			const value: Option<string> = { _tag: "Some", value: "Hello" };
 
 			expect(match(value).with({ _tag: "Some" }, () => true)).to.be.ok();
+		});
+
+		it("player team", () => {
+			const team = new Instance("Team");
+			team.TeamColor = new BrickColor("Really black");
+
+			const playerTeam = team;
+			expect(match(team).with({ TeamColor: playerTeam.TeamColor }, () => true)).to.be.ok();
 		});
 	});
 };
