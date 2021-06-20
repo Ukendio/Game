@@ -32,4 +32,7 @@ interface ClientEvents {
 	updateScoreBoard(playerName: string): void;
 }
 
-export const Events = Flamework.createEvent<ServerEvents, ClientEvents>();
+const events = Flamework.createEvent<ServerEvents, ClientEvents>();
+
+export const serverEvents = events.server;
+export const clientEvents = events.client;

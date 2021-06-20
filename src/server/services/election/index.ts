@@ -4,11 +4,9 @@ import { gameModes } from "server/core/gameModes";
 import store from "server/core/store";
 import { castVote, createTopic, selectGameMode, startVote, stopVote } from "server/core/store/actions";
 import { match } from "shared/rbxts-pattern";
-import { Events } from "shared/remotes";
+import { serverEvents } from "shared/remotes";
 import { getKeys } from "shared/tableUtil";
 import { getVoteOrDefault } from "./getVoteOrDefault";
-
-const events = Events.server;
 
 @Service({
 	loadOrder: 4,
@@ -17,7 +15,7 @@ export class Election implements OnInit, OnStart {
 	constructor() {}
 
 	onInit() {
-		events.connect("clientAppendVote", (player, vote) => {
+		serverEvents.connect("clientAppendVote", (player, vote) => {
 			const state = store.getState();
 
 			assert(state.voting === false, "Cannot start a vote when a vote is ongoing");
@@ -29,7 +27,7 @@ export class Election implements OnInit, OnStart {
 			store.dispatch(castVote(player, vote));
 		});
 
-		events.connect("clientAppendVote", (player, vote) => this._castVote(player, vote));
+		serverEvents.connect("clientAppendVote", (player, vote) => this._castVote(player, vote));
 	}
 
 	onStart() {}
@@ -46,13 +44,13 @@ export class Election implements OnInit, OnStart {
 
 				store.dispatch(startVote());
 
-				events.councilVoteOn.broadcast(this._serializeTopic());
+				serverEvents.councilVoteOn.broadcast(this._serializeTopic());
 
 				await Promise.delay(1).then(() => {
 					store.dispatch(selectGameMode(this._conclude() as keyof typeof gameModes));
 					store.dispatch(stopVote());
 
-					events.councilStopVote.broadcast();
+					serverEvents.councilStopVote.broadcast();
 				});
 			})
 			.with("Map", async () => {
@@ -65,13 +63,13 @@ export class Election implements OnInit, OnStart {
 
 				store.dispatch(startVote());
 
-				events.councilVoteOn.broadcast(this._serializeTopic());
+				serverEvents.councilVoteOn.broadcast(this._serializeTopic());
 
 				await Promise.delay(1).then(() => {
 					store.dispatch(selectGameMode(this._conclude() as keyof typeof gameModes));
 					store.dispatch(stopVote());
 
-					events.councilStopVote.broadcast();
+					serverEvents.councilStopVote.broadcast();
 				});
 			});
 	}

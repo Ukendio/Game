@@ -1,10 +1,8 @@
 import { OnStart, Service } from "@rbxts/flamework";
 import store from "server/core/store";
 import { startRound } from "server/core/store/actions";
-import { Events } from "shared/remotes";
+import { serverEvents } from "shared/remotes";
 import { Election } from "../election";
-
-const events = Events.server;
 
 @Service({
 	loadOrder: 3,
@@ -15,7 +13,7 @@ export class RoundCoordinator implements OnStart {
 	onStart() {
 		const roundBuilder = async () => {
 			store.dispatch(startRound());
-			events.roundStarted.broadcast();
+			serverEvents.roundStarted.broadcast();
 
 			return store
 				.getState()
