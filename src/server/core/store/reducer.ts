@@ -1,4 +1,5 @@
 import Rodux, { Store } from "@rbxts/rodux";
+import { Vec } from "@rbxts/rust-classes";
 import { gameModes } from "server/core/gameModes";
 import { copyShallow } from "shared/tableUtil";
 import { TopicFormat } from "shared/Types";
@@ -11,14 +12,14 @@ export interface PlayerScore {
 }
 
 export interface State {
-	teams: PlayerTeam[];
-	ranking: PlayerScore[];
+	teams: Vec<PlayerTeam>;
+	ranking: Vec<PlayerScore>;
 	voting: boolean;
 	topic: TopicFormat;
-	votes: string[];
-	hasVoted: Player[];
+	votes: Record<string, number>;
+	hasVoted: Vec<Player>;
 	sequence: "started" | "intermission";
-	deployedPlayers: Player[];
+	deployedPlayers: Vec<Player>;
 	currentMap: string;
 	gameMode: keyof typeof gameModes;
 	winCondition: (store: Store<State, Actions>) => Promise<void>;
@@ -26,14 +27,14 @@ export interface State {
 }
 
 const initialState: State = {
-	teams: [],
-	ranking: [],
+	teams: Vec.vec(),
+	ranking: Vec.vec(),
 	voting: false,
 	topic: undefined!,
-	votes: [],
-	hasVoted: [],
+	votes: {},
+	hasVoted: Vec.vec(),
 	sequence: "intermission",
-	deployedPlayers: new Array<Player>(),
+	deployedPlayers: Vec.vec(),
 	currentMap: undefined!,
 	gameMode: undefined!,
 	winCondition: undefined!,
@@ -43,7 +44,7 @@ const initialState: State = {
 export const reducer = Rodux.createReducer<State, Actions>(initialState, {
 	AddKillToPlayer: (state, action) => {
 		const newState = copyShallow<State>(state);
-		newState.ranking.forEach((current) => {
+		newState.ranking.iter().map((current) => {
 			if (current.player === action.player) {
 				current.kills += 1;
 			}
@@ -54,7 +55,7 @@ export const reducer = Rodux.createReducer<State, Actions>(initialState, {
 
 	AddDeathToPlayer: (state, action) => {
 		const newState = copyShallow<State>(state);
-		newState.ranking.forEach((current) => {
+		newState.ranking.iter().map((current) => {
 			if (current.player === action.player) {
 				current.deaths += 1;
 			}
@@ -64,10 +65,11 @@ export const reducer = Rodux.createReducer<State, Actions>(initialState, {
 	},
 
 	StartVote: (state) => {
-		assert(state.voting === false, "Cannot start a vote when a vote is ongoing");
 		const newState = copyShallow<State>(state);
 		newState.voting = true;
-
+		state.topic.options.iter().forEach((index) => {
+			newState.votes[index] = 0;
+		});
 		return newState;
 	},
 
@@ -77,23 +79,19 @@ export const reducer = Rodux.createReducer<State, Actions>(initialState, {
 		const newState = copyShallow<State>(state);
 		newState.voting = false;
 		newState.topic = undefined!;
-		newState.votes = [];
-		newState.hasVoted = [];
+		newState.votes = {};
+		newState.hasVoted = Vec.vec();
 
 		return newState;
 	},
 
 	CastVote: (state, action) => {
-		assert(
-			state.topic.options.find((option) => option === action.vote),
-			"Was not available in options",
-		);
-
 		const newState = copyShallow<State>(state);
-		newState.votes.push(action.vote);
+		newState.votes[action.vote]++;
 		newState.hasVoted.push(action.player);
 		return state;
 	},
+
 	CreateTopic: (state, action) => {
 		assert(state.voting === false, "Cannot have an ongoing vote before creating topic");
 
@@ -112,7 +110,7 @@ export const reducer = Rodux.createReducer<State, Actions>(initialState, {
 	ChangeRanking: (state) => {
 		const newState = copyShallow<State>(state);
 		const ranking = newState.ranking;
-		ranking.sort((a, b) => a.kills < b.kills);
+		table.sort(ranking.asPtr(), (a, b) => a.kills < b.kills);
 
 		return newState;
 	},
@@ -127,7 +125,7 @@ export const reducer = Rodux.createReducer<State, Actions>(initialState, {
 	},
 	Depart: (state, action) => {
 		const newState = copyShallow<State>(state);
-		newState.deployedPlayers.filter((player) => player !== action.player);
+		newState.deployedPlayers.iter().filter((player) => player !== action.player);
 
 		return newState;
 	},
@@ -176,22 +174,16 @@ export const reducer = Rodux.createReducer<State, Actions>(initialState, {
 	},
 	AddKillToTeam: (state, action) => {
 		const newState = copyShallow<State>(state);
-		const team = newState.teams.find((team) => team === action.team);
-
-		if (team) {
-			team.kills += 1;
-		}
+		const team = newState.teams.iter().find((team) => team === action.team);
+		team.map((playerTeam) => (playerTeam.kills += 1));
 
 		return newState;
 	},
 
 	AddDeathToTeam: (state, action) => {
 		const newState = copyShallow<State>(state);
-		const team = newState.teams.find((team) => team === action.team);
-
-		if (team) {
-			team.deaths += 1;
-		}
+		const team = newState.teams.iter().find((team) => team === action.team);
+		team.map((playerTeam) => (playerTeam.kills += 1));
 
 		return newState;
 	},
