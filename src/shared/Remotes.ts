@@ -1,23 +1,35 @@
+import { Flamework } from "@rbxts/flamework";
 import Net from "@rbxts/net";
 import { Config, TopicFormat } from "shared/Types";
 
 const remotes = Net.Definitions.Create({
-	ServerCreateHealthPack: Net.Definitions.ServerToClientEvent<[Model]>(),
-	ServerCreateGun: Net.Definitions.ServerToClientEvent<[Tool, Config]>(),
-	ServerCreateHero: Net.Definitions.ServerToClientEvent<[Player]>(),
-	ServerCreateMelee: Net.Definitions.ServerToClientEvent<[Tool]>(),
-	ServerCreateTag: Net.Definitions.ServerToClientEvent<[Model]>(),
-
-	CouncilVoteOn: Net.Definitions.ServerToClientEvent<[TopicFormat]>(),
-	CouncilStopVote: Net.Definitions.ServerToClientEvent(),
 	UICountdown: Net.Definitions.ServerToClientEvent<[number, string, string]>(),
 	UIScoreboardUpdate: Net.Definitions.ServerToClientEvent<[string]>(),
 	RoundStarted: Net.Definitions.ServerToClientEvent(),
 
 	ClientRequestDeploy: Net.Definitions.ServerAsyncFunction<() => boolean | Model>(),
-
-	ClientAppendVote: Net.Definitions.ClientToServerEvent<[string]>(),
-	ClientChooseTeam: Net.Definitions.ClientToServerEvent<[Team]>(),
 });
 
 export default remotes;
+
+interface ServerEvents {
+	clientAppendVote(vote: string): void;
+	clientChooseTeam(team: Team): void;
+}
+
+interface ClientEvents {
+	unitConstructHealthPack(model: Model): void;
+	unitConstructGun(tool: Tool, Configuration: Config): void;
+	unitConstructHero(player: Player): void;
+	unitConstructMelee(tool: Tool): void;
+	unitConstructTag(model: Model): void;
+
+	roundStarted(): void;
+	councilVoteOn(topic: { name: string; options: string[] }): void;
+	councilStopVote(): void;
+
+	userRequestDeploy(): [boolean, Model | undefined];
+	updateScoreBoard(playerName: string): void;
+}
+
+export const Events = Flamework.createEvent<ServerEvents, ClientEvents>();
