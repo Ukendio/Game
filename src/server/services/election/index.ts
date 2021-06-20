@@ -56,7 +56,7 @@ export class Election implements OnInit, OnStart {
 			.with("Map", async () => {
 				store.dispatch(
 					createTopic({
-						name: "Gamemode",
+						name: "Map",
 						options: Vec.vec(...getKeys(gameModes)),
 					}),
 				);
