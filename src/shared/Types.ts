@@ -1,3 +1,5 @@
+import { Vec } from "@rbxts/rust-classes";
+
 export enum Mode {
 	Semi,
 	Auto,
@@ -13,5 +15,5 @@ export interface Config {
 
 export interface TopicFormat {
 	name: string;
-	options: string[];
+	options: Vec<string>;
 }
