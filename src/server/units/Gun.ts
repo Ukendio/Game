@@ -1,7 +1,6 @@
 import { Players } from "@rbxts/services";
-import matchModeForKill from "server/core/listeners/scoreHandler";
+import matchModeForKill from "server/core/gameModes/helpers/matchModeForKill";
 import { Mode } from "shared/Types";
-
 const gun: FabricUnits["Gun"] = {
 	name: "Gun",
 
