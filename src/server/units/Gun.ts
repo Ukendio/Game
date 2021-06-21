@@ -63,7 +63,7 @@ const gun: FabricUnits["Gun"] = {
 				if (player && enemyPlayer && humanoid) {
 					humanoid.TakeDamage(tonumber(hit)!);
 
-					if (humanoid.Health <= 0) matchModeForKill(this.fabric, player, enemyPlayer);
+					if (humanoid.Health <= 0) matchModeForKill(player, enemyPlayer);
 				}
 			}
 		},

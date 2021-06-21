@@ -1,14 +1,16 @@
-import { Fabric } from "@rbxts/fabric";
+import { Dependency } from "@rbxts/flamework";
 import store from "server/core/store";
 import { addKillToPlayer, addDeathToPlayer, addKillToTeam, addDeathToTeam } from "server/core/store/actions";
-import { createTag } from "server/core/unitFactory/createTag";
+import { UnitConstructor } from "server/services/unitConstructor";
 import { match } from "shared/rbxts-pattern";
 
-function matchModeForKill(fabric: Fabric, player: Player, enemyPlayer: Player) {
+const unitConstructor = Dependency<UnitConstructor>();
+
+function matchModeForKill(player: Player, enemyPlayer: Player) {
 	if (store.getState().sequence === "intermission") return;
 
-	return match(store.getState().gameMode)
-		.with("Team Deathmatch", () => {
+	return match(store.getState())
+		.with({ gameMode: "Team Deathmatch" }, () => {
 			store.dispatch(addKillToPlayer(player));
 			store.dispatch(addDeathToPlayer(enemyPlayer));
 
@@ -26,12 +28,12 @@ function matchModeForKill(fabric: Fabric, player: Player, enemyPlayer: Player) {
 						.run();
 				});
 		})
-		.with("Free For All", () => {
+		.with({ gameMode: "Free For All" }, () => {
 			store.dispatch(addKillToPlayer(player));
 			store.dispatch(addDeathToPlayer(enemyPlayer));
 		})
-		.with("Kill Confirmed", () => {
-			createTag(fabric, enemyPlayer);
+		.with({ gameMode: "Kill Confirmed" }, () => {
+			unitConstructor.createTag(enemyPlayer);
 		})
 		.otherwise(() => {
 			error("Invalid gamemode");
