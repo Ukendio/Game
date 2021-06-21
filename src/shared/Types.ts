@@ -1,3 +1,4 @@
+import { InferDataType } from "@rbxts/fabric";
 import { Vec } from "@rbxts/rust-classes";
 
 export enum Mode {
@@ -17,3 +18,7 @@ export interface TopicFormat {
 	name: string;
 	options: Vec<string>;
 }
+
+export type TLayerData<T extends keyof FabricUnits> = Required<FabricUnits[T]>["_addLayerData"] extends {}
+	? Required<FabricUnits[T]>["_addLayerData"]
+	: Partial<InferDataType<T>>;
