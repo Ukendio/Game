@@ -1,38 +1,25 @@
-import { Flamework } from "@rbxts/flamework";
+import { NonNullableObject } from "@rbxts/fabric";
+import Unit from "@rbxts/fabric/src/FabricLib/Fabric/Unit";
 import Net from "@rbxts/net";
-import { Config } from "shared/Types";
+import { TLayerData } from "./Types";
 
-const remotes = Net.Definitions.Create({
-	UICountdown: Net.Definitions.ServerToClientEvent<[number, string, string]>(),
-	UIScoreboardUpdate: Net.Definitions.ServerToClientEvent<[string]>(),
-	RoundStarted: Net.Definitions.ServerToClientEvent(),
+const define = Net.Definitions;
+const remotes = define.Create({
+	UICountdown: define.ServerToClientEvent<[number, string, string]>(),
+	UIScoreboardUpdate: define.ServerToClientEvent<[string]>(),
+	updateScoreBoard: define.ServerToClientEvent<[string]>(),
 
-	ClientRequestDeploy: Net.Definitions.ServerAsyncFunction<() => boolean | Model>(),
+	roundStarted: define.ServerToClientEvent(),
+	councilVoteOn: define.ServerToClientEvent<[{ name: string; options: string[] }]>(),
+	councilStopVote: define.ServerToClientEvent(),
+
+	constructUnit: define.ServerToClientEvent<
+		[keyof FabricUnits, Instance | Unit<keyof FabricUnits>, NonNullableObject<TLayerData<keyof FabricUnits>>]
+	>(),
+
+	userRequestDeploy: define.ServerAsyncFunction<() => boolean | Model>(),
+
+	clientAppendVote: define.ClientToServerEvent<[string]>(),
 });
 
 export default remotes;
-
-interface ServerEvents {
-	clientAppendVote(vote: string): void;
-	clientChooseTeam(team: Team): void;
-}
-
-interface ClientEvents {
-	unitConstructHealthPack(model: Model): void;
-	unitConstructGun(tool: Tool, Configuration: Config): void;
-	unitConstructHero(player: Player): void;
-	unitConstructMelee(tool: Tool): void;
-	unitConstructTag(model: Model): void;
-
-	roundStarted(): void;
-	councilVoteOn(topic: { name: string; options: string[] }): void;
-	councilStopVote(): void;
-
-	userRequestDeploy(): [boolean, Model | undefined];
-	updateScoreBoard(playerName: string): void;
-}
-
-const events = Flamework.createEvent<ServerEvents, ClientEvents>();
-
-export const serverEvents = events.server;
-export const clientEvents = events.client;
