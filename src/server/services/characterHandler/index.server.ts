@@ -1,11 +1,9 @@
 import { OnStart, Service } from "@rbxts/flamework";
-import { Option } from "@rbxts/rust-classes";
 import { Players } from "@rbxts/services";
 import yieldForR15CharacterDescendants from "@rbxts/yield-for-character";
 
 import store from "server/core/store";
-import { createHealthPack } from "server/core/unitFactory/createHealthPack";
-import { createTag } from "server/core/unitFactory/createTag";
+import { Config, Mode } from "shared/Types";
 import { UnitConstructor } from "../unitConstructor";
 import { findSpawn } from "./findSpawn";
 
@@ -20,12 +18,23 @@ export class CharacterHandler implements OnStart {
 	onStart() {
 		const handleCharacterAdded = async (character: Model) => {
 			const rig = await yieldForR15CharacterDescendants(character);
-			const player = Players.GetPlayerFromCharacter(rig);
+			const player = Players.GetPlayerFromCharacter(rig)!;
+
+			this.UnitConstructor.createGun(
+				player,
+				identity<Config>({
+					fireRate: 1,
+					recoil: 1,
+					maxDistance: 400,
+					damage: 5,
+					mode: Mode.Auto,
+				}),
+			);
 
 			rig.Humanoid.Health = 20;
 			rig.Humanoid.Died.Connect(() => {
-				createHealthPack(this.UnitConstructor.fabric, Option.wrap(player)).mapErr((err) => warn(err));
-				createTag(this.UnitConstructor.fabric, player!);
+				this.UnitConstructor.createHealthPack(player);
+				this.UnitConstructor.createTag(player);
 			});
 
 			return rig;
