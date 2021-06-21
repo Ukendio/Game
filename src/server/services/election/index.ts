@@ -4,30 +4,25 @@ import { gameModes } from "server/core/gameModes";
 import store from "server/core/store";
 import { castVote, createTopic, selectGameMode, startVote, stopVote } from "server/core/store/actions";
 import { match } from "shared/rbxts-pattern";
-import { serverEvents } from "shared/remotes";
-import { getKeys } from "shared/tableUtil";
 import { getVoteOrDefault } from "./getVoteOrDefault";
+import remotes from "shared/Remotes";
+import { TopicFormat } from "shared/Types";
+import Object from "@rbxts/object-utils";
+
+const serverEvents = remotes.Server;
 
 @Service({
 	loadOrder: 4,
 })
 export class Election implements OnInit, OnStart {
+	private clientAppendVote = serverEvents.Create("clientAppendVote");
+	private councilVoteOn = serverEvents.Create("councilVoteOn");
+	private councilStopVote = serverEvents.Create("councilStopVote");
+
 	constructor() {}
 
 	onInit() {
-		serverEvents.connect("clientAppendVote", (player, vote) => {
-			const state = store.getState();
-
-			assert(state.voting === false, "Cannot start a vote when a vote is ongoing");
-			assert(
-				state.topic.options.iter().find((option) => option === vote),
-				"Was not found in votable options",
-			);
-
-			store.dispatch(castVote(player, vote));
-		});
-
-		serverEvents.connect("clientAppendVote", (player, vote) => this._castVote(player, vote));
+		this.clientAppendVote.Connect((player, vote) => this._castVote(player, vote));
 	}
 
 	onStart() {}
@@ -38,38 +33,37 @@ export class Election implements OnInit, OnStart {
 				store.dispatch(
 					createTopic({
 						name: "Gamemode",
-						options: Vec.vec(...getKeys(gameModes)),
+						options: Vec.vec(...Object.keys(gameModes)),
 					}),
 				);
 
 				store.dispatch(startVote());
-
-				serverEvents.councilVoteOn.broadcast(this._serializeTopic());
+				this.councilVoteOn.SendToAllPlayers(this._serializeTopic(store.getState().topic));
 
 				await Promise.delay(1).then(() => {
 					store.dispatch(selectGameMode(this._conclude() as keyof typeof gameModes));
 					store.dispatch(stopVote());
 
-					serverEvents.councilStopVote.broadcast();
+					this.councilStopVote.SendToAllPlayers();
 				});
 			})
 			.with("Map", async () => {
 				store.dispatch(
 					createTopic({
 						name: "Map",
-						options: Vec.vec(...getKeys(gameModes)),
+						options: Vec.vec(...Object.keys(gameModes)),
 					}),
 				);
 
 				store.dispatch(startVote());
 
-				serverEvents.councilVoteOn.broadcast(this._serializeTopic());
+				this.councilVoteOn.SendToAllPlayers(this._serializeTopic(store.getState().topic));
 
 				await Promise.delay(1).then(() => {
 					store.dispatch(selectGameMode(this._conclude() as keyof typeof gameModes));
 					store.dispatch(stopVote());
 
-					serverEvents.councilStopVote.broadcast();
+					this.councilStopVote.SendToAllPlayers();
 				});
 			});
 	}
@@ -79,8 +73,7 @@ export class Election implements OnInit, OnStart {
 		return getVoteOrDefault(state.votes, state.topic.options);
 	}
 
-	protected _serializeTopic() {
-		const topic = store.getState().topic;
+	protected _serializeTopic(topic: TopicFormat) {
 		return {
 			name: topic.name,
 			options: topic.options.asPtr(),

@@ -4,7 +4,7 @@ import { startRound } from "server/core/store/actions";
 import { Election } from "../election";
 import remotes from "shared/Remotes";
 
-const RoundStarted = remotes.Server.Create("RoundStarted");
+const roundStarted = remotes.Server.Create("roundStarted");
 
 @Service({
 	loadOrder: 3,
@@ -15,7 +15,7 @@ export class RoundCoordinator implements OnStart {
 	onStart() {
 		const roundBuilder = async () => {
 			store.dispatch(startRound());
-			RoundStarted.SendToAllPlayers();
+			roundStarted.SendToAllPlayers();
 			return store
 				.getState()
 				.winCondition(store)

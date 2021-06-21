@@ -3,7 +3,8 @@ import Remotes from "shared/remotes";
 import UserCamera from "client/UserInterface/Components/camera";
 import { Players, UserInputService } from "@rbxts/services";
 
-const RoundStarted = Remotes.Client.Get("RoundStarted");
+const roundStarted = Remotes.Client.Get("roundStarted");
+const deployUser = Remotes.Client.Get("userRequestDeploy");
 
 interface State {
 	status: Color3;
@@ -22,7 +23,7 @@ export class Home extends Roact.Component<Props, State> {
 	};
 
 	didMount() {
-		RoundStarted.Connect(() => this.setState({ status: new Color3(0, 1, 0), visible: this.state.visible }));
+		roundStarted.Connect(() => this.setState({ status: new Color3(0, 1, 0), visible: this.state.visible }));
 		UserCamera.setActorNone();
 		UserCamera.addBlur(1);
 
@@ -34,7 +35,6 @@ export class Home extends Roact.Component<Props, State> {
 	}
 
 	render(): Roact.Element {
-		const DeployUser = Remotes.Client.Get("ClientRequestDeploy");
 		return (
 			<frame
 				Key={"MainFrame"}
@@ -56,7 +56,7 @@ export class Home extends Roact.Component<Props, State> {
 					Event={{
 						MouseButton1Down: (rbx, x, y) => {
 							if (this.state.debounce) {
-								DeployUser.CallServerAsync().then((deployed: boolean | Model) => {
+								deployUser.CallServerAsync().then((deployed: boolean | Model) => {
 									if (deployed !== false && typeIs(deployed, "Instance") && deployed.IsA("Model")) {
 										UserCamera.removeBlur();
 										UserCamera.setActorUser(deployed);
