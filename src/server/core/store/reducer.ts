@@ -1,7 +1,6 @@
 import Rodux, { Store } from "@rbxts/rodux";
 import { Vec } from "@rbxts/rust-classes";
 import { gameModes } from "server/core/gameModes";
-import { copyShallow } from "shared/tableUtil";
 import { TopicFormat } from "shared/Types";
 import { Actions, PlayerTeam } from "./actions";
 
@@ -43,29 +42,29 @@ const initialState: State = {
 
 export const reducer = Rodux.createReducer<State, Actions>(initialState, {
 	AddKillToPlayer: (state, action) => {
-		const newState = copyShallow<State>(state);
-		newState.ranking.iter().forEach((current) => {
-			if (current.player === action.player) {
-				current.kills++;
-			}
-		});
+		const newState = { ...state };
+		newState.ranking
+			.iter()
+			.find((current) => current.player === action.player)
+			.map((player) => player.kills++)
+			.unwrap();
 
 		return newState;
 	},
 
 	AddDeathToPlayer: (state, action) => {
-		const newState = copyShallow<State>(state);
-		newState.ranking.iter().forEach((current) => {
-			if (current.player === action.player) {
-				current.deaths++;
-			}
-		});
+		const newState = { ...state };
+		newState.ranking
+			.iter()
+			.find((current) => current.player === action.player)
+			.map((player) => player.deaths++)
+			.unwrap();
 
 		return newState;
 	},
 
 	StartVote: (state) => {
-		const newState = copyShallow<State>(state);
+		const newState = { ...state };
 		newState.voting = true;
 		state.topic.options.iter().forEach((index) => {
 			newState.votes[index] = 0;
@@ -76,7 +75,7 @@ export const reducer = Rodux.createReducer<State, Actions>(initialState, {
 	StopVote: (state) => {
 		assert(state.voting === true, "Cannot stop a voting that is not ongoing");
 
-		const newState = copyShallow<State>(state);
+		const newState = { ...state };
 		newState.voting = false;
 		newState.topic = undefined!;
 		newState.votes = {};
@@ -86,7 +85,7 @@ export const reducer = Rodux.createReducer<State, Actions>(initialState, {
 	},
 
 	CastVote: (state, action) => {
-		const newState = copyShallow<State>(state);
+		const newState = { ...state };
 		newState.votes[action.vote]++;
 		newState.hasVoted.push(action.player);
 		return state;
@@ -95,20 +94,20 @@ export const reducer = Rodux.createReducer<State, Actions>(initialState, {
 	CreateTopic: (state, action) => {
 		assert(state.voting === false, "Cannot have an ongoing vote before creating topic");
 
-		const newState = copyShallow<State>(state);
+		const newState = { ...state };
 		newState.topic = action.topic;
 
 		return newState;
 	},
 	AddPlayerToBoard: (state, action) => {
-		const newState = copyShallow<State>(state);
+		const newState = { ...state };
 		newState.ranking.push(action.playerScore);
 
 		return newState;
 	},
 
 	ChangeRanking: (state) => {
-		const newState = copyShallow<State>(state);
+		const newState = { ...state };
 		const ranking = newState.ranking;
 		table.sort(ranking.asPtr(), (a, b) => a.kills < b.kills);
 
@@ -116,7 +115,7 @@ export const reducer = Rodux.createReducer<State, Actions>(initialState, {
 	},
 	Deploy: (state, action) => {
 		if (action.player.Parent !== undefined) {
-			const newState = copyShallow<State>(state);
+			const newState = { ...state };
 			newState.deployedPlayers.push(action.player);
 
 			return newState;
@@ -124,7 +123,7 @@ export const reducer = Rodux.createReducer<State, Actions>(initialState, {
 		return state;
 	},
 	Depart: (state, action) => {
-		const newState = copyShallow<State>(state);
+		const newState = { ...state };
 		newState.deployedPlayers
 			.iter()
 			.filter((player) => player !== action.player)
@@ -134,7 +133,7 @@ export const reducer = Rodux.createReducer<State, Actions>(initialState, {
 	},
 	Start: (state) => {
 		if (state.sequence === "intermission") {
-			const newState = copyShallow<State>(state);
+			const newState = { ...state };
 			newState.sequence = "started";
 
 			return newState;
@@ -144,7 +143,7 @@ export const reducer = Rodux.createReducer<State, Actions>(initialState, {
 	},
 	Stop: (state) => {
 		if (state.sequence === "started") {
-			const newState = copyShallow<State>(state);
+			const newState = { ...state };
 			newState.sequence = "intermission";
 
 			return newState;
@@ -153,7 +152,7 @@ export const reducer = Rodux.createReducer<State, Actions>(initialState, {
 	},
 
 	SelectGameMode: (state, action) => {
-		const newState = copyShallow<State>(state);
+		const newState = { ...state };
 		newState.gameMode = action.gameMode;
 		newState.winCondition = gameModes[action.gameMode];
 
@@ -161,7 +160,7 @@ export const reducer = Rodux.createReducer<State, Actions>(initialState, {
 	},
 
 	SelectMap: (state, action) => {
-		const newState = copyShallow<State>(state);
+		const newState = { ...state };
 		newState.currentMap = action.map;
 
 		return newState;
@@ -169,48 +168,56 @@ export const reducer = Rodux.createReducer<State, Actions>(initialState, {
 
 	SetSpawnLocations: (state, action) => {
 		if (action.positions !== undefined) {
-			const newState = copyShallow<State>(state);
+			const newState = { ...state };
 			newState.spawnLocations = action.positions;
 			return newState;
 		}
 		return state;
 	},
 	AddKillToTeam: (state, action) => {
-		const newState = copyShallow<State>(state);
-		const team = newState.teams.iter().find((team) => team === action.team);
-		team.map((playerTeam) => playerTeam.kills++);
+		const newState = { ...state };
+		newState.teams
+			.iter()
+			.find((team) => team === action.team)
+			.map((playerTeam) => playerTeam.kills++)
+			.unwrap();
 
 		return newState;
 	},
 
 	AddDeathToTeam: (state, action) => {
-		const newState = copyShallow<State>(state);
-		const team = newState.teams.iter().find((team) => team === action.team);
-		team.map((playerTeam) => playerTeam.kills++);
+		const newState = { ...state };
+		newState.teams
+			.iter()
+			.find((team) => team === action.team)
+			.map((playerTeam) => playerTeam.deaths++)
+			.unwrap();
 
 		return newState;
 	},
 	AddTeammate: (state, action) => {
-		const newState = copyShallow<State>(state);
-		const team = action.team;
-
-		team.members.push(action.player);
+		const newState = { ...state };
+		newState.teams
+			.iter()
+			.find((team) => team === action.team)
+			.map((playerTeam) => playerTeam.members.push(action.player))
+			.unwrap();
 
 		return newState;
 	},
 
 	RemoveTeammateAction: (state, action) => {
-		const newState = copyShallow<State>(state);
-		const team = action.team;
-
-		team.members.filter((current) => current !== action.player);
+		const newState = { ...state };
+		newState.teams
+			.iter()
+			.find((team) => team === action.team)
+			.map((playerTeam) => playerTeam.members.filter((current) => current !== action.player))
+			.unwrap();
 
 		return newState;
 	},
 
 	EnlistTeam: (state, action) => {
-		const newState = copyShallow<State>(state);
-		newState.teams.push(action.team);
-		return newState;
+		return { ...state, teams: Vec.vec(...[action.team, ...state.teams.asPtr()]) };
 	},
 });

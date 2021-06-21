@@ -1,5 +1,4 @@
 import { RunService, Workspace } from "@rbxts/services";
-import { copyShallow } from "../../../shared/tableUtil";
 
 interface Options {
 	overrideDistance?: number;
@@ -34,7 +33,7 @@ function step(options: Required<Options>) {
 	if (result) {
 		const normal = result.Normal;
 		const reflect = currentNormal.sub(normal.mul(currentNormal.Dot(normal)).mul(2));
-		const newOptions = copyShallow<Required<Options>>(options);
+		const newOptions = { ...options };
 		newOptions.currentPosition = position;
 		newOptions.overrideDistance = options.stepDistance - position.sub(oldPosition).Magnitude;
 		newOptions.currentNormal = reflect;
@@ -43,7 +42,7 @@ function step(options: Required<Options>) {
 		return;
 	}
 
-	const newOptions = copyShallow<Required<Options>>(options);
+	const newOptions = { ...options };
 	newOptions.currentDistance += position.sub(oldPosition).Magnitude;
 	newOptions.currentPosition = currentPosition;
 
