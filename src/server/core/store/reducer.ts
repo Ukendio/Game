@@ -46,8 +46,7 @@ export const reducer = Rodux.createReducer<State, Actions>(initialState, {
 		newState.ranking
 			.iter()
 			.find((current) => current.player === action.player)
-			.map((player) => player.kills++)
-			.unwrap();
+			.map((player) => player.kills++);
 
 		return newState;
 	},
@@ -57,8 +56,7 @@ export const reducer = Rodux.createReducer<State, Actions>(initialState, {
 		newState.ranking
 			.iter()
 			.find((current) => current.player === action.player)
-			.map((player) => player.deaths++)
-			.unwrap();
+			.map((player) => player.deaths++);
 
 		return newState;
 	},
@@ -179,8 +177,7 @@ export const reducer = Rodux.createReducer<State, Actions>(initialState, {
 		newState.teams
 			.iter()
 			.find((team) => team === action.team)
-			.map((playerTeam) => playerTeam.kills++)
-			.unwrap();
+			.map((playerTeam) => playerTeam.kills++);
 
 		return newState;
 	},
@@ -190,8 +187,7 @@ export const reducer = Rodux.createReducer<State, Actions>(initialState, {
 		newState.teams
 			.iter()
 			.find((team) => team === action.team)
-			.map((playerTeam) => playerTeam.deaths++)
-			.unwrap();
+			.map((playerTeam) => playerTeam.deaths++);
 
 		return newState;
 	},
@@ -200,8 +196,7 @@ export const reducer = Rodux.createReducer<State, Actions>(initialState, {
 		newState.teams
 			.iter()
 			.find((team) => team === action.team)
-			.map((playerTeam) => playerTeam.members.push(action.player))
-			.unwrap();
+			.map((playerTeam) => playerTeam.members.push(action.player));
 
 		return newState;
 	},
@@ -211,8 +206,7 @@ export const reducer = Rodux.createReducer<State, Actions>(initialState, {
 		newState.teams
 			.iter()
 			.find((team) => team === action.team)
-			.map((playerTeam) => playerTeam.members.filter((current) => current !== action.player))
-			.unwrap();
+			.map((playerTeam) => playerTeam.members.filter((current) => current !== action.player));
 
 		return newState;
 	},
