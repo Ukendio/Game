@@ -172,7 +172,7 @@ export = () => {
 				{ player: "Ukendio", choice: userPlay },
 				{ player: "Computer", choice: computerPlay },
 			).match(
-				(win) => `${win.player} won using ${win.choice}`,
+				(won) => `${won.player} won using ${won.choice}`,
 				(draw) => draw,
 			);
 
