@@ -111,16 +111,15 @@ export = () => {
 		});
 
 		it("player team", () => {
-			const team = new Instance("Team");
-			const brick = new BrickColor("Really black").Color;
+			const brick = new BrickColor("Really black");
 
 			const playerTeam = {
-				hello: "bye",
+				marcus: "bye",
 				brick: brick,
 			};
 
 			const matchedPlayerTeam = match(playerTeam)
-				.with({ brick: brick }, () => true)
+				.with({ marcus: "bye", brick: brick }, () => true)
 				.run();
 			expect(matchedPlayerTeam).to.be.ok();
 		});
