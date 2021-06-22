@@ -42,28 +42,25 @@ const initialState: State = {
 
 export const reducer = Rodux.createReducer<State, Actions>(initialState, {
 	AddKillToPlayer: (state, action) => {
-		const newState = { ...state };
-		newState.ranking
+		state.ranking
 			.iter()
 			.find((current) => current.player === action.player)
 			.map((player) => player.kills++);
 
-		return newState;
+		return { ...state };
 	},
 
 	AddDeathToPlayer: (state, action) => {
-		const newState = { ...state };
-		newState.ranking
+		state.ranking
 			.iter()
 			.find((current) => current.player === action.player)
 			.map((player) => player.deaths++);
 
-		return newState;
+		return { ...state };
 	},
 
 	StartVote: (state) => {
-		const newState = { ...state };
-		newState.voting = true;
+		const newState = { ...state, voting: true };
 		state.topic.options.iter().forEach((index) => {
 			newState.votes[index] = 0;
 		});
@@ -71,90 +68,63 @@ export const reducer = Rodux.createReducer<State, Actions>(initialState, {
 	},
 
 	StopVote: (state) => {
-		assert(state.voting === true, "Cannot stop a voting that is not ongoing");
-
-		const newState = { ...state };
-		newState.voting = false;
-		newState.topic = undefined!;
-		newState.votes = {};
-		newState.hasVoted = Vec.vec();
-
-		return newState;
+		return { ...state, voting: false, topic: undefined!, votes: {}, hasVoted: Vec.vec() };
 	},
 
 	CastVote: (state, action) => {
-		const newState = { ...state };
+		const newState = { ...state, hasVoted: state.hasVoted.push(action.player) };
 		newState.votes[action.vote]++;
-		newState.hasVoted.push(action.player);
-		return state;
+		return newState;
 	},
 
 	CreateTopic: (state, action) => {
-		assert(state.voting === false, "Cannot have an ongoing vote before creating topic");
-
-		const newState = { ...state };
-		newState.topic = action.topic;
-
-		return newState;
+		return { ...state, topic: action.topic };
 	},
-	AddPlayerToBoard: (state, action) => {
-		const newState = { ...state };
-		newState.ranking.push(action.playerScore);
 
-		return newState;
+	AddPlayerToBoard: (state, action) => {
+		return { ...state, ranking: state.ranking.push(action.playerScore) };
 	},
 
 	ChangeRanking: (state) => {
-		const newState = { ...state };
-		const ranking = newState.ranking;
-		table.sort(ranking.asPtr(), (a, b) => a.kills < b.kills);
+		table.sort(state.ranking.asPtr(), (a, b) => a.kills < b.kills);
 
-		return newState;
+		return { ...state };
 	},
+
 	Deploy: (state, action) => {
 		if (action.player.Parent !== undefined) {
-			const newState = { ...state };
-			newState.deployedPlayers.push(action.player);
-
-			return newState;
+			return { ...state, deployedPlayers: state.deployedPlayers.push(action.player) };
 		}
 		return state;
 	},
-	Depart: (state, action) => {
-		const newState = { ...state };
-		newState.deployedPlayers
-			.iter()
-			.filter((player) => player !== action.player)
-			.collect();
 
-		return newState;
+	Depart: (state, action) => {
+		return {
+			...state,
+			deployedPlayers: state.deployedPlayers
+				.iter()
+				.filter((player) => player !== action.player)
+				.collect(),
+		};
 	},
+
 	Start: (state) => {
 		if (state.sequence === "intermission") {
-			const newState = { ...state };
-			newState.sequence = "started";
-
-			return newState;
+			return { ...state, sequence: "intermission" };
 		}
 
 		return state;
 	},
+
 	Stop: (state) => {
 		if (state.sequence === "started") {
-			const newState = { ...state };
-			newState.sequence = "intermission";
-
-			return newState;
+			return { ...state, sequence: "intermission" };
 		}
 		return state;
 	},
 
 	SelectGameMode: (state, action) => {
-		const newState = { ...state };
-		newState.gameMode = action.gameMode;
-		newState.winCondition = gameModes[action.gameMode];
-
-		return newState;
+		return { ...state, gameMode: action.gameMode, winCondition: gameModes[action.gameMode] };
 	},
 
 	SelectMap: (state, action) => {
@@ -172,6 +142,7 @@ export const reducer = Rodux.createReducer<State, Actions>(initialState, {
 		}
 		return state;
 	},
+
 	AddKillToTeam: (state, action) => {
 		const newState = { ...state };
 		newState.teams
@@ -183,32 +154,17 @@ export const reducer = Rodux.createReducer<State, Actions>(initialState, {
 	},
 
 	AddDeathToTeam: (state, action) => {
-		const newState = { ...state };
-		newState.teams
-			.iter()
-			.find((team) => team === action.team)
-			.map((playerTeam) => playerTeam.deaths++);
-
-		return newState;
+		action.team.deaths++;
+		return { ...state };
 	},
 	AddTeammate: (state, action) => {
-		const newState = { ...state };
-		newState.teams
-			.iter()
-			.find((team) => team === action.team)
-			.map((playerTeam) => playerTeam.members.push(action.player));
-
-		return newState;
+		action.team.members.push(action.player);
+		return { ...state };
 	},
 
 	RemoveTeammateAction: (state, action) => {
-		const newState = { ...state };
-		newState.teams
-			.iter()
-			.find((team) => team === action.team)
-			.map((playerTeam) => playerTeam.members.filter((current) => current !== action.player));
-
-		return newState;
+		action.team.members.filter((current) => current !== action.player);
+		return { ...state };
 	},
 
 	EnlistTeam: (state, action) => {
