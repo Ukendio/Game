@@ -27,7 +27,8 @@
 		"game:out/server/services/referee@Referee": "lJ",
 		"game:out/server/services/characterHandler/init.server@CharacterHandler": "Lr",
 		"game:out/server/services/characterHandler/deployment@Deployment": "8k",
-		"game:out/server/services/unitConstructor/init@UnitConstructor": "WN"
+		"game:out/server/services/unitConstructor/init@UnitConstructor": "WN",
+		"game:out/server/services/enlistment/init@Enlistment": "o5"
 	},
 	"salt": "7c5c47f013b98fe8a5b7c61c711d0b9ee306cc4ffe77419e4a36c2e146c912f43cf72c892e130df9f466aa5c9a39fc01730d01dcc4a99e6f8ab4a4da90d258cf"
 }

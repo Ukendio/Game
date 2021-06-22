@@ -104,15 +104,25 @@ export = () => {
 
 			const value: Option<string> = { _tag: "Some", value: "Hello" };
 
-			expect(match(value).with({ _tag: "Some" }, () => true)).to.be.ok();
+			const isSome = match(value)
+				.with({ _tag: "Some" }, () => true)
+				.run();
+			expect(isSome).to.be.ok();
 		});
 
 		it("player team", () => {
 			const team = new Instance("Team");
-			team.TeamColor = new BrickColor("Really black");
+			const brick = new BrickColor("Really black").Color;
 
-			const playerTeam = team;
-			expect(match(team).with({ TeamColor: playerTeam.TeamColor }, () => true)).to.be.ok();
+			const playerTeam = {
+				hello: "bye",
+				brick: brick,
+			};
+
+			const matchedPlayerTeam = match(playerTeam)
+				.with({ brick: brick }, () => true)
+				.run();
+			expect(matchedPlayerTeam).to.be.ok();
 		});
 	});
 
@@ -138,7 +148,9 @@ export = () => {
 
 		function parseType(name: string): Option<Choice> {
 			for (const typ of Vec.vec(Choice.ROCK, Choice.PAPER, Choice.SCISSOR).generator()) {
-				if (tostring(typ).lower() === name.lower()) Option.some(typ);
+				if (tostring(typ).lower() === name.lower()) {
+					return Option.some(typ);
+				}
 			}
 			return Option.none<Choice>();
 		}

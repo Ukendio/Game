@@ -18,11 +18,11 @@ function matchModeForKill(player: Player, enemyPlayer: Player) {
 				.getState()
 				.teams.iter()
 				.forEach((team) => {
-					match(team.tag)
-						.with({ TeamColor: player.TeamColor }, () => {
+					match(team.tag.TeamColor)
+						.with(player.TeamColor, () => {
 							store.dispatch(addKillToTeam(team));
 						})
-						.with({ TeamColor: enemyPlayer.TeamColor }, () => {
+						.with(enemyPlayer.TeamColor, () => {
 							store.dispatch(addDeathToTeam(team));
 						})
 						.run();
