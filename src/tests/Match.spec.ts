@@ -1,4 +1,5 @@
 /// <reference types="@rbxts/testez/globals" />
+import { Option, Result, Vec } from "@rbxts/rust-classes";
 import { match, _select } from "shared/rbxts-pattern";
 
 export = () => {
@@ -112,6 +113,70 @@ export = () => {
 
 			const playerTeam = team;
 			expect(match(team).with({ TeamColor: playerTeam.TeamColor }, () => true)).to.be.ok();
+		});
+	});
+
+	describe("rock paper scissors", () => {
+		const enum Choice {
+			ROCK = "rock",
+			PAPER = "paper",
+			SCISSOR = "scissor",
+		}
+
+		interface Play {
+			choice: Choice;
+			player: string;
+		}
+
+		function getBeats(input: Choice): Choice {
+			return match(input)
+				.with(Choice.ROCK, () => Choice.SCISSOR)
+				.with(Choice.PAPER, () => Choice.ROCK)
+				.with(Choice.SCISSOR, () => Choice.PAPER)
+				.run();
+		}
+
+		function parseType(name: string): Option<Choice> {
+			for (const typ of Vec.vec(Choice.ROCK, Choice.PAPER, Choice.SCISSOR).generator()) {
+				if (tostring(typ).lower() === name.lower()) Option.some(typ);
+			}
+			return Option.none<Choice>();
+		}
+
+		function randomPlayOrForce(forceChoice?: Choice): Choice {
+			return forceChoice !== undefined
+				? forceChoice
+				: match(math.random(0, 2))
+						.with(0, () => Choice.ROCK)
+						.with(1, () => Choice.PAPER)
+						.with(2, () => Choice.SCISSOR)
+						.otherwise(() => error("Unable to generate random play!"));
+		}
+
+		function getResult(playOne: Play, playTwo: Play): Result<Play, string> {
+			const userBeats = getBeats(playOne.choice);
+			const computerBeats = getBeats(playTwo.choice);
+
+			if (userBeats === playTwo.choice) {
+				return Result.ok(playOne);
+			} else if (computerBeats === playOne.choice) {
+				return Result.ok(playTwo);
+			} else return Result.err("Draw!");
+		}
+
+		it("rock wins", () => {
+			const userPlay = parseType("Rock").expect("Invalid input!");
+			const computerPlay = randomPlayOrForce(Choice.SCISSOR);
+
+			const result = getResult(
+				{ player: "Ukendio", choice: userPlay },
+				{ player: "Computer", choice: computerPlay },
+			).match(
+				(win) => `${win.player} won using ${win.choice}`,
+				(draw) => draw,
+			);
+
+			expect(result).to.equal("Ukendio won using rock");
 		});
 	});
 };
