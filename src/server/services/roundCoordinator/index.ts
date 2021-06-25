@@ -1,6 +1,6 @@
 import { OnStart, Service } from "@rbxts/flamework";
 import store from "server/core/store";
-import { startRound } from "server/core/store/actions";
+import { startRound } from "shared/Rodux/actions";
 import { Election } from "../election";
 import remotes from "shared/Remotes";
 

@@ -1,7 +1,7 @@
 import { OnInit, Service } from "@rbxts/flamework";
 import Remotes from "shared/remotes";
 import store from "server/core/store";
-import { deploy } from "server/core/store/actions";
+import { deploy } from "shared/Rodux/actions";
 const userRequestDeploy = Remotes.Server.Create("userRequestDeploy");
 
 @Service({ loadOrder: 5 })

@@ -1,8 +1,8 @@
 import { OnInit, OnStart, Service } from "@rbxts/flamework";
 import { Vec } from "@rbxts/rust-classes";
-import { gameModes } from "server/core/gameModes";
+import { gameModes } from "shared/gameModes";
 import store from "server/core/store";
-import { castVote, createTopic, selectGameMode, startVote, stopVote } from "server/core/store/actions";
+import { castVote, createTopic, selectGameMode, startVote, stopVote } from "shared/Rodux/actions";
 import { match } from "shared/rbxts-pattern";
 import { getVoteOrDefault } from "./getVoteOrDefault";
 import remotes from "shared/Remotes";

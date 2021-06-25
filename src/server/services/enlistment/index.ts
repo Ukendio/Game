@@ -1,6 +1,6 @@
 import { Service } from "@rbxts/flamework";
 import store from "server/core/store";
-import { addTeammate } from "server/core/store/actions";
+import { addTeammate } from "shared/Rodux/actions";
 
 @Service({
 	loadOrder: 6,
