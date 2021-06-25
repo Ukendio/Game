@@ -1,5 +1,5 @@
 import Rodux from "@rbxts/rodux";
-import { gameModes } from "server/core/gameModes";
+import { gameModes } from "shared/gameModes";
 import { TopicFormat } from "shared/Types";
 import { PlayerScore } from "./reducer";
 
