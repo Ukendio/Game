@@ -1,0 +1,48 @@
+# Taken from roblox-ts under the MIT license https://github.com/roblox-ts/types/blob/master/.github/workflows/build.yml
+
+name: Build
+
+on:
+    workflow_dispatch:
+    schedule:
+        - cron: "0 7 * * *"
+    push:
+        branches:
+            - master
+
+jobs:
+    build:
+        if:
+            contains(github.event.commits[0].message, '[skip ci]') == false &&
+            # github.repository == 'Ukendio/Game' &&
+            # github.ref == 'refs/heads/master' &&
+            true
+
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@master
+
+            - name: Install NodeJS
+              uses: actions/setup-node@master
+              with:
+                  node-version: 12.16.2
+                  registry-url: "https://registry.npmjs.org"
+
+            - uses: bahmutov/npm-install@v1
+
+            - name: Configure Git
+              run: |
+                  git config --global user.name "GitHub Actions"
+                  git config --global user.email "noreply@github.com"
+            - name: Generate Files
+              run: npm run build
+
+            - name: Push Generated Files
+              run: |
+                  git add -A
+                  if ! git diff-index --quiet HEAD --; then
+                    echo "Generated files changed!"
+                    git commit -m "Update generated files [skip ci][test ci]"
+                    git push https://Ukendio:${{ secrets.github_token }}@github.com/Ukendio/Game.git HEAD:master
+                  fi
