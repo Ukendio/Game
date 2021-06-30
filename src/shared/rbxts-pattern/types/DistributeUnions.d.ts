@@ -27,12 +27,12 @@ import { IsMatching } from "./IsMatching";
  * // => ['a', 1 | 2] | ['b', 1 | 2]
  */
 export type DistributeMatchingUnions<a, p> = IsAny<a> extends true
-	? any
+	? unknown
 	: BuildMany<a, Distribute<FindUnionsMany<a, p>>>;
 
 // FindUnionsMany :: a -> Union<a> -> PropertyKey[] -> UnionConfig[]
-export type FindUnionsMany<a, p, path extends any[] = []> = UnionToTuple<
-	(p extends any ? (IsMatching<a, p> extends true ? FindUnions<a, p, path> : []) : never)[number] // using [number] to flatten everything to the same level
+export type FindUnionsMany<a, p, path extends unknown[] = []> = UnionToTuple<
+	(p extends unknown ? (IsMatching<a, p> extends true ? FindUnions<a, p, path> : []) : never)[number] // using [number] to flatten everything to the same level
 >;
 
 /**
@@ -53,7 +53,7 @@ export type FindUnionsMany<a, p, path extends any[] = []> = UnionToTuple<
  * }
  * FindUnions :: Pattern a p => a -> p -> UnionConfig[]
  */
-export type FindUnions<a, p, path extends any[] = []> = unknown extends p
+export type FindUnions<a, p, path extends unknown[] = []> = unknown extends p
 	? []
 	: IsAny<p> extends true
 	? [] // Don't try to find unions after 5 levels
@@ -62,7 +62,7 @@ export type FindUnions<a, p, path extends any[] = []> = unknown extends p
 	: IsUnion<a> extends true
 	? [
 			{
-				cases: a extends any
+				cases: a extends unknown
 					? {
 							value: a;
 							subUnions: FindUnionsMany<a, p, path>;
@@ -71,7 +71,7 @@ export type FindUnions<a, p, path extends any[] = []> = unknown extends p
 				path: path;
 			},
 	  ]
-	: [a, p] extends [readonly any[], readonly any[]]
+	: [a, p] extends [readonly unknown[], readonly unknown[]]
 	? [a, p] extends [
 			readonly [infer a1, infer a2, infer a3, infer a4, infer a5],
 			readonly [infer p1, infer p2, infer p3, infer p4, infer p5],
@@ -104,9 +104,9 @@ export type FindUnions<a, p, path extends any[] = []> = unknown extends p
 		: [a, p] extends [readonly [infer a1], readonly [infer p1]]
 		? FindUnions<a1, p1, [...path, 0]>
 		: []
-	: a extends Set<any>
+	: a extends Set<unknown>
 	? []
-	: a extends Map<any, any>
+	: a extends Map<unknown, unknown>
 	? []
 	: [IsPlainObject<a>, IsPlainObject<p>] extends [true, true]
 	? Flatten<
@@ -122,8 +122,11 @@ export type FindUnions<a, p, path extends any[] = []> = unknown extends p
 	: [];
 
 // Distribute :: UnionConfig[] -> Union<[a, path][]>
-export type Distribute<unions extends any[]> = unions extends [{ cases: infer cases; path: infer path }, ...infer tail]
+export type Distribute<unions extends unknown[]> = unions extends [
+	{ cases: infer cases; path: infer path },
+	...infer tail
+]
 	? cases extends { value: infer value; subUnions: infer subUnions }
-		? [[value, path], ...Distribute<Cast<subUnions, any[]>>, ...Distribute<tail>]
+		? [[value, path], ...Distribute<Cast<subUnions, unknown[]>>, ...Distribute<tail>]
 		: never
 	: [];

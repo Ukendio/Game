@@ -10,7 +10,7 @@ export type IsMatching<a, p> =
 		? p extends a
 			? true
 			: false
-		: [p, a] extends [readonly any[], readonly any[]]
+		: [p, a] extends [readonly unknown[], readonly unknown[]]
 		? [p, a] extends [
 				readonly [infer p1, infer p2, infer p3, infer p4, infer p5],
 				readonly [infer a1, infer a2, infer a3, infer a4, infer a5],
@@ -52,12 +52,12 @@ export type IsMatching<a, p> =
 		: IsPlainObject<p> extends true
 		? true extends (
 				// `true extends union` means "if some cases of the a union are matching"
-				a extends any // loop over the `a` union
+				a extends unknown // loop over the `a` union
 					? [keyof p & keyof a] extends [never] // if no common keys
 						? false
 						: /**
 						 * Intentionally not using ValueOf, to avoid reaching the
-						 * 'type instanciation is too deep error'.
+						 * 'type instantiation is too deep error'.
 						 */
 						{ [k in keyof p & keyof a]: IsMatching<a[k], p[k]> }[keyof p & keyof a] extends true
 						? true // all values are matching
