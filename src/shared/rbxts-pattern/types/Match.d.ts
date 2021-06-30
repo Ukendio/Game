@@ -18,7 +18,7 @@ type NonExhaustiveError<i> = { __nonExhaustive: never } & i;
  * #### Match
  * An interface to create a pattern matching clause.
  */
-export type Match<i, o, patternValueTuples extends [any, any] = never, inferredOutput = never> = {
+export type Match<i, o, patternValueTuples extends [unknown, unknown] = never, inferredOutput = never> = {
 	/**
 	 * #### Match.with
 	 *
@@ -35,12 +35,12 @@ export type Match<i, o, patternValueTuples extends [any, any] = never, inferredO
 		p2 extends Pattern<i>,
 		c,
 		p = p1 | p2,
-		value = p extends any ? MatchedValue<i, InvertPattern<p>> : never
+		value = p extends unknown ? MatchedValue<i, InvertPattern<p>> : never
 	>(
 		pattern1: p1,
 		pattern2: p2,
 		handler: (value: value) => PickReturnValue<o, c>,
-	): Match<i, o, patternValueTuples | (p extends any ? [p, value] : never), Union<inferredOutput, c>>;
+	): Match<i, o, patternValueTuples | (p extends unknown ? [p, value] : never), Union<inferredOutput, c>>;
 
 	with<
 		pat extends Pattern<i>,
@@ -55,7 +55,7 @@ export type Match<i, o, patternValueTuples extends [any, any] = never, inferredO
 		i,
 		o,
 		| patternValueTuples
-		| (pred extends (value: any) => value is infer narrowed ? [GuardPattern<unknown, narrowed>, value] : never),
+		| (pred extends (value: unknown) => value is infer narrowed ? [GuardPattern<unknown, narrowed>, value] : never),
 		Union<inferredOutput, c>
 	>;
 
@@ -63,10 +63,10 @@ export type Match<i, o, patternValueTuples extends [any, any] = never, inferredO
 		ps extends [Pattern<i>, ...Pattern<i>[]],
 		c,
 		p = ps[number],
-		value = p extends any ? MatchedValue<i, InvertPattern<p>> : never
+		value = p extends unknown ? MatchedValue<i, InvertPattern<p>> : never
 	>(
 		...args: [...patterns: ps, handler: (value: value) => PickReturnValue<o, c>]
-	): Match<i, o, patternValueTuples | (p extends any ? [p, value] : never), Union<inferredOutput, c>>;
+	): Match<i, o, patternValueTuples | (p extends unknown ? [p, value] : never), Union<inferredOutput, c>>;
 
 	/**
 	 * #### Match.when
@@ -81,7 +81,7 @@ export type Match<i, o, patternValueTuples extends [any, any] = never, inferredO
 		i,
 		o,
 		| patternValueTuples
-		| (pred extends (value: any) => value is infer narrowed ? [GuardPattern<unknown, narrowed>, value] : never),
+		| (pred extends (value: unknown) => value is infer narrowed ? [GuardPattern<unknown, narrowed>, value] : never),
 		Union<inferredOutput, c>
 	>;
 
@@ -128,7 +128,7 @@ export type Match<i, o, patternValueTuples extends [any, any] = never, inferredO
 	): Match<i, o, patternValueTuples | [p, value], Union<inferredOutput, c>>;
 };
 
-type DeepExcludeAll<a, tuple extends [any, any]> = DeepExclude<
+type DeepExcludeAll<a, tuple extends [unknown, unknown]> = DeepExclude<
 	a,
-	tuple extends any ? InvertPatternForExclude<tuple[0], tuple[1]> : never
+	tuple extends unknown ? InvertPatternForExclude<tuple[0], tuple[1]> : never
 >;

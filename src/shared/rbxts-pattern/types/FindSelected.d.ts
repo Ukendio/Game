@@ -6,7 +6,7 @@ export type FindSelectionUnion<
 	i,
 	p,
 	// path just serves as an id, to identify different anonymous patterns which have the same type
-	path extends any[] = []
+	path extends unknown[] = []
 > = p extends NamedSelectPattern<infer k>
 	? { [kk in k]: [i, path] }
 	: p extends AnonymousSelectPattern

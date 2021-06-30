@@ -1,4 +1,4 @@
-export type ValueOf<a> = a extends any[] ? a[number] : a[keyof a];
+export type ValueOf<a> = a extends unknown[] ? a[number] : a[keyof a];
 
 export type Values<a extends object> = UnionToTuple<ValueOf<a>>;
 
@@ -7,7 +7,7 @@ export type Values<a extends object> = UnionToTuple<ValueOf<a>>;
  * An interesting one. A type taking two imbricated sets and returning the
  * smallest one.
  * We need that because sometimes the pattern's infered type holds more
- * information than the value on which we are matching (if the value is any
+ * information than the value on which we are matching (if the value is unknown
  * or unknown for instance).
  */
 
@@ -18,15 +18,15 @@ export type LeastUpperBound<a, b> = a extends b ? a : b extends a ? b : never;
  * returns never, otherwise returns the type of object
  **/
 
-export type ExcludeIfContainsNever<a, b> = b extends Map<any, any> | Set<any>
+export type ExcludeIfContainsNever<a, b> = b extends Map<unknown, unknown> | Set<unknown>
 	? a
-	: b extends readonly [any, ...any]
+	: b extends readonly [unknown, ...unknown[]]
 	? ExcludeObjectIfContainsNever<a, keyof b & ("0" | "1" | "2" | "3" | "4")>
-	: b extends any[]
+	: b extends unknown[]
 	? ExcludeObjectIfContainsNever<a, keyof b & number>
 	: ExcludeObjectIfContainsNever<a, keyof b & string>;
 
-export type ExcludeObjectIfContainsNever<a, keyConstraint = unknown> = a extends any
+export type ExcludeObjectIfContainsNever<a, keyConstraint = unknown> = a extends unknown
 	? {
 			[k in keyConstraint & keyof a]-?: [a[k]] extends [never] ? "exclude" : "include";
 	  }[keyConstraint & keyof a] extends infer includeOrExclude
@@ -39,42 +39,52 @@ export type ExcludeObjectIfContainsNever<a, keyConstraint = unknown> = a extends
 	: never;
 
 // from https://stackoverflow.com/questions/50374908/transform-union-type-to-intersection-type/50375286#50375286
-export type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (k: infer I) => void ? I : never;
+export type UnionToIntersection<U> = (U extends unknown ? (k: U) => void : never) extends (k: infer I) => void
+	? I
+	: never;
 
 export type IsUnion<a> = [a] extends [UnionToIntersection<a>] ? false : true;
 
-export type UnionToTuple<T> = UnionToIntersection<T extends any ? (t: T) => T : never> extends (_: any) => infer W
+export type UnionToTuple<T> = UnionToIntersection<T extends unknown ? (t: T) => T : never> extends (
+	_: unknown,
+) => infer W
 	? [...UnionToTuple<Exclude<T, W>>, W]
 	: [];
 
 export type Cast<a, b> = a extends b ? a : never;
 
-export type Flatten<xs extends any[]> = xs extends readonly [infer head, ...infer tail]
-	? [...Cast<head, any[]>, ...Flatten<tail>]
+export type Flatten<xs extends unknown[]> = xs extends readonly [infer head, ...infer tail]
+	? [...Cast<head, unknown[]>, ...Flatten<tail>]
 	: [];
 
 export type Equal<X, Y> = (<T>() => T extends X ? 1 : 2) extends <T>() => T extends Y ? 1 : 2 ? true : false;
 
 export type Expect<T extends true> = T;
 
-export type IsAny<T> = 0 extends 1 & T ? true : false;
+export type Isunknown<T> = 0 extends 1 & T ? true : false;
 
-export type Length<it extends any[]> = it["size"];
+export type Length<it extends unknown[]> = it["size"];
 
-export type Iterator<n extends number, it extends any[] = []> = it["size"] extends n ? it : Iterator<n, [any, ...it]>;
+export type Iterator<n extends number, it extends unknown[] = []> = it["size"] extends n
+	? it
+	: Iterator<n, [unknown, ...it]>;
 
-export type Next<it extends any[]> = [any, ...it];
-export type Prev<it extends any[]> = it extends readonly [any, ...infer tail] ? tail : [];
+export type Next<it extends unknown[]> = [unknown, ...it];
+export type Prev<it extends unknown[]> = it extends readonly [unknown, ...infer tail] ? tail : [];
 
-export type Slice<xs extends readonly any[], it extends any[], output extends any[] = []> = Length<it> extends 0
+export type Slice<
+	xs extends readonly unknown[],
+	it extends unknown[],
+	output extends unknown[] = []
+> = Length<it> extends 0
 	? output
 	: xs extends readonly [infer head, ...infer tail]
 	? Slice<tail, Prev<it>, [...output, head]>
 	: output;
 
-export type Drop<xs extends readonly any[], n extends any[]> = Length<n> extends 0
+export type Drop<xs extends readonly unknown[], n extends unknown[]> = Length<n> extends 0
 	? xs
-	: xs extends readonly [any, ...infer tail]
+	: xs extends readonly [unknown, ...infer tail]
 	? Drop<tail, Prev<n>>
 	: [];
 
@@ -87,7 +97,7 @@ export type IsPlainObject<o> = o extends object
 		: true
 	: false;
 
-export type Compute<a extends any> = a extends {} ? a : { [k in keyof a]: a[k] } & unknown;
+export type Compute<a extends unknown> = a extends {} ? a : { [k in keyof a]: a[k] } & unknown;
 
 // All :: Bool[] -> Bool
 export type All<xs> = xs extends readonly [infer head, ...infer tail]

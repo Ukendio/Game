@@ -4,7 +4,7 @@ import { Primitives, IsPlainObject } from "./helpers";
 /**
  * GuardValue returns the value guarded by a type guard function.
  */
-export type GuardValue<F> = F extends (value: any) => value is infer b
+export type GuardValue<F> = F extends (value: unknown) => value is infer b
 	? b
 	: F extends (value: infer a) => unknown
 	? a
@@ -61,7 +61,7 @@ export type Pattern<a> =
 	| AnonymousSelectPattern
 	| NamedSelectPattern<string>
 	| GuardPattern<a, a>
-	| NotPattern<a | any>
+	| NotPattern<a | unknown>
 	| WildCardPattern<a>
 	| (a extends Primitives
 			? a
