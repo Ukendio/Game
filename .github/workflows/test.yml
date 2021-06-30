@@ -13,7 +13,10 @@ on:
 
 jobs:
     test:
-        if: contains(github.event.commits[0].message, '[test ci]') == true
+        if:
+            contains(github.event.commits[0].message, '[skip ci]') == false
+            # github.repository == 'Ukendio/Game' &&
+            # github.ref == 'refs/heads/master' &&
         name: Unit Tests
         runs-on: windows-latest
         timeout-minutes: 10
@@ -54,6 +57,6 @@ jobs:
                   git add -A
                   if ! git diff-index --quiet HEAD --; then
                     echo "Generated files changed!"
-                    git commit -m "Update generated files [skip ci][test ci]"
+                    git commit -m "Update generated files [skip ci]"
                     git push https://Ukendio:${{ secrets.github_token }}@github.com/Ukendio/Game.git HEAD:master
                   fi
