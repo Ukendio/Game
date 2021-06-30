@@ -1,0 +1,23 @@
+# Taken from roblox-ts under the MIT license https://github.com/roblox-ts/types/blob/master/.github/workflows/build.yml
+name: Compile
+
+on:
+    push:
+
+jobs:
+    build:
+        if: contains(github.event.commits[0].message, '[skip ci]') == false
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@master
+
+            - name: Install NodeJS
+              uses: actions/setup-node@master
+              with:
+                  node-version: 12.16.2
+                  registry-url: "https://registry.npmjs.org"
+
+            - uses: bahmutov/npm-install@v1
+
+            - name: Run compiler
+              run: npm run compile

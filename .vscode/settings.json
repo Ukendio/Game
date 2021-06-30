@@ -10,15 +10,11 @@
 	"eslint.run": "onType",
 	"eslint.format.enable": true,
 	"typescript.tsdk": "node_modules/typescript/lib",
-	"cSpell.ignoreWords": [
-		"fmod",
-		"spideyy"
-	],
-	"Lua.diagnostics.disable": [
-		"missing-module-return",
-	],
-	"Lua.diagnostics.globals": [
-		"remodel"
-	],
-	"powermode.enabled": true 
+	"cSpell.ignoreWords": ["fmod", "spideyy"],
+	"Lua.diagnostics.disable": ["missing-module-return"],
+	"Lua.diagnostics.globals": ["remodel"],
+	"powermode.enabled": true,
+	"roblox-ts.color-picker.precision": 3,
+	"roblox-ts.command.parameters": ["-w", "--verbose"],
+	"roblox-ts.command.development": false
 }
