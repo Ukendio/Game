@@ -54,7 +54,7 @@ jobs:
             - name: Push Generated Files
               run: |
                   git add -A
-                  if (!git diff-index --quiet HEAD --); then
+                  if (!git diff-index --quiet HEAD --) then
                     echo "Generated files changed!"
                     git commit -m "Update generated files [skip ci]"
                     git push https://Ukendio:${{ secrets.github_token }}@github.com/Ukendio/Game.git HEAD:master
