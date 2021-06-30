@@ -45,6 +45,8 @@ const healPackage: HealPackage = {
 		particle: true,
 	},
 
+	janitor: new Janitor(),
+
 	onInitialize: function (this) {
 		const model = this.ref as Model;
 		const part = model.PrimaryPart!;

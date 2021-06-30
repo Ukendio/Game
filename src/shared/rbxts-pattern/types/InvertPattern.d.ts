@@ -13,7 +13,7 @@ export type InvertPattern<p> = p extends typeof __.number
 	? string
 	: p extends typeof __.boolean
 	? boolean
-	: p extends NamedSelectPattern<unknown> | AnonymousSelectPattern | typeof __
+	: p extends NamedSelectPattern<string> | AnonymousSelectPattern | typeof __
 	? unknown
 	: p extends GuardPattern<infer p1, infer p2>
 	? [p2] extends [never]
@@ -52,7 +52,7 @@ export type InvertPatternForExclude<p, i> = p extends NotPattern<infer p1>
 	? string
 	: p extends typeof __.boolean
 	? boolean
-	: p extends NamedSelectPattern<unknown> | AnonymousSelectPattern | typeof __
+	: p extends NamedSelectPattern<string> | AnonymousSelectPattern | typeof __
 	? unknown
 	: p extends GuardPattern<unknown, infer p1>
 	? p1

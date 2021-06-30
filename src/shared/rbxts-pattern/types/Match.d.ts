@@ -5,7 +5,7 @@ import type { DeepExclude } from "./DeepExclude";
 import type { WithDefault, Union } from "./helpers";
 import type { FindSelected } from "./FindSelected";
 
-// We fall back to `a` if we weren't able to extract anything more precise
+// We fall back to `a` if we weren't able to extract unknownthing more precise
 export type MatchedValue<a, invpattern> = WithDefault<ExtractPreciseValue<a, invpattern>, a>;
 
 export type Unset = "@ts-pattern/unset";
