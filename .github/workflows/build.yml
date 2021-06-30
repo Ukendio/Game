@@ -13,10 +13,9 @@ on:
 jobs:
     build:
         if:
-            contains(github.event.commits[0].message, '[skip ci]') == false &&
+            contains(github.event.commits[0].message, '[skip ci]') == false
             # github.repository == 'Ukendio/Game' &&
             # github.ref == 'refs/heads/master' &&
-            true
 
         runs-on: ubuntu-latest
 
