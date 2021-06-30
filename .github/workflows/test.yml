@@ -13,10 +13,10 @@ on:
 
 jobs:
     test:
-        if: contains(github.event.commits[0].message, '[skip ci]') == false &&
+        if: contains(github.event.commits[0].message, '[force test]') == true ||
+            (contains(github.event.commits[0].message, '[skip ci]') == false &&
             github.repository == 'Ukendio/Game' &&
-            github.ref == 'refs/heads/master' ||
-            contains(github.event.commits[0].message, '[force test]') == true
+            github.ref == 'refs/heads/master')
         name: Unit Tests
         runs-on: windows-latest
         timeout-minutes: 10
