@@ -12,7 +12,7 @@ on:
 
 jobs:
     test:
-        if: contains(github.event.commits[0].message, '[skip ci]') == false
+        if: contains(github.event.commits[0].message, '[skip ci]') == false &&
             github.repository == 'Ukendio/Game' &&
             github.ref == 'refs/heads/master'
         name: Unit Tests
