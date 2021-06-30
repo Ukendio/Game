@@ -1,6 +1,6 @@
 # Taken from roblox-ts under the MIT license https://github.com/roblox-ts/types/blob/master/.github/workflows/build.yml
 
-name: Build
+name: Compile
 
 on:
     push:
@@ -22,5 +22,5 @@ jobs:
 
             - uses: bahmutov/npm-install@v1
 
-            - name: Generate Files
-              run: npm run build
+            - name: Run compiler
+              run: npm run compile
