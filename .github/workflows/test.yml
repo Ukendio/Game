@@ -12,9 +12,7 @@ on:
 
 jobs:
     test:
-        if: contains(github.event.commits[0].message, '[skip ci]') == false &&
-            github.repository == 'Ukendio/Game' &&
-            github.ref == 'refs/heads/master'
+        if: contains(github.event.commits[0].message, '[skip ci]') == false
         name: Unit Tests
         runs-on: windows-latest
         timeout-minutes: 10
@@ -45,13 +43,12 @@ jobs:
             #   with:
             #       github-token: ${{ secrets.GITHUB_TOKEN }}
 
-            - name: Configure Git
+            - name: Push Generated Files
+              if: github.repository == 'Ukendio/Game' &&
+                  github.ref == 'refs/heads/master'
               run: |
                   git config --global user.name "GitHub Actions"
                   git config --global user.email "noreply@github.com"
-
-            - name: Push Generated Files
-              run: |
                   git add -A
                   if (git diff-index --quiet HEAD --) {}
                   else {
