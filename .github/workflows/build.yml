@@ -1,5 +1,4 @@
 # Taken from roblox-ts under the MIT license https://github.com/roblox-ts/types/blob/master/.github/workflows/build.yml
-
 name: Compile
 
 on:
