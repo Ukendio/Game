@@ -14,7 +14,7 @@ type SafeGet<data, k extends unknown, def> = k extends keyof data ? data[k] : de
 
 // Update :: a -> b -> PropertyKey[] -> a
 type Update<data, value, path extends unknown[]> = path extends [infer head, ...infer tail]
-	? data extends readonly [unknown, ...unknown]
+	? data extends readonly [unknown, ...unknown[]]
 		? head extends number
 			? [
 					...Slice<data, Iterator<head>>,

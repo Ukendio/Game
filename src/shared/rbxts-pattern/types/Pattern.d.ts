@@ -53,7 +53,7 @@ type WildCardPattern<a> = a extends number
 
 /**
  * ### Pattern
- * Patterns can be any (nested) javascript value.
+ * Patterns can be unknown (nested) javascript value.
  * They can also be a "wildcards", like `__`.
  */
 export type Pattern<a> =

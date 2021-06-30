@@ -57,7 +57,7 @@ export type IsMatching<a, p> =
 						? false
 						: /**
 						 * Intentionally not using ValueOf, to avoid reaching the
-						 * 'type instanciation is too deep error'.
+						 * 'type instantiation is too deep error'.
 						 */
 						{ [k in keyof p & keyof a]: IsMatching<a[k], p[k]> }[keyof p & keyof a] extends true
 						? true // all values are matching
