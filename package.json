@@ -8,7 +8,7 @@
 		"rojo-build": "rojo build -o ./game.rbxlx",
 		"build": "npm run compile && npm run rojo-build",
 		"eslint": "eslint src --max-warnings 0",
-		"test-run": "run-in-roblox --place ./game.rbxlx --script ./out/tests/test.server.lua",
+		"test-run": "run-in-roblox --place ./game.rbxlx --script ./out/server/test.server.lua",
 		"test": "npm run build && npm run test-run"
 	},
 	"keywords": [],
