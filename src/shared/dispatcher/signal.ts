@@ -63,7 +63,7 @@ class Signal {
 			if (!listener.disconnected) {
 				const [ok, result] = xpcall(() => {
 					noYield(listener.handler, ...args);
-				}, tracebackReporter);
+				}); // TODO: add tracebackReporter when @rbxts/types updates the xpcall definition
 
 				if (!ok) throw result;
 			}
