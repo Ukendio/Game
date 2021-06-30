@@ -1,5 +1,5 @@
 import Roact from "@rbxts/roact";
-import Remotes from "shared/remotes";
+import Remotes from "shared/Remotes";
 import UserCamera from "client/UserInterface/Components/camera";
 import { Players, UserInputService } from "@rbxts/services";
 
