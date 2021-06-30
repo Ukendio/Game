@@ -190,4 +190,15 @@ export = () => {
 			expect(result).to.equal("Ukendio won using rock");
 		});
 	});
+
+	it("return b", () => {
+		const result = match({ field1: 1, field2: "test" })
+			.with({ field1: 1 }, () => "a")
+			.with({ field1: 1, field2: "test" }, () => "b")
+			.with({ field1: 1 }, () => "c")
+			.run();
+
+		print(result);
+		expect(result).to.equal("b");
+	});
 };
