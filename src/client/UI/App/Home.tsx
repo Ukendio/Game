@@ -1,6 +1,6 @@
 import Roact from "@rbxts/roact";
 import Remotes from "shared/Remotes";
-import UserCamera from "client/UserInterface/Components/camera";
+import UserCamera from "client/UI/Components/camera";
 import { Players, UserInputService } from "@rbxts/services";
 
 const roundStarted = Remotes.Client.Get("roundStarted");

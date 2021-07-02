@@ -1,8 +1,8 @@
 import Roact from "@rbxts/roact";
 import { Players, ReplicatedStorage, SoundService, UserInputService, Workspace } from "@rbxts/services";
 import { Config, Mode } from "shared/Types";
-import { Crosshair } from "client/UserInterface/App/Crosshair";
-import HitMark from "client/UserInterface/App/HitMark";
+import { Crosshair } from "client/UI/App/Crosshair";
+import HitMark from "client/UI/App/HitMark";
 import { shoot } from "client/units/Gun/shoot";
 import Dispatcher, { interval } from "shared/dispatcher";
 import { match } from "shared/rbxts-pattern";

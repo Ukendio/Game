@@ -1,5 +1,5 @@
 import Roact from "@rbxts/roact";
-import { Indicator } from "client/UserInterface/Components/Indicator";
+import { Indicator } from "client/UI/Components/Indicator";
 import { Players } from "@rbxts/services";
 interface ImageLabelState {
 	transparency: number;

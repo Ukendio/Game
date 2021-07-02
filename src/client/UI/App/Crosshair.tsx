@@ -1,5 +1,5 @@
 import Roact from "@rbxts/roact";
-import Outline from "client/UserInterface/Components/Outline";
+import Outline from "client/UI/Components/Outline";
 
 import Flipper from "@rbxts/flipper";
 import Dispatcher from "shared/dispatcher";
