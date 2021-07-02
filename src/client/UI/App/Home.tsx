@@ -3,8 +3,8 @@ import Remotes from "shared/Remotes";
 import UserCamera from "client/UI/Components/camera";
 import { Players, UserInputService } from "@rbxts/services";
 
-const roundStarted = Remotes.Client.Get("roundStarted");
-const deployUser = Remotes.Client.Get("userRequestDeploy");
+const roundStarted = Remotes.Client.WaitFor("roundStarted");
+const deployUser = Remotes.Client.WaitFor("userRequestDeploy");
 
 interface State {
 	status: Color3;
@@ -23,7 +23,14 @@ export class Home extends Roact.Component<Props, State> {
 	};
 
 	didMount() {
-		roundStarted.Connect(() => this.setState({ status: new Color3(0, 1, 0), visible: this.state.visible }));
+		roundStarted.then((remote) => {
+			print("round started for client");
+			remote.Connect(() => {
+				print("change status ig");
+				this.setState({ status: new Color3(0, 1, 0), visible: this.state.visible });
+			});
+		});
+
 		UserCamera.setActorNone();
 		UserCamera.addBlur(1);
 
@@ -56,22 +63,28 @@ export class Home extends Roact.Component<Props, State> {
 					Event={{
 						MouseButton1Down: (rbx, x, y) => {
 							if (this.state.debounce) {
-								deployUser.CallServerAsync().then((deployed: boolean | Model) => {
-									if (deployed !== false && typeIs(deployed, "Instance") && deployed.IsA("Model")) {
-										UserCamera.removeBlur();
-										UserCamera.setActorUser(deployed);
-										Players.LocalPlayer.CameraMode = Enum.CameraMode.LockFirstPerson;
-										UserInputService.MouseBehavior = Enum.MouseBehavior.LockCenter;
+								deployUser.then((remote) => {
+									remote.CallServerAsync().then((deployed: boolean | Model) => {
+										if (
+											deployed !== false &&
+											typeIs(deployed, "Instance") &&
+											deployed.IsA("Model")
+										) {
+											UserCamera.removeBlur();
+											UserCamera.setActorUser(deployed);
+											Players.LocalPlayer.CameraMode = Enum.CameraMode.LockFirstPerson;
+											UserInputService.MouseBehavior = Enum.MouseBehavior.LockCenter;
 
-										this.state.mouseConnection.Disconnect();
+											this.state.mouseConnection.Disconnect();
 
-										this.setState({
-											status: this.state.status,
-											visible: false,
-											debounce: false,
-											mouseConnection: undefined!,
-										});
-									}
+											this.setState({
+												status: this.state.status,
+												visible: false,
+												debounce: false,
+												mouseConnection: undefined!,
+											});
+										}
+									});
 								});
 
 								Promise.delay(1).then(() =>

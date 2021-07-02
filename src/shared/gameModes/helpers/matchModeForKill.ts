@@ -1,7 +1,7 @@
 import { Dependency } from "@rbxts/flamework";
-import store from "server/core/store";
+import store from "shared/Rodux/store";
 import { addKillToPlayer, addDeathToPlayer, addKillToTeam, addDeathToTeam } from "shared/Rodux/actions";
-import { UnitConstructor } from "server/services/unitConstructor";
+import type { UnitConstructor } from "server/services/unitConstructor";
 import { match } from "shared/rbxts-pattern";
 
 const unitConstructor = Dependency<UnitConstructor>();

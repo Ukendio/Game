@@ -4,7 +4,7 @@ import { StarterPlayer } from "@rbxts/services";
 import remotes from "shared/Remotes";
 
 const clientEvents = remotes.Client;
-const constructUnit = clientEvents.Get("constructUnit");
+const constructUnit = clientEvents.WaitFor("constructUnit");
 
 @Controller({})
 export class UnitController implements OnInit {
@@ -17,9 +17,11 @@ export class UnitController implements OnInit {
 		FabricLib.useBatching(fabric);
 		fabric.registerUnitsIn(StarterPlayer.StarterPlayerScripts.TS.units);
 
-		constructUnit.Connect((unitResolvable, ref, layerData) => {
-			const c = fabric.getOrCreateUnitByRef(unitResolvable, ref);
-			c.mergeBaseLayer(layerData);
+		constructUnit.then((remote) => {
+			remote.Connect((unitResolvable, ref, layerData) => {
+				const c = fabric.getOrCreateUnitByRef(unitResolvable, ref);
+				c.mergeBaseLayer(layerData);
+			});
 		});
 	}
 }

@@ -1,7 +1,7 @@
 import { OnInit, OnStart, Service } from "@rbxts/flamework";
 import { Vec } from "@rbxts/rust-classes";
 import { gameModes } from "shared/gameModes";
-import store from "server/core/store";
+import store from "shared/Rodux/store";
 import { castVote, createTopic, selectGameMode, startVote, stopVote } from "shared/Rodux/actions";
 import { match } from "shared/rbxts-pattern";
 import { getVoteOrDefault } from "./getVoteOrDefault";
@@ -29,37 +29,28 @@ export class Election implements OnInit, OnStart {
 
 	voteOn(topic: string) {
 		return match(topic)
-			.with("GameMode", async () => {
+			.with("GameMode", async () =>
 				store.dispatch(
 					createTopic({
 						name: "Gamemode",
 						options: Vec.vec(...Object.keys(gameModes)),
 					}),
-				);
-
-				store.dispatch(startVote());
-				this.councilVoteOn.SendToAllPlayers(this._serializeTopic(store.getState().topic));
-
-				await Promise.delay(1).then(() => {
-					store.dispatch(selectGameMode(this._conclude() as keyof typeof gameModes));
-					store.dispatch(stopVote());
-
-					this.councilStopVote.SendToAllPlayers();
-				});
-			})
-			.with("Map", async () => {
+				),
+			)
+			.with("Map", async () =>
 				store.dispatch(
 					createTopic({
 						name: "Map",
 						options: Vec.vec(...Object.keys(gameModes)),
 					}),
-				);
-
+				),
+			)
+			.run()
+			.then(async () => {
 				store.dispatch(startVote());
-
 				this.councilVoteOn.SendToAllPlayers(this._serializeTopic(store.getState().topic));
 
-				await Promise.delay(1).then(() => {
+				Promise.delay(1).then(() => {
 					store.dispatch(selectGameMode(this._conclude() as keyof typeof gameModes));
 					store.dispatch(stopVote());
 

@@ -1,5 +1,5 @@
 import { Service } from "@rbxts/flamework";
-import store from "server/core/store";
+import store from "shared/Rodux/store";
 import { addTeammate } from "shared/Rodux/actions";
 
 @Service({

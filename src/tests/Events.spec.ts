@@ -17,6 +17,8 @@ export = () => {
 		});
 
 		it("Should fire every interval", () => {
+			Promise.delay(1.2).await();
+
 			let testValue = 0;
 			const times = new Array<number>();
 			const listener = interval(1 / 6, () => {

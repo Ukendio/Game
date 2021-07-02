@@ -30,7 +30,17 @@
 		"game:out/server/services/unitConstructor/init@UnitConstructor": "WN",
 		"game:out/server/services/enlistment/init@Enlistment": "o5",
 		"game:out/client/UserInterface/Components/TeamButton@TeamButton": "Bg",
-		"game:out/client/UserInterface/App/TeamSelection@TeamSelection": "gq"
+		"game:out/client/UserInterface/App/TeamSelection@TeamSelection": "gq",
+		"game:out/client/UI/Components/Outline@Outline": "eL",
+		"game:out/client/UI/App/Crosshair@Crosshair": "RK",
+		"game:out/client/UI/App/HitMark@HitMark": "EG",
+		"game:out/client/UI/Components/camera@UserCamera": "3x",
+		"game:out/client/UI/App/Home@Home": "b5",
+		"game:out/client/UI/Components/TeamButton@TeamButton": "km",
+		"game:out/client/UI/App/TeamSelection@TeamSelection": "zW",
+		"game:out/client/UI/Components/Indicator@Indicator": "mB",
+		"game:out/client/UI/Components/RedVignette@RedVignette": "p3",
+		"game:out/client/UI/Components/Vote@Vote": "M1"
 	},
 	"salt": "7c5c47f013b98fe8a5b7c61c711d0b9ee306cc4ffe77419e4a36c2e146c912f43cf72c892e130df9f466aa5c9a39fc01730d01dcc4a99e6f8ab4a4da90d258cf"
 }

@@ -1,5 +1,5 @@
 import { OnStart, Service } from "@rbxts/flamework";
-import store from "server/core/store";
+import store from "shared/Rodux/store";
 import { startRound } from "shared/Rodux/actions";
 import { Election } from "../election";
 import remotes from "shared/Remotes";
@@ -7,13 +7,14 @@ import remotes from "shared/Remotes";
 const roundStarted = remotes.Server.Create("roundStarted");
 
 @Service({
-	loadOrder: 3,
+	loadOrder: 1,
 })
 export class RoundCoordinator implements OnStart {
 	constructor(private Election: Election) {}
 
 	onStart() {
 		const roundBuilder = async () => {
+			print("round started");
 			store.dispatch(startRound());
 			roundStarted.SendToAllPlayers();
 			return store
@@ -23,14 +24,14 @@ export class RoundCoordinator implements OnStart {
 				.then(() => {
 					//prompt MVP
 					print("prompt");
-				})
-				.then(() => intermission);
+				});
 		};
 		const intermission = () => {
-			return Promise.delay(5)
+			print("intermission");
+			return Promise.delay(15)
 				.then(() => this.Election.voteOn("Map"))
 				.then(() => this.Election.voteOn("GameMode"))
-				.then(() => roundBuilder)
+				.then(() => roundBuilder())
 				.expect();
 		};
 

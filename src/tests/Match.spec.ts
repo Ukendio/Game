@@ -198,7 +198,6 @@ export = () => {
 			.with({ field1: 1 }, () => "c")
 			.run();
 
-		print(result);
 		expect(result).to.equal("b");
 	});
 };

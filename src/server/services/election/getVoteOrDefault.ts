@@ -1,3 +1,4 @@
+import Object from "@rbxts/object-utils";
 import { Iterator, Vec } from "@rbxts/rust-classes";
 
 /**
@@ -14,7 +15,7 @@ import { Iterator, Vec } from "@rbxts/rust-classes";
  * 	  is of the `None` type
  */
 export function getVoteOrDefault(votes: Record<string, number>, votableOptions: Vec<string>) {
-	return Iterator.fromItems(...pairs(votes))
+	return Iterator.fromItems(...Object.entries(votes))
 		.maxBy(([_a, aCount], [_b, bCount]) => aCount - bCount)
 		.map(([name]) => name)
 		.or(votableOptions.last())

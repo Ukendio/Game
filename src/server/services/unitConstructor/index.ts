@@ -8,7 +8,7 @@ import { createUnit } from "./createUnit";
 const serverEvents = remotes.Server;
 
 @Service({
-	loadOrder: 1,
+	loadOrder: 3,
 })
 export class UnitConstructor implements OnInit {
 	public fabric = new FabricLib.Fabric("Game");

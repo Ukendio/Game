@@ -1,6 +1,6 @@
 import { Janitor } from "@rbxts/janitor";
 import { RunService } from "@rbxts/services";
-import store from "server/core/store";
+import store from "shared/Rodux/store";
 import { addDeathToPlayer, addKillToPlayer } from "shared/Rodux/actions";
 
 export = identity<FabricUnits["Tag"]>({
