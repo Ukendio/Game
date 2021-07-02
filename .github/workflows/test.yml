@@ -51,6 +51,6 @@ jobs:
                   if (git diff-index --quiet HEAD --) {}
                   else {
                     echo "Generated files changed!"
-                    git commit -m "Update generated files [skip ci]"
+                    git commit -m "${{github.event.commits[0].author.name}}: ${{github.event.commits[0].message}} [skip ci]"
                     git push https://Ukendio:${{ secrets.github_token }}@github.com/Ukendio/Game.git HEAD:master
                   }
