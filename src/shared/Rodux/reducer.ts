@@ -164,7 +164,7 @@ export const reducer = Rodux.createReducer<State, Actions>(initialState, {
 	},
 
 	RemoveTeammateAction: (state, action) => {
-		action.team.members.filter((current) => current !== action.player);
+		action.team.members.iter().filter((current) => current !== action.player);
 		return { ...state };
 	},
 

@@ -1,4 +1,5 @@
 import { Store } from "@rbxts/rodux";
+import { Vec } from "@rbxts/rust-classes";
 import { Teams } from "@rbxts/services";
 import { Actions, enlistTeam } from "shared/Rodux/actions";
 import { State } from "shared/Rodux/reducer";
@@ -14,7 +15,7 @@ export = async function (colours: BrickColor[], store: Store<State, Actions>) {
 				tag: team,
 				kills: 0,
 				deaths: 0,
-				members: [],
+				members: Vec.vec(),
 			}),
 		);
 	});

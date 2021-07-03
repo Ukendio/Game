@@ -1,17 +1,23 @@
 import Roact from "@rbxts/roact";
 import TeamButton from "../Components/TeamButton";
 
+const triangularNumber = (sum: number) => {
+	return (sum * (sum + 1)) / 2;
+};
+const cantorFunction = (i: number, j: number) => {
+	const sum = i + j;
+	const triangularSum = triangularNumber(sum);
+
+	return triangularSum + j;
+};
+
 class TeamSelection extends Roact.Component {
 	render() {
-		return (
-			<frame Size={UDim2.fromOffset(400, 400)}>
-				<uigridlayout FillDirectionMaxCells={2} CellSize={UDim2.fromScale(0.5, 0.5)} />
-				<TeamButton teamIndex={0} />
-				<TeamButton teamIndex={1} />
-				<TeamButton teamIndex={2} />
-				<TeamButton teamIndex={3} />
-			</frame>
-		);
+		const children = new Array<Roact.Element>();
+		for (let i = 0; i < 5; i++) {
+			children.push(<TeamButton teamIndex={i} />);
+		}
+		return <frame Size={UDim2.fromOffset(350, 350)}>{...children}</frame>;
 	}
 }
 

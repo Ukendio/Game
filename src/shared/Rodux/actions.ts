@@ -1,4 +1,5 @@
 import Rodux from "@rbxts/rodux";
+import { Vec } from "@rbxts/rust-classes";
 import { gameModes } from "shared/gameModes";
 import { TopicFormat } from "shared/Types";
 import { PlayerScore } from "./reducer";
@@ -170,7 +171,7 @@ export interface PlayerTeam {
 	tag: Team;
 	kills: number;
 	deaths: number;
-	members: Player[];
+	members: Vec<Player>;
 }
 interface AddTeammateAction extends Rodux.Action<"AddTeammate"> {
 	player: Player;
