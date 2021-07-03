@@ -11,7 +11,7 @@ export class Enlistment {
 		const team = store
 			.getState()
 			.teams.iter()
-			.maxBy((a, b) => a.members.size() - b.members.size())
+			.maxBy((a, b) => a.members.len() - b.members.len())
 			.unwrap();
 
 		this._lock(team.tag);
