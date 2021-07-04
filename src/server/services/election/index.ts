@@ -27,8 +27,8 @@ export class Election implements OnInit, OnStart {
 
 	onStart() {}
 
-	voteOn(topic: string) {
-		return match(topic)
+	async voteOn(topic: string) {
+		await match(topic)
 			.with("GameMode", async () =>
 				store.dispatch(
 					createTopic({
@@ -45,18 +45,13 @@ export class Election implements OnInit, OnStart {
 					}),
 				),
 			)
-			.run()
-			.then(async () => {
-				store.dispatch(startVote());
-				this.councilVoteOn.SendToAllPlayers(this._serializeTopic(store.getState().topic));
-
-				Promise.delay(1).then(() => {
-					store.dispatch(selectGameMode(this._conclude() as keyof typeof gameModes));
-					store.dispatch(stopVote());
-
-					this.councilStopVote.SendToAllPlayers();
-				});
-			});
+			.run();
+		store.dispatch(startVote());
+		this.councilVoteOn.SendToAllPlayers(this._serializeTopic(store.getState().topic));
+		await Promise.delay(1);
+		store.dispatch(selectGameMode(this._conclude() as keyof typeof gameModes));
+		store.dispatch(stopVote());
+		this.councilStopVote.SendToAllPlayers();
 	}
 
 	protected _conclude() {
