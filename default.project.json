@@ -1,6 +1,6 @@
 {
 	"name": "roblox-ts-game",
-	"servePlaceIds": [6872537214, 7035810131],
+	"servePlaceIds": [6872537214, 7035810131, 6865781498],
 	"servePort": 34872,
 	"globIgnorePaths": ["**/package.json", "**/tsconfig.json"],
 	"tree": {
