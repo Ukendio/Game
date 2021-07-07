@@ -124,7 +124,6 @@ export const reducer = Rodux.createReducer<State, Actions>(initialState, {
 	},
 
 	SelectGameMode: (state, action) => {
-		print(action.gameMode);
 		return { ...state, gameMode: action.gameMode, winCondition: gameModes[action.gameMode] };
 	},
 

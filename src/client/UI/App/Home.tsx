@@ -2,6 +2,7 @@ import Roact from "@rbxts/roact";
 import Remotes from "shared/Remotes";
 import UserCamera from "client/UI/Components/camera";
 import { Players, UserInputService } from "@rbxts/services";
+import Log from "@rbxts/log";
 
 const roundStarted = Remotes.Client.WaitFor("roundStarted");
 const deployUser = Remotes.Client.WaitFor("userRequestDeploy");
@@ -24,9 +25,9 @@ export class Home extends Roact.Component<Props, State> {
 
 	didMount() {
 		roundStarted.then((remote) => {
-			print("round started for client");
+			Log.Info("round started for client");
 			remote.Connect(() => {
-				print("change status ig");
+				Log.Info("change status ig");
 				this.setState({ status: new Color3(0, 1, 0), visible: this.state.visible });
 			});
 		});
@@ -61,7 +62,7 @@ export class Home extends Roact.Component<Props, State> {
 					TextScaled={true}
 					Font={Enum.Font.SourceSansBold}
 					Event={{
-						MouseButton1Down: (rbx, x, y) => {
+						MouseButton1Down: () => {
 							if (this.state.debounce) {
 								deployUser.then((remote) => {
 									remote.CallServerAsync().then((deployed: boolean | Model) => {

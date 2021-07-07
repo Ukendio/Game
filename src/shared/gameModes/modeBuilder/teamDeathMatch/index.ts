@@ -4,6 +4,7 @@ import { State } from "shared/Rodux/reducer";
 import listTeams from "shared/gameModes/helpers/listTeams";
 import unlistTeams from "shared/gameModes/helpers/unlistTeams";
 import settings from "./settings";
+import Log from "@rbxts/log";
 
 function maxKills(store: Store<State, Actions>) {
 	return new Promise((resolve) => {
@@ -24,7 +25,7 @@ async function winCondition(store: Store<State, Actions>) {
 		.then(() =>
 			Promise.race([
 				maxKills(store).then((winners) => {
-					print(winners);
+					Log.Info("The winners are {}", winners);
 				}),
 				Promise.delay(settings.roundLength).then(() => {
 					let winningTeam = undefined! as PlayerTeam;
@@ -39,7 +40,7 @@ async function winCondition(store: Store<State, Actions>) {
 							}
 						});
 
-					print(winningTeam);
+					Log.Info("The winners are {}", winningTeam);
 				}),
 			]),
 		);

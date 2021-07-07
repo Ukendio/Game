@@ -35,7 +35,6 @@ namespace Spirit {
 	}
 
 	export function free() {
-		print("start");
 		startFreeCamera();
 		enabled = true;
 	}

@@ -3,6 +3,7 @@ import store from "shared/Rodux/store";
 import { startRound } from "shared/Rodux/actions";
 import { Election } from "../election";
 import remotes from "shared/Remotes";
+import Log from "@rbxts/log";
 
 const roundStarted = remotes.Server.Create("roundStarted");
 
@@ -14,20 +15,22 @@ export class RoundCoordinator implements OnStart {
 
 	onStart() {
 		const roundBuilder = async () => {
-			print("round started");
 			store.dispatch(startRound());
 			roundStarted.SendToAllPlayers();
+
+			Log.Info("round started");
+
 			return store
 				.getState()
 				.winCondition(store)
 				.andThenCall(Promise.delay, 5)
 				.then(() => {
-					//prompt MVP
-					print("prompt");
+					Log.Info("prompt");
 				});
 		};
 		const intermission = () => {
-			print("intermission");
+			Log.Info("intermission");
+
 			return Promise.delay(15)
 				.then(() => this.Election.voteOn("Map"))
 				.then(() => this.Election.voteOn("GameMode"))

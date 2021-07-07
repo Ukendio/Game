@@ -6,6 +6,7 @@ import unlistTeams from "shared/gameModes/helpers/unlistTeams";
 import settings from "./settings";
 import { Vec } from "@rbxts/rust-classes";
 import { Players } from "@rbxts/services";
+import Log from "@rbxts/log";
 
 async function buildTeam(store: Store<State, Actions>) {
 	const availableTeams = store.getState().teams;
@@ -56,7 +57,7 @@ async function winCondition(store: Store<State, Actions>) {
 		.then(() =>
 			Promise.race([
 				maxKills(store).then((winners) => {
-					print(winners);
+					Log.Info("{winners}", winners);
 				}),
 				Promise.delay(settings.roundLength).then(() => {
 					let winningTeam = undefined! as PlayerTeam;
@@ -71,7 +72,7 @@ async function winCondition(store: Store<State, Actions>) {
 							}
 						});
 
-					print(winningTeam);
+					Log.Info("{winner} won", winningTeam);
 				}),
 			]),
 		);
