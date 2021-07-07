@@ -178,7 +178,7 @@ namespace Input {
 	export function stopCapture() {
 		function zero(t: object) {
 			for (const [k, v] of pairs(t)) {
-				t[k as never] = (v * 0) as never;
+				t[k as never] = ((v as number) * 0) as never;
 			}
 		}
 
