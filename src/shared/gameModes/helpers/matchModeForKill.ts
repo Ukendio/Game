@@ -1,6 +1,6 @@
 import { Dependency } from "@rbxts/flamework";
-import store from "shared/Rodux/store";
-import { addKillToPlayer, addDeathToPlayer, addKillToTeam, addDeathToTeam } from "shared/Rodux/actions";
+import store from "shared/rodux/store";
+import { addKillToPlayer, addDeathToPlayer, addKillToTeam, addDeathToTeam } from "shared/rodux/actions";
 import type { UnitConstructor } from "server/services/unitConstructor";
 import { match } from "shared/rbxts-pattern";
 

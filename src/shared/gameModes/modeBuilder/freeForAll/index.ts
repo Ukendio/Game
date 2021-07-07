@@ -1,6 +1,6 @@
 import { Store } from "@rbxts/rodux";
-import { PlayerTeam, Actions, addTeammate, removeTeammate } from "shared/Rodux/actions";
-import { State } from "shared/Rodux/reducer";
+import { PlayerTeam, Actions, addTeammate, removeTeammate } from "shared/rodux/actions";
+import { State } from "shared/rodux/reducer";
 import listTeams from "shared/gameModes/helpers/listTeams";
 import unlistTeams from "shared/gameModes/helpers/unlistTeams";
 import settings from "./settings";

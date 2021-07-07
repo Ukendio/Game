@@ -2,7 +2,7 @@ import { OnStart, Service } from "@rbxts/flamework";
 import { Players } from "@rbxts/services";
 import yieldForR15CharacterDescendants from "@rbxts/yield-for-character";
 
-import store from "shared/Rodux/store";
+import store from "shared/rodux/store";
 import { Config, Mode } from "shared/Types";
 import { UnitConstructor } from "../unitConstructor";
 import { findSpawn } from "./findSpawn";

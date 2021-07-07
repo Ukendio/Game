@@ -1,8 +1,8 @@
 import { Store } from "@rbxts/rodux";
 import { Vec } from "@rbxts/rust-classes";
 import { Teams } from "@rbxts/services";
-import { Actions, enlistTeam } from "shared/Rodux/actions";
-import { State } from "shared/Rodux/reducer";
+import { Actions, enlistTeam } from "shared/rodux/actions";
+import { State } from "shared/rodux/reducer";
 
 export = async function (colours: BrickColor[], store: Store<State, Actions>) {
 	colours.forEach((colour) => {

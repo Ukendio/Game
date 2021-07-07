@@ -1,6 +1,6 @@
 import Roact from "@rbxts/roact";
 import { match } from "shared/rbxts-pattern";
-import store from "shared/Rodux/store";
+import store from "shared/rodux/store";
 
 interface Props {
 	teamIndex: number;

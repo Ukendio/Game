@@ -1,4 +1,4 @@
-import { State } from "shared/Rodux/reducer";
+import { State } from "shared/rodux/reducer";
 
 export async function findSpawn(state: State, player: Player) {
 	let closestSpawn = undefined! as SpawnLocation;
