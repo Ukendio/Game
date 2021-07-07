@@ -1,3 +1,4 @@
+import Log from "@rbxts/log";
 import { RunService } from "@rbxts/services";
 import Signal from "./signal";
 import SingleEvent from "./singleEvent";
@@ -16,7 +17,7 @@ export function interval(duration: number, callback: Callback) {
 				.then(() => {
 					if (
 						!isCancelled(() => {
-							warn("[Event] Rejected");
+							Log.Warn("[Event] Rejected");
 							loop = undefined!;
 						})
 					) {
