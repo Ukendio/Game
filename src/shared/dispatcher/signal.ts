@@ -61,9 +61,9 @@ class Signal {
 
 		while (listener !== undefined) {
 			if (!listener.disconnected) {
-				const [ok, result] = pcall(() => {
+				const [ok, result] = xpcall(() => {
 					noYield(listener.handler, ...args);
-				}); // TODO: add tracebackReporter with xpcall when @rbxts/types updates the xpcall definition
+				}, tracebackReporter);
 
 				if (!ok) throw result;
 			}
