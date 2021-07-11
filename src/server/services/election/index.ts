@@ -3,7 +3,7 @@ import { Vec } from "@rbxts/rust-classes";
 import { gameModes } from "shared/gameModes";
 import store from "shared/rodux/store";
 import { castVote, createTopic, selectGameMode, startVote, stopVote } from "shared/rodux/actions";
-import { match } from "shared/rbxts-pattern";
+import { match } from "shared/match";
 import { getVoteOrDefault } from "./getVoteOrDefault";
 import remotes from "shared/Remotes";
 import { TopicFormat } from "shared/Types";
