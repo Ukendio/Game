@@ -77,22 +77,18 @@ class Signal {
 	}
 
 	fireNoYield(...args: unknown[]) {
-		const promise = new Promise((resolve, reject, onCancel) => {
-			let listener = this.currentListHead;
+		let listener = this.currentListHead;
 
-			while (listener !== undefined) {
-				if (!listener.disconnected) {
-					const [ok, result] = xpcall(() => {
-						noYield(listener.handler, ...args);
-					}, tracebackReporter);
+		while (listener !== undefined) {
+			if (!listener.disconnected) {
+				const [ok, result] = xpcall(() => {
+					noYield(listener.handler, ...args);
+				}, tracebackReporter);
 
-					if (!ok) reject(result);
-				}
-				listener = listener.next;
+				if (!ok) throw result;
 			}
-		});
-
-		return promise;
+			listener = listener.next;
+		}
 	}
 }
 
