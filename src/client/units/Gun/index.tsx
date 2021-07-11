@@ -1,11 +1,11 @@
 import Roact from "@rbxts/roact";
 import { Players, ReplicatedStorage, SoundService, UserInputService, Workspace } from "@rbxts/services";
 import { Config, Mode } from "shared/Types";
-import { Crosshair } from "client/UI/App/Crosshair";
-import HitMark from "client/UI/App/HitMark";
+import Crosshair from "client/ui/app/crosshair";
+import HitMark from "client/ui/app/hitMark";
 import { shoot } from "client/units/Gun/shoot";
 import Dispatcher, { interval } from "shared/dispatcher";
-import { match } from "shared/rbxts-pattern";
+import { match } from "shared/match";
 import { ThisFabricUnit, UnitDefinition } from "@rbxts/fabric";
 import { Janitor } from "@rbxts/janitor";
 
@@ -99,7 +99,7 @@ const gun: GunDefinition = {
 				<screengui ZIndexBehavior="Sibling">
 					<Crosshair
 						signal={signal}
-						mouseOffset={Workspace.CurrentCamera!.ViewportSize.Y / 2 - 36}
+						offset={Workspace.CurrentCamera!.ViewportSize.Y / 2 - 36}
 						fireRate={settings.fireRate}
 						recoil={settings.recoil}
 					/>
