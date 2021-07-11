@@ -1,10 +1,10 @@
 import Zircon, { ZirconServer, ZirconFunctionBuilder } from "@rbxts/zircon";
 import Log, { Logger } from "@rbxts/log";
-import print_message from "./commands/print_message";
+import print_message from "./commands/print";
 import kick from "./commands/kick";
 import { ZirconRegistryService } from "@rbxts/zircon/out/Services/RegistryService";
-import { match } from "shared/rbxts-pattern";
-import give_temp_admin from "./commands/give_temp_admin";
+import { match } from "shared/match";
+import give_temp_admin from "./commands/admin";
 
 Log.SetLogger(Logger.configure().WriteTo(Zircon.Log.Console()).Create());
 
