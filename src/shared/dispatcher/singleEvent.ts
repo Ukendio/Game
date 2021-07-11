@@ -1,6 +1,6 @@
 class SingleEvent {
-	private _listener = undefined! as Callback;
-	private _promise = undefined! as Promise<unknown>;
+	private listener: Callback | undefined;
+	private promise = undefined! as Promise<unknown>;
 
 	constructor(
 		executor: (
@@ -12,23 +12,23 @@ class SingleEvent {
 		) => void,
 	) {
 		const dispatch = () => {
-			if (this._listener !== undefined) {
-				coroutine.wrap(this._listener)();
+			if (this.listener !== undefined) {
+				coroutine.wrap(this.listener)();
 			}
 		};
-		this._promise = Promise.defer((resolve) => {
-			resolve(new Promise(executor(dispatch)).then(() => (this._listener = undefined!)));
+		this.promise = Promise.defer((resolve) => {
+			resolve(new Promise(executor(dispatch)).then(() => (this.listener = undefined)));
 		});
 	}
 
 	connect(handler: Callback) {
-		assert(this._listener === undefined, "Dispatcher is already used up");
-		assert(this._promise.getStatus() === "Started", "Dispatcher is already used up");
+		assert(this.listener === undefined, "Dispatcher is already used up");
+		assert(this.promise.getStatus() === "Started", "Dispatcher is already used up");
 
-		this._listener = handler;
+		this.listener = handler;
 		const disconnect = () => {
-			this._promise.cancel();
-			this._listener = undefined!;
+			this.promise.cancel();
+			this.listener = undefined!;
 		};
 
 		return {

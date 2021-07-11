@@ -11,7 +11,7 @@ interface Listener {
 const tracebackReporter = (message: unknown) => debug.traceback(tostring(message));
 
 class Signal {
-	private _currentListHead = undefined! as Listener;
+	private currentListHead = undefined! as Listener;
 
 	connect(handler: Callback) {
 		const listener: Listener = {
@@ -19,7 +19,7 @@ class Signal {
 			disconnected: false,
 			connectTraceback: debug.traceback(),
 			disconnectTraceback: undefined!,
-			next: this._currentListHead,
+			next: this.currentListHead,
 		};
 
 		const disconnect = () => {
@@ -30,10 +30,10 @@ class Signal {
 			listener.disconnected = true;
 			listener.disconnectTraceback = debug.traceback();
 
-			if (this._currentListHead === listener) {
-				this._currentListHead = listener.next;
+			if (this.currentListHead === listener) {
+				this.currentListHead = listener.next;
 			} else {
-				let previous = this._currentListHead;
+				let previous = this.currentListHead;
 
 				while (previous && previous.next !== listener) {
 					previous = previous.next;
@@ -45,7 +45,8 @@ class Signal {
 			}
 		};
 
-		this._currentListHead = listener;
+		this.currentListHead = listener;
+
 		return {
 			/**
 			 * @hidden
@@ -56,19 +57,42 @@ class Signal {
 		};
 	}
 
+	/**
+	 * @hidden
+	 * we declare this field so that promise can consume it in promise::fromEvent
+	 */
+	Connect(...args: Parameters<Signal["connect"]>) {
+		return this.connect(...args);
+	}
+
 	fire(...args: unknown[]) {
-		let listener = this._currentListHead;
+		let listener = this.currentListHead;
 
 		while (listener !== undefined) {
 			if (!listener.disconnected) {
-				const [ok, result] = xpcall(() => {
-					noYield(listener.handler, ...args);
-				}, tracebackReporter);
-
-				if (!ok) throw result;
+				listener.handler(...args);
 			}
 			listener = listener.next;
 		}
+	}
+
+	fireNoYield(...args: unknown[]) {
+		const promise = new Promise((resolve, reject, onCancel) => {
+			let listener = this.currentListHead;
+
+			while (listener !== undefined) {
+				if (!listener.disconnected) {
+					const [ok, result] = xpcall(() => {
+						noYield(listener.handler, ...args);
+					}, tracebackReporter);
+
+					if (!ok) reject(result);
+				}
+				listener = listener.next;
+			}
+		});
+
+		return promise;
 	}
 }
 
