@@ -1,99 +1,102 @@
 import Roact from "@rbxts/roact";
-import Outline from "client/UI/Components/Outline";
-
+import Hooks from "@rbxts/roact-hooks";
 import Flipper from "@rbxts/flipper";
-import Dispatcher from "shared/dispatcher";
+import Signal from "shared/dispatcher";
+import Outline from "client/ui/components/outline";
+import { match } from "shared/match";
 
 interface Props {
-	signal: Dispatcher;
-	mouseOffset: number;
+	signal: Signal;
+	offset: number;
 	fireRate: number;
 	recoil: number;
 }
 
-export class Crosshair extends Roact.Component<Props> {
-	private _motor = new Flipper.SingleMotor(0);
-	private _binding;
+const recoilOnClick: Hooks.FC<Props> = (props, { useCallback }) => {
+	const motor = new Flipper.SingleMotor(0);
+	const [binding, setBinding] = Roact.createBinding(motor.getValue());
+	const newBinding = binding;
+	motor.onStep(setBinding);
 
-	constructor(props: Props) {
-		super({
-			signal: props.signal,
-			mouseOffset: props.mouseOffset,
-			fireRate: props.fireRate,
-			recoil: props.recoil,
-		});
-		const [binding, setBinding] = Roact.createBinding(this._motor.getValue());
-		this._binding = binding;
-		this._motor.onStep(setBinding);
-	}
+	const doRecoil = useCallback(() => {
+		motor.setGoal(
+			new Flipper.Spring(1, {
+				frequency: 10,
+				dampingRatio: 1,
+			}),
+		);
 
-	didMount() {
-		this.props.signal.connect(() => {
-			this._motor.setGoal(
-				new Flipper.Spring(1, {
-					frequency: 10,
-					dampingRatio: 1,
+		Promise.delay(0.075).then(() => {
+			motor.setGoal(
+				new Flipper.Spring(0, {
+					frequency: 4,
+					dampingRatio: 0.75,
 				}),
 			);
-
-			Promise.delay(0.075).then(() => {
-				this._motor.setGoal(
-					new Flipper.Spring(0, {
-						frequency: 4,
-						dampingRatio: 0.75,
-					}),
-				);
-			});
 		});
+	});
+
+	props.signal.connect(() => doRecoil());
+
+	const layers = ["Inner", "Outer"] as const;
+	const directions = ["Up", "Down", "Left", "Right"] as const;
+	const innerOutlines = new Array<Roact.Element>();
+	const outerOutlines = new Array<Roact.Element>();
+
+	for (const layer of layers) {
+		for (const direction of directions) {
+			const outline = <Outline name={direction} layer={layer} />;
+			match(layer)
+				.with("Outer", () => outerOutlines.push(outline))
+				.with("Inner", () => innerOutlines.push(outline))
+				.run();
+		}
 	}
-	render() {
-		return (
+
+	return (
+		<frame
+			AnchorPoint={new Vector2(0.5, 0.5)}
+			BackgroundTransparency={1}
+			Position={new UDim2(0.5, 0, 0, props.offset)}
+			Size={new UDim2(0, 100, 0, 100)}
+			ZIndex={0}
+		>
 			<frame
+				Key="CenterPoint"
+				AnchorPoint={new Vector2(0.5, 0.5)}
+				BackgroundColor3={Color3.fromRGB(255, 255, 255)}
+				BorderSizePixel={0}
+				Position={new UDim2(0.5, 0, 0.5, 0)}
+				Size={new UDim2(0, 3, 0, 3)}
+				ZIndex={20}
+			/>
+			<frame
+				Key="Outer"
 				AnchorPoint={new Vector2(0.5, 0.5)}
 				BackgroundTransparency={1}
-				Position={new UDim2(0.5, 0, 0, this.props.mouseOffset)}
-				Size={new UDim2(0, 100, 0, 100)}
-				ZIndex={0}
+				Position={new UDim2(0.5, 0, 0.5, 0)}
+				Size={newBinding.map((value) =>
+					new UDim2(0.5, 0, 0.3, 0).Lerp(new UDim2(0.5, 0, props.recoil, 0), value),
+				)}
+				ZIndex={20}
 			>
-				<frame
-					Key="CenterPoint"
-					AnchorPoint={new Vector2(0.5, 0.5)}
-					BackgroundColor3={Color3.fromRGB(255, 255, 255)}
-					BorderSizePixel={0}
-					Position={new UDim2(0.5, 0, 0.5, 0)}
-					Size={new UDim2(0, 3, 0, 3)}
-					ZIndex={20}
-				/>
-				<frame
-					Key="Outer"
-					AnchorPoint={new Vector2(0.5, 0.5)}
-					BackgroundTransparency={1}
-					Position={new UDim2(0.5, 0, 0.5, 0)}
-					Size={this._binding.map((value) =>
-						new UDim2(0.5, 0, 0.3, 0).Lerp(new UDim2(0.5, 0, this.props.recoil, 0), value),
-					)}
-					ZIndex={20}
-				>
-					<Outline name="Up" layer="Outer" />
-					<Outline name="Down" layer="Outer" />
-					<Outline name="Left" layer="Outer" />
-					<Outline name="Right" layer="Outer" />
-					<uiaspectratioconstraint DominantAxis={Enum.DominantAxis.Height} AspectType="ScaleWithParentSize" />
-				</frame>
-				<frame
-					Key="Inner"
-					AnchorPoint={new Vector2(0.5, 0.5)}
-					BackgroundTransparency={1}
-					Position={new UDim2(0.5, 0, 0.5, 0)}
-					Size={new UDim2(0.3, 0, 0.3, 0)}
-					ZIndex={10}
-				>
-					<Outline name="Up" layer="Inner" />
-					<Outline name="Down" layer="Inner" />
-					<Outline name="Left" layer="Inner" />
-					<Outline name="Right" layer="Inner" />
-				</frame>
+				{...outerOutlines}
+				<uiaspectratioconstraint DominantAxis={Enum.DominantAxis.Height} AspectType="ScaleWithParentSize" />
 			</frame>
-		);
-	}
-}
+			<frame
+				Key="Inner"
+				AnchorPoint={new Vector2(0.5, 0.5)}
+				BackgroundTransparency={1}
+				Position={new UDim2(0.5, 0, 0.5, 0)}
+				Size={new UDim2(0.3, 0, 0.3, 0)}
+				ZIndex={10}
+			>
+				{...innerOutlines}
+			</frame>
+		</frame>
+	);
+};
+
+export = new Hooks(Roact)(recoilOnClick, {
+	defaultProps: {},
+});

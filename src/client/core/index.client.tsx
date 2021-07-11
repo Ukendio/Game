@@ -2,7 +2,7 @@ import { Flamework } from "@rbxts/flamework";
 
 import { Players, StarterGui } from "@rbxts/services";
 import Roact from "@rbxts/roact";
-import { Home } from "client/UI/App/Home";
+import { Home } from "client/ui/app/home";
 
 const player = Players.LocalPlayer;
 const playerGui = player.WaitForChild("PlayerGui");

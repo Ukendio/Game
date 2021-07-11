@@ -1,4 +1,5 @@
 import Roact from "@rbxts/roact";
+import Hooks from "@rbxts/roact-hooks";
 
 interface Props {
 	name: keyof typeof offsetMap;
@@ -39,22 +40,21 @@ const layerMap = {
 	},
 };
 
-class Outline extends Roact.Component<Props> {
-	render() {
-		const direction = offsetMap[this.props.name];
-		const layer = layerMap[this.props.layer];
-		return (
-			<frame
-				Key={this.props.name}
-				AnchorPoint={direction.anchor}
-				BackgroundColor3={layer.colour}
-				Transparency={layer.transparency}
-				BorderSizePixel={0}
-				Position={direction.position}
-				Size={direction.size}
-			/>
-		);
-	}
-}
+const outline: Hooks.FC<Props> = (props, {}) => {
+	const direction = offsetMap[props.name];
+	const layer = layerMap[props.layer];
 
-export = Outline;
+	return (
+		<frame
+			Key={props.name}
+			AnchorPoint={direction.anchor}
+			BackgroundColor3={layer.colour}
+			Transparency={layer.transparency}
+			BorderSizePixel={0}
+			Position={direction.position}
+			Size={direction.size}
+		/>
+	);
+};
+
+export = new Hooks(Roact)(outline, {});

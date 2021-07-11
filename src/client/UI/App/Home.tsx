@@ -1,8 +1,8 @@
 import Roact from "@rbxts/roact";
 import Remotes from "shared/Remotes";
-import UserCamera from "client/UI/Components/camera";
 import { Players, UserInputService } from "@rbxts/services";
 import Log from "@rbxts/log";
+import { getCamera } from "client/core/userCamera";
 
 const roundStarted = Remotes.Client.WaitFor("roundStarted");
 const deployUser = Remotes.Client.WaitFor("userRequestDeploy");
@@ -32,12 +32,11 @@ export class Home extends Roact.Component<Props, State> {
 			});
 		});
 
-		UserCamera.setActorNone();
-		UserCamera.addBlur(1);
+		getCamera().setActorNone().addBlur(1);
 
 		this.setState({
 			mouseConnection: UserInputService.InputChanged.Connect((inputObject) => {
-				if (inputObject.UserInputType === Enum.UserInputType.MouseMovement) UserCamera.moveCamera();
+				if (inputObject.UserInputType === Enum.UserInputType.MouseMovement) getCamera().move();
 			}),
 		});
 	}
@@ -71,8 +70,8 @@ export class Home extends Roact.Component<Props, State> {
 											typeIs(deployed, "Instance") &&
 											deployed.IsA("Model")
 										) {
-											UserCamera.removeBlur();
-											UserCamera.setActorUser(deployed);
+											getCamera().removeBlur().setActor(deployed);
+
 											Players.LocalPlayer.CameraMode = Enum.CameraMode.LockFirstPerson;
 											UserInputService.MouseBehavior = Enum.MouseBehavior.LockCenter;
 
