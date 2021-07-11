@@ -17,13 +17,13 @@ import Object from "@rbxts/object-utils";
 import { t } from "@rbxts/t";
 
 export const when = <a, b extends a = never>(predicate: GuardFunction<a, b>): GuardPattern<a, b> => ({
-	"@ts-pattern/__patternKind": PatternType.Guard,
-	"@ts-pattern/__when": predicate,
+	"@rbxts-pattern/__patternKind": PatternType.Guard,
+	"@rbxts-pattern/__when": predicate,
 });
 
 export const _not = <a>(pattern: Pattern<a>): NotPattern<a> => ({
-	"@ts-pattern/__patternKind": PatternType.Not,
-	"@ts-pattern/__pattern": pattern,
+	"@rbxts-pattern/__patternKind": PatternType.Not,
+	"@rbxts-pattern/__pattern": pattern,
 });
 
 const ANONYMOUS_SELECT_KEY = "@ts-pattern/__anonymous-select-key";
@@ -33,11 +33,11 @@ export function _select<k extends string>(key: k): NamedSelectPattern<k>;
 export function _select<k extends string>(key?: k): AnonymousSelectPattern | NamedSelectPattern<k> {
 	return key === undefined
 		? {
-				"@ts-pattern/__patternKind": PatternType.AnonymousSelect,
+				"@rbxts-pattern/__patternKind": PatternType.AnonymousSelect,
 		  }
 		: {
-				"@ts-pattern/__patternKind": PatternType.NamedSelect,
-				"@ts-pattern/__key": key,
+				"@rbxts-pattern/__patternKind": PatternType.NamedSelect,
+				"@rbxts-pattern/__key": key,
 		  };
 }
 
@@ -204,24 +204,24 @@ const isGuardPattern = (x: unknown): x is GuardPattern<unknown> => {
 	const pattern = x as GuardPattern<unknown>;
 	return (
 		pattern &&
-		pattern["@ts-pattern/__patternKind"] === PatternType.Guard &&
-		typeIs(pattern["@ts-pattern/__when"], "function")
+		pattern["@rbxts-pattern/__patternKind"] === PatternType.Guard &&
+		typeIs(pattern["@rbxts-pattern/__when"], "function")
 	);
 };
 
 const isNotPattern = (x: unknown): x is NotPattern<unknown> => {
 	const pattern = x as NotPattern<unknown>;
-	return pattern && pattern["@ts-pattern/__patternKind"] === PatternType.Not;
+	return pattern && pattern["@rbxts-pattern/__patternKind"] === PatternType.Not;
 };
 
 const isNamedSelectPattern = (x: unknown): x is NamedSelectPattern<string> => {
 	const pattern = x as NamedSelectPattern<string>;
-	return pattern && pattern["@ts-pattern/__patternKind"] === PatternType.NamedSelect;
+	return pattern && pattern["@rbxts-pattern/__patternKind"] === PatternType.NamedSelect;
 };
 
 const isAnonymousSelectPattern = (x: unknown): x is AnonymousSelectPattern => {
 	const pattern = x as AnonymousSelectPattern;
-	return pattern && pattern["@ts-pattern/__patternKind"] === PatternType.AnonymousSelect;
+	return pattern && pattern["@rbxts-pattern/__patternKind"] === PatternType.AnonymousSelect;
 };
 
 // tells us if the value matches a given pattern.
@@ -234,7 +234,7 @@ const matchPattern = <a, p extends Pattern<a>>(
 		if (pattern === __) return true;
 
 		if (isNamedSelectPattern(pattern)) {
-			_select(pattern["@ts-pattern/__key"], value);
+			_select(pattern["@rbxts-pattern/__key"], value);
 			return true;
 		}
 
@@ -243,9 +243,10 @@ const matchPattern = <a, p extends Pattern<a>>(
 			return true;
 		}
 
-		if (isGuardPattern(pattern)) return pattern["@ts-pattern/__when"](value) === true;
+		if (isGuardPattern(pattern)) return pattern["@rbxts-pattern/__when"](value) === true;
 
-		if (isNotPattern(pattern)) return !matchPattern(pattern["@ts-pattern/__pattern"] as Pattern<a>, value, _select);
+		if (isNotPattern(pattern))
+			return !matchPattern(pattern["@rbxts-pattern/__pattern"] as Pattern<a>, value, _select);
 
 		if (!isObject(value)) return false;
 

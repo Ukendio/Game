@@ -19,28 +19,28 @@ export type GuardFunction<a, b extends a> = ((value: a) => value is b) | ((value
 
 export type GuardPattern<a, b extends a = never> = {
 	/** @deprecated This property should only be used by ts-pattern's internals. */
-	"@ts-pattern/__patternKind": PatternType.Guard;
+	"@rbxts-pattern/__patternKind": PatternType.Guard;
 	/** @deprecated This property should only be used by ts-pattern's internals. */
-	"@ts-pattern/__when": GuardFunction<a, b>;
+	"@rbxts-pattern/__when": GuardFunction<a, b>;
 };
 
 export type NotPattern<a> = {
 	/** @deprecated This property should only be used by ts-pattern's internals. */
-	"@ts-pattern/__patternKind": PatternType.Not;
+	"@rbxts-pattern/__patternKind": PatternType.Not;
 	/** @deprecated This property should only be used by ts-pattern's internals. */
-	"@ts-pattern/__pattern": Pattern<a>;
+	"@rbxts-pattern/__pattern": Pattern<a>;
 };
 
 export type AnonymousSelectPattern = {
 	/** @deprecated This property should only be used by ts-pattern's internals. */
-	"@ts-pattern/__patternKind": PatternType.AnonymousSelect;
+	"@rbxts-pattern/__patternKind": PatternType.AnonymousSelect;
 };
 
 export type NamedSelectPattern<k extends string> = {
 	/** @deprecated This property should only be used by ts-pattern's internals. */
-	"@ts-pattern/__patternKind": PatternType.NamedSelect;
+	"@rbxts-pattern/__patternKind": PatternType.NamedSelect;
 	/** @deprecated This property should only be used by ts-pattern's internals. */
-	"@ts-pattern/__key": k;
+	"@rbxts-pattern/__key": k;
 };
 
 type WildCardPattern<a> = a extends number
@@ -53,7 +53,7 @@ type WildCardPattern<a> = a extends number
 
 /**
  * ### Pattern
- * Patterns can be unknown (nested) javascript value.
+ * Patterns can be any (nested) javascript value.
  * They can also be a "wildcards", like `__`.
  */
 export type Pattern<a> =

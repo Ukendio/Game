@@ -1,6 +1,6 @@
 /// <reference types="@rbxts/testez/globals" />
 import { Option, Result, Vec } from "@rbxts/rust-classes";
-import { match, _select } from "shared/rbxts-pattern";
+import { match, _select } from "shared/match";
 
 export = () => {
 	describe("complex patterns", () => {

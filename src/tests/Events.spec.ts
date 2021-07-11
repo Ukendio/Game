@@ -68,7 +68,7 @@ export = () => {
 				wait(5);
 			});
 
-			expect(() => signal.fire()).to.throw();
+			expect(() => signal.fireNoYield().expect()).to.throw();
 		});
 	});
 };

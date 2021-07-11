@@ -8,7 +8,7 @@ import type { FindSelected } from "./FindSelected";
 // We fall back to `a` if we weren't able to extract unknownthing more precise
 export type MatchedValue<a, invpattern> = WithDefault<ExtractPreciseValue<a, invpattern>, a>;
 
-export type Unset = "@ts-pattern/unset";
+export type Unset = "@rbxts-pattern/unset";
 
 export type PickReturnValue<a, b> = a extends Unset ? b : a;
 
