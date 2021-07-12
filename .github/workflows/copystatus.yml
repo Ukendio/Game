@@ -1,0 +1,20 @@
+name: Copy CI status
+
+on:
+    pull_request:
+    push:
+
+jobs:
+    status:
+        if: contains(github.event.commits[0].message, '[skip ci]') == true
+        name: Copy CI status
+        runs-on: ubuntu-latest
+        steps:
+            - name: Copy CI status
+              uses: actions/github-script@v4
+              with:
+                  script: |
+                      console.log(await core.actions.listWorkflowRunsForRepo({
+                          owner: context.repo.owner,
+                          repo: context.repo.repo,
+                      })
