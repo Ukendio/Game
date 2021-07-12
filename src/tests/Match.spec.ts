@@ -202,7 +202,7 @@ export = () => {
 	});
 
 	it("number is even", () => {
-		const isOdd = (x: number) => x % 2 === 0;
+		const isOdd = (x: number) => x % 2 === 1;
 
 		const result = match({ x: 2 })
 			.with({ x: when(isOdd) }, ({ x }) => `${x} is odd`)
