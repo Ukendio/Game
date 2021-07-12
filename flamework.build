@@ -15,7 +15,9 @@
 		"game:out/server/services/election/init@Election": "9r",
 		"game:out/server/services/enlistment/init@Enlistment": "Ba",
 		"game:out/server/services/roundCoordinator/init@RoundCoordinator": "rp",
-		"game:out/shared/spirit/spring@Spring": "VB"
+		"game:out/shared/spirit/spring@Spring": "VB",
+		"game:out/client/UI/App/Home@Home": "wR",
+		"game:out/client/UI/Components/Vote@Vote": "ZW"
 	},
 	"salt": "6e34ab0d7aa054a31fedafcb23da6a2b1e23175deff955e9b7fe9cefb2a69230a998ead447cb83d25ad3befd954d20e99fcc134b778f5db90224c165379815c3"
 }
