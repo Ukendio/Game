@@ -1,5 +1,5 @@
-import { startFreeCamera, stopFreeCamera } from "shared/Spirit/toggle";
-import { SPIRIT_SETTINGS } from "shared/Spirit/settings";
+import { startFreeCamera, stopFreeCamera } from "shared/spirit/toggle";
+import { SPIRIT_SETTINGS } from "shared/spirit/settings";
 import { ContextActionService } from "@rbxts/services";
 
 namespace Spirit {
