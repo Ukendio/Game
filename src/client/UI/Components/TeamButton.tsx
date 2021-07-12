@@ -35,7 +35,8 @@ const teamButton: Hooks.FC<Props> = (props, { useState }) => {
 
 	const thisTeam = getTeam(specificIndex.Color);
 
-	const [memberCount, setMemberCount] = useState(0);
+	const [memberCount, setMemberCount] = useState(thisTeam.members.len());
+
 	return (
 		<frame Rotation={45}>
 			<uiaspectratioconstraint />

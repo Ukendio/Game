@@ -43,7 +43,9 @@
 		"game:out/client/UI/Components/Vote@Vote": "M1",
 		"game:out/shared/spirit/spring@Spring": "qy",
 		"game:out/client/controllers/zircon@ZirconController": "Z7",
-		"game:out/client/controllers/zirconController@ZirconController": "J7"
+		"game:out/client/controllers/zirconController@ZirconController": "J7",
+		"game:out/client/ui/app/home@Home": "x8",
+		"game:out/client/ui/components/Vote@Vote": "PPw"
 	},
 	"salt": "7c5c47f013b98fe8a5b7c61c711d0b9ee306cc4ffe77419e4a36c2e146c912f43cf72c892e130df9f466aa5c9a39fc01730d01dcc4a99e6f8ab4a4da90d258cf"
 }

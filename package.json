@@ -28,13 +28,13 @@
 		"eslint-plugin-prettier": "^3.3.1",
 		"eslint-plugin-roblox-ts": "0.0.25",
 		"prettier": "^2.2.1",
-		"rbxts-transformer-flamework": "0.0.7",
+		"rbxts-transformer-flamework": "0.0.12",
 		"roblox-ts": "^1.1.1",
 		"typescript": "^4.3.2"
 	},
 	"dependencies": {
 		"@rbxts/fabric": "^1.1.6",
-		"@rbxts/flamework": "^0.0.5",
+		"@rbxts/flamework": "0.0.11",
 		"@rbxts/flipper": "^2.0.0",
 		"@rbxts/janitor": "^1.1.3",
 		"@rbxts/log": "^0.3.0-alpha.1",
