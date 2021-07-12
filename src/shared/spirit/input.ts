@@ -1,5 +1,6 @@
 import { ContextActionService, UserInputService } from "@rbxts/services";
 import { DEVICE_SETTINGS, SPIRIT_SETTINGS } from "./settings";
+
 const gamePad = {
 	ButtonX: 0,
 	ButtonY: 0,
