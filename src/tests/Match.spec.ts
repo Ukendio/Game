@@ -1,6 +1,6 @@
 /// <reference types="@rbxts/testez/globals" />
 import { Option, Result, Vec } from "@rbxts/rust-classes";
-import { match, _select } from "shared/match";
+import { match, when, _select, __ } from "shared/match";
 
 export = () => {
 	describe("complex patterns", () => {
@@ -199,5 +199,16 @@ export = () => {
 			.run();
 
 		expect(result).to.equal("b");
+	});
+
+	it("number is even", () => {
+		const isOdd = (x: number) => x % 2 === 0;
+
+		const result = match({ x: 2 })
+			.with({ x: when(isOdd) }, ({ x }) => `${x} is odd`)
+			.with(__, ({ x }) => `${x} is even`)
+			.exhaustive();
+
+		expect(result).to.equal("2 is even");
 	});
 };
