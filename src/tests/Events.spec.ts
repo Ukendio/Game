@@ -1,5 +1,5 @@
 /// <reference types="@rbxts/testez/globals" />
-import Dispatcher, { interval } from "shared/dispatcher";
+import Signal, { interval } from "shared/dispatcher";
 
 export = () => {
 	describe("interval", () => {
@@ -38,7 +38,7 @@ export = () => {
 
 	describe("Signal", () => {
 		it("Should only run once", () => {
-			const signal = new Dispatcher();
+			const signal = new Signal();
 			let hasRanTimes = 0;
 			const connection = signal.connect((check) => {
 				connection.disconnect();
@@ -51,7 +51,7 @@ export = () => {
 		});
 
 		it("Inline resumption should be of okay", () => {
-			const signal = new Dispatcher();
+			const signal = new Signal();
 			let success = false;
 			signal.connect(() => {
 				success = true;
@@ -62,7 +62,7 @@ export = () => {
 		});
 
 		it("Error when yielding inside of handler", () => {
-			const signal = new Dispatcher();
+			const signal = new Signal();
 
 			signal.connect(() => {
 				wait(5);
