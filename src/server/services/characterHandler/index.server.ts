@@ -8,7 +8,7 @@ import { UnitConstructor } from "../unitConstructor";
 import { findSpawn } from "./findSpawn";
 
 @Service({
-	loadOrder: 2,
+	loadOrder: 3,
 })
 export class CharacterHandler implements OnStart {
 	private stateContainer = store;

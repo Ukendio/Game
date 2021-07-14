@@ -12,7 +12,7 @@ import Object from "@rbxts/object-utils";
 const serverEvents = remotes.Server;
 
 @Service({
-	loadOrder: 4,
+	loadOrder: 5,
 })
 export class Election implements OnInit, OnStart {
 	private clientAppendVote = serverEvents.Create("clientAppendVote");

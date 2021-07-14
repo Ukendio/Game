@@ -8,7 +8,7 @@ import Log from "@rbxts/log";
 const roundStarted = remotes.Server.Create("roundStarted");
 
 @Service({
-	loadOrder: 1,
+	loadOrder: 2,
 })
 export class RoundCoordinator implements OnStart {
 	constructor(private Election: Election) {}
