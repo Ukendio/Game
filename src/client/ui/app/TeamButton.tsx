@@ -8,10 +8,6 @@ interface Props {
 	side: "Left" | "Right";
 }
 
-interface State {
-	memberCount: number;
-}
-
 const teamButton: Hooks.FC<Props> = (props, { useState }) => {
 	const transform = (...args: [BrickColor, UDim2, Vector2]) => {
 		return {
