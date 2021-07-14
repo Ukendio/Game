@@ -7,7 +7,7 @@ const clientEvents = remotes.Client;
 const constructUnit = clientEvents.WaitFor("constructUnit");
 
 @Controller({})
-export class UnitController implements OnInit {
+export class UnitConstructor implements OnInit {
 	onInit() {
 		const fabric = new FabricLib.Fabric("Game");
 

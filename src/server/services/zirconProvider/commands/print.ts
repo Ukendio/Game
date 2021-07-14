@@ -1,5 +1,5 @@
 import Log from "@rbxts/log";
-import { ListCommand } from "../index.server";
+import { ListCommand } from "..";
 
 export = (...parameters: Parameters<ListCommand>) => {
 	const registry = parameters[0];
