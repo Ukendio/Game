@@ -1,12 +1,12 @@
 import Roact from "@rbxts/roact";
 import Hooks from "@rbxts/roact-hooks";
 import Flipper from "@rbxts/flipper";
-import Signal from "shared/dispatcher";
-import Outline from "client/ui/components/outline";
+import Dispatcher from "shared/dispatcher";
+import Outline from "client/ui/components/Outline";
 import { match } from "shared/match";
 
 interface Props {
-	signal: Signal;
+	signal: Dispatcher;
 	offset: number;
 	fireRate: number;
 	recoil: number;
