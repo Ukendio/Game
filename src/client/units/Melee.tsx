@@ -2,7 +2,7 @@ import { ThisFabricUnit, UnitDefinition } from "@rbxts/fabric";
 import { Janitor } from "@rbxts/janitor";
 import Roact from "@rbxts/roact";
 import { Players, Workspace } from "@rbxts/services";
-import HitMark from "client/ui/app/hitMark";
+import HitMark from "client/ui/app/HitMark";
 
 interface MeleeDefinition extends UnitDefinition<"Melee"> {
 	ref?: Tool;
