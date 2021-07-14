@@ -41,7 +41,15 @@
 		"Workspace": {
 			"$className": "Workspace",
 			"$properties": {
-				"FilteringEnabled": true
+				"FilteringEnabled": true,
+				"MeshPartHeadsAndAccessories": {
+   					"Type": "Enum",
+    				"Value": 1
+				},
+				"SignalBehavior": {
+					"Type": "Enum",
+					"Value": 2   
+				}
 			},
 			"Maps": {
 				"$className": "Folder"
