@@ -25,13 +25,4 @@ const reducer = Rodux.combineReducers({
 	team: teamReducer,
 });
 
-export default new Rodux.Store<
-	{
-		dispatcher: DispatcherState;
-		election: ElectionState;
-		round: RoundState;
-		score: ScoreState;
-		team: TeamState;
-	},
-	Actions
->(reducer, initialState as never);
+export default new Rodux.Store<State, Actions>(reducer as never, initialState);
