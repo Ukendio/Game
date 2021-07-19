@@ -5,9 +5,9 @@ import { RoundActions, roundReducer, roundState, RoundState } from "./reducers/r
 import { ScoreActions, scoreReducer, scoreState, ScoreState } from "./reducers/score";
 import { TeamActions, teamReducer, teamState, TeamState } from "./reducers/team";
 
-type State = DispatcherState & ElectionState & RoundState & ScoreState & TeamState;
+export type State = DispatcherState & ElectionState & RoundState & ScoreState & TeamState;
 
-type Actions = DispatcherActions | ElectionActions | RoundActions | ScoreActions | TeamActions;
+export type Actions = DispatcherActions | ElectionActions | RoundActions | ScoreActions | TeamActions;
 
 const initialState = identity<State>({
 	...dispatcherState,

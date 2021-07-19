@@ -48,6 +48,8 @@ export = () => {
 				Mul,
 			}
 
+			const sum = { operator: Operator.Add, left: 12, right: 3 };
+			print(sum);
 			const result = match({ left: 12, operator: Operator.Add, right: 3 })
 				.with({ operator: Operator.Add }, ({ left, right }) => left + right)
 				.with({ operator: Operator.Sub }, ({ left, right }) => left - right)

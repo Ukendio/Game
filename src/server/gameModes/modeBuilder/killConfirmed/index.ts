@@ -20,7 +20,7 @@ function maxKills() {
 
 async function winCondition() {
 	return unlistTeams()
-		.andThenCall(listTeams, settings.teams)
+		.andThenCall(listTeams, settings.teams, store)
 		.then(() =>
 			Promise.race([
 				maxKills().then((winners) => {
