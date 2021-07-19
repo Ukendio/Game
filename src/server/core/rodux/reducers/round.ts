@@ -12,11 +12,11 @@ export type RoundActions =
 			type: "StopRound";
 	  };
 
-export const initialState = {
+export const roundState = {
 	sequence: "intermission" as const,
 };
 
-export const roundReducer = Rodux.createReducer<RoundState, RoundActions>(initialState, {
+export const roundReducer = Rodux.createReducer<RoundState, RoundActions>(roundState, {
 	StartRound: (state) => {
 		if (state.sequence === "intermission") {
 			return { ...state, sequence: "started" };

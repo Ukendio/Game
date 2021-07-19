@@ -15,11 +15,11 @@ export type DispatcherActions =
 			player: Player;
 	  };
 
-export const initialState = {
+export const dispatcherState = {
 	deployedPlayers: Vec.vec<Player>(),
 };
 
-export const dispatcherReducer = Rodux.createReducer<DispatcherState, DispatcherActions>(initialState, {
+export const dispatcherReducer = Rodux.createReducer<DispatcherState, DispatcherActions>(dispatcherState, {
 	Deploy: (state, action) => {
 		if (action.player.Parent !== undefined) {
 			return { ...state, deployedPlayers: state.deployedPlayers.push(action.player) };

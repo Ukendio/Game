@@ -44,7 +44,7 @@ export type ElectionActions =
 			positions: Set<SpawnLocation>;
 	  };
 
-export const initialState = {
+export const electionState = {
 	voting: false,
 	topic: undefined!,
 	votes: {},
@@ -56,7 +56,7 @@ export const initialState = {
 	spawnLocations: new Set<SpawnLocation>(),
 };
 
-export const electionReducer = Rodux.createReducer<ElectionState, ElectionActions>(initialState, {
+export const electionReducer = Rodux.createReducer<ElectionState, ElectionActions>(electionState, {
 	StartVote: (state) => {
 		const newState = { ...state, voting: true };
 		state.topic.options.iter().forEach((index) => {

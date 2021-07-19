@@ -19,11 +19,11 @@ export type ScoreActions =
 			type: "ChangeRanking";
 	  };
 
-export const initialState = {
+export const scoreState = {
 	ranking: Vec.vec<PlayerScore>(),
 };
 
-export const scoreReducer = Rodux.createReducer<ScoreState, ScoreActions>(initialState, {
+export const scoreReducer = Rodux.createReducer<ScoreState, ScoreActions>(scoreState, {
 	AddKillToPlayer: (state, action) => {
 		state.ranking
 			.iter()

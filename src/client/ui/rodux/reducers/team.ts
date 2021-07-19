@@ -30,11 +30,11 @@ export type TeamActions =
 			team: PlayerTeam;
 	  };
 
-export const teamState = {
+export const initialState = {
 	teams: Vec.vec<PlayerTeam>(),
 };
 
-export const teamReducer = Rodux.createReducer<TeamState, TeamActions>(teamState, {
+export const teamReducer = Rodux.createReducer<TeamState, TeamActions>(initialState, {
 	AddTeammate: (state, action) => {
 		action.team.members.push(action.player);
 		return { ...state };

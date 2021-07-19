@@ -2,7 +2,7 @@ import Roact from "@rbxts/roact";
 import Hooks from "@rbxts/roact-hooks";
 
 import { match } from "shared/match";
-import store from "client/core/rodux/store";
+import store from "../rodux/store";
 
 interface Props {
 	side: "Left" | "Right";
@@ -19,7 +19,7 @@ const teamButton: Hooks.FC<Props> = (props, { useState }) => {
 	const specificIndex = match(props.side)
 		.with("Left", () => transform(new BrickColor(255, 60, 35), UDim2.fromScale(0, 0.5), new Vector2(0, 0.5)))
 		.with("Right", () => transform(new BrickColor(58, 147, 255), UDim2.fromScale(1, 0.5), new Vector2(1, 0.5)))
-		.run();
+		.exhaustive();
 
 	const getTeam = (color: BrickColor) => {
 		return store
