@@ -1,6 +1,5 @@
 import { Service } from "@rbxts/flamework";
-import store from "shared/rodux/store";
-import { addTeammate } from "shared/rodux/actions";
+import store from "server/core/rodux/store";
 
 @Service({
 	loadOrder: 6,
@@ -15,7 +14,7 @@ export class Enlistment {
 			.unwrap();
 
 		this._lock(team.tag);
-		store.dispatch(addTeammate(player, team));
+		store.dispatch({ type: "AddTeammate", player: player, team: team });
 	}
 
 	_ensureLocked() {}

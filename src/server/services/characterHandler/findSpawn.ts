@@ -1,18 +1,21 @@
-import { State } from "shared/rodux/reducer";
+import store from "server/core/rodux/store";
 
-export async function findSpawn(state: State, player: Player) {
+export async function findSpawn(player: Player) {
 	let closestSpawn = undefined! as SpawnLocation;
 
 	let closestMagnitude = undefined! as number;
 
-	state.spawnLocations.forEach((spawnLocation) => {
+	store.getState().spawnLocations.forEach((spawnLocation) => {
 		let totalMagnitude = 0;
-		state.deployedPlayers.iter().forEach((player) => {
-			const root = player.Character?.FindFirstChild("HumanoidRootPart") as BasePart;
-			if (root) {
-				totalMagnitude += spawnLocation.Position.sub(root.Position).Magnitude;
-			}
-		});
+		store
+			.getState()
+			.deployedPlayers.iter()
+			.forEach((player) => {
+				const root = player.Character?.FindFirstChild("HumanoidRootPart") as BasePart;
+				if (root) {
+					totalMagnitude += spawnLocation.Position.sub(root.Position).Magnitude;
+				}
+			});
 
 		if (closestMagnitude === undefined) {
 			closestMagnitude = totalMagnitude;

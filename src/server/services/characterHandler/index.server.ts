@@ -2,7 +2,7 @@ import { OnStart, Service } from "@rbxts/flamework";
 import { Players } from "@rbxts/services";
 import yieldForR15CharacterDescendants from "@rbxts/yield-for-character";
 
-import store from "shared/rodux/store";
+import store from "server/core/rodux/store";
 import { Config, Mode } from "shared/Types";
 import { UnitConstructor } from "../unitConstructor";
 import { findSpawn } from "./findSpawn";
@@ -41,7 +41,7 @@ export class CharacterHandler implements OnStart {
 		};
 
 		const onPlayerAdded = (player: Player) => {
-			findSpawn(this.stateContainer.getState(), player).then(() => {
+			findSpawn(player).then(() => {
 				if (player.Character) handleCharacterAdded(player.Character);
 				else player.CharacterAdded.Connect(handleCharacterAdded);
 			});

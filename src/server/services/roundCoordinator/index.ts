@@ -1,6 +1,5 @@
 import { OnStart, Service } from "@rbxts/flamework";
-import store from "shared/rodux/store";
-import { startRound } from "shared/rodux/actions";
+import store from "server/core/rodux/store";
 import { Election } from "../election";
 import remotes from "shared/Remotes";
 import Log from "@rbxts/log";
@@ -15,19 +14,20 @@ export class RoundCoordinator implements OnStart {
 
 	onStart() {
 		const roundBuilder = async () => {
-			store.dispatch(startRound());
+			store.dispatch({ type: "StartRound" });
 			roundStarted.SendToAllPlayers();
 
 			Log.Info("round started");
 
 			return store
 				.getState()
-				.winCondition(store)
+				.winCondition()
 				.andThenCall(Promise.delay, 5)
 				.then(() => {
 					Log.Info("prompt");
 				});
 		};
+
 		const intermission = () => {
 			Log.Info("intermission");
 

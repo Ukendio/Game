@@ -3,3 +3,5 @@ interface ServerScriptService extends Instance {
 		units: Folder;
 	};
 }
+
+interface Test {}

@@ -1,6 +1,5 @@
 import { Dependency } from "@rbxts/flamework";
-import store from "shared/rodux/store";
-import { addKillToPlayer, addDeathToPlayer, addKillToTeam, addDeathToTeam } from "shared/rodux/actions";
+import store from "server/core/rodux/store";
 import type { UnitConstructor } from "server/services/unitConstructor";
 import { match } from "shared/match";
 
@@ -11,27 +10,27 @@ function matchModeForKill(player: Player, enemyPlayer: Player) {
 
 	return match(store.getState())
 		.with({ gameMode: "Team Deathmatch" }, () => {
-			store.dispatch(addKillToPlayer(player));
-			store.dispatch(addDeathToPlayer(enemyPlayer));
+			store.dispatch({ type: "AddKillToPlayer", player: player });
+			store.dispatch({ type: "AddDeathToPlayer", player: enemyPlayer });
 
 			store
 				.getState()
 				.teams.iter()
 
-				.forEach((team) => {
+				.forEach((team) =>
 					match({ TeamColor: team.tag.TeamColor })
 						.with({ TeamColor: player.TeamColor }, () => {
-							store.dispatch(addKillToTeam(team));
+							store.dispatch({ type: "AddKillToTeam", team: team });
 						})
 						.with({ TeamColor: enemyPlayer.TeamColor }, () => {
-							store.dispatch(addDeathToTeam(team));
+							store.dispatch({ type: "AddDeathToTeam", team: team });
 						})
-						.run();
-				});
+						.run(),
+				);
 		})
 		.with({ gameMode: "Free For All" }, () => {
-			store.dispatch(addKillToPlayer(player));
-			store.dispatch(addDeathToPlayer(enemyPlayer));
+			store.dispatch({ type: "AddKillToPlayer", player: player });
+			store.dispatch({ type: "AddDeathToPlayer", player: enemyPlayer });
 		})
 		.with({ gameMode: "Kill Confirmed" }, () => {
 			unitConstructor.createTag(enemyPlayer);

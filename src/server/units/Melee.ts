@@ -1,5 +1,5 @@
 import { Players } from "@rbxts/services";
-import matchModeForKill from "shared/gameModes/helpers/matchModeForKill";
+import matchModeForKill from "server/gameModes/helpers/matchModeForKill";
 
 const melee: FabricUnits["Melee"] = {
 	name: "Melee",

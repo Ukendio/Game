@@ -69,7 +69,7 @@ export = () => {
 		expect(result).to.equal("b");
 	});
 
-	it("number is even", () => {
+	it("2 is even", () => {
 		const isOdd = (x: number) => x % 2 === 1;
 
 		const result = match({ x: 2 })
@@ -78,5 +78,16 @@ export = () => {
 			.exhaustive();
 
 		expect(result).to.equal("2 is even");
+	});
+
+	it("7 is odd", () => {
+		const isOdd = (x: number) => x % 2 === 1;
+
+		const result = match({ x: 7 })
+			.with({ x: when(isOdd) }, ({ x }) => `${x} is odd`)
+			.with(__, ({ x }) => `${x} is even`)
+			.exhaustive();
+
+		expect(result).to.equal("7 is odd");
 	});
 };

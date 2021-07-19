@@ -1,12 +1,11 @@
-import { Store } from "@rbxts/rodux";
-import { PlayerTeam, Actions } from "shared/rodux/actions";
-import { State } from "shared/rodux/reducer";
-import listTeams from "shared/gameModes/helpers/listTeams";
-import unlistTeams from "shared/gameModes/helpers/unlistTeams";
+import listTeams from "server/gameModes/helpers/listTeams";
+import unlistTeams from "server/gameModes/helpers/unlistTeams";
 import settings from "./settings";
 import Log from "@rbxts/log";
+import { PlayerTeam } from "shared/Types";
+import store from "server/core/rodux/store";
 
-function maxKills(store: Store<State, Actions>) {
+function maxKills() {
 	return new Promise((resolve) => {
 		store.changed.connect(() => {
 			store
@@ -19,12 +18,12 @@ function maxKills(store: Store<State, Actions>) {
 	});
 }
 
-async function winCondition(store: Store<State, Actions>) {
+async function winCondition() {
 	return unlistTeams()
-		.andThenCall(listTeams, settings.teams, store)
+		.andThenCall(listTeams, settings.teams)
 		.then(() =>
 			Promise.race([
-				maxKills(store).then((winners) => {
+				maxKills().then((winners) => {
 					Log.Info("The winners are {winners}", winners);
 				}),
 				Promise.delay(settings.roundLength).then(() => {

@@ -3,7 +3,7 @@ import Log, { Logger } from "@rbxts/log";
 import print_message from "./commands/print";
 import kick from "./commands/kick";
 import { ZirconRegistryService } from "@rbxts/zircon/out/Services/RegistryService";
-import { match } from "shared/match";
+import { match, __ } from "shared/match";
 import give_temp_admin from "./commands/admin";
 import { OnInit, OnStart, Service } from "@rbxts/flamework";
 
@@ -18,23 +18,15 @@ export type ListCommand = (
 	builder: typeof ZirconFunctionBuilder,
 ) => void;
 
-enum Commands {
-	give_temp_admin,
-	print_message,
-	kick,
-}
-
-function buildCommand(commandName: Commands) {
-	return match(commandName)
-		.with(Commands.give_temp_admin, () => give_temp_admin)
-		.with(Commands.print_message, () => print_message)
-		.with(Commands.kick, () => kick)
-		.run();
-}
+const commands = {
+	give_temp_admin: give_temp_admin,
+	print_message: print_message,
+	kick: kick,
+};
 
 function buildCommands(...parameters: Parameters<ListCommand>) {
-	for (const [_, commandName] of pairs(Commands)) {
-		buildCommand(commandName)(...parameters);
+	for (const [commandName] of pairs(commands)) {
+		commands[commandName](...parameters);
 	}
 }
 

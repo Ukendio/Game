@@ -1,15 +1,15 @@
-import { Store } from "@rbxts/rodux";
-import { PlayerTeam, Actions, addTeammate, removeTeammate } from "shared/rodux/actions";
-import { State } from "shared/rodux/reducer";
-import listTeams from "shared/gameModes/helpers/listTeams";
-import unlistTeams from "shared/gameModes/helpers/unlistTeams";
+import listTeams from "server/gameModes/helpers/listTeams";
+import unlistTeams from "server/gameModes/helpers/unlistTeams";
 import settings from "./settings";
 import { Vec } from "@rbxts/rust-classes";
 import { Players } from "@rbxts/services";
 import Log from "@rbxts/log";
+import store from "server/core/rodux/store";
+import { PlayerTeam } from "shared/Types";
 
-async function buildTeam(store: Store<State, Actions>) {
+async function buildTeam() {
 	const availableTeams = store.getState().teams;
+
 	const takenTeams = Vec.withCapacity<PlayerTeam>(availableTeams.len());
 
 	const playerAdded = (player: Player) => {
@@ -20,7 +20,7 @@ async function buildTeam(store: Store<State, Actions>) {
 
 		takenTeams.push(team);
 
-		store.dispatch(addTeammate(player, team));
+		store.dispatch({ type: "AddTeammate", player: player, team: team });
 		player.Team = team.tag;
 	};
 
@@ -29,7 +29,7 @@ async function buildTeam(store: Store<State, Actions>) {
 
 		for (const team of drainedTeams) {
 			availableTeams.push(team);
-			store.dispatch(removeTeammate(player, team));
+			store.dispatch({ type: "RemoveTeammate", player: player, team: team });
 		}
 	});
 
@@ -38,7 +38,7 @@ async function buildTeam(store: Store<State, Actions>) {
 	}
 }
 
-function maxKills(store: Store<State, Actions>) {
+function maxKills() {
 	return new Promise((resolve) => {
 		store.changed.connect(() => {
 			store
@@ -51,12 +51,12 @@ function maxKills(store: Store<State, Actions>) {
 	});
 }
 
-async function winCondition(store: Store<State, Actions>) {
+async function winCondition() {
 	return unlistTeams()
-		.andThenCall(listTeams, settings.teams, store)
+		.andThenCall(listTeams, settings.teams)
 		.then(() =>
 			Promise.race([
-				maxKills(store).then((winners) => {
+				maxKills().then((winners) => {
 					Log.Info("{winners}", winners);
 				}),
 				Promise.delay(settings.roundLength).then(() => {

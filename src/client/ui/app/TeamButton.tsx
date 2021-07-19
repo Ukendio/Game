@@ -2,7 +2,7 @@ import Roact from "@rbxts/roact";
 import Hooks from "@rbxts/roact-hooks";
 
 import { match } from "shared/match";
-import store from "shared/rodux/store";
+import store from "client/core/rodux/store";
 
 interface Props {
 	side: "Left" | "Right";

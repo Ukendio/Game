@@ -1,5 +1,4 @@
 import Log from "@rbxts/log";
-import { RunService } from "@rbxts/services";
 import { noYield } from "./noYield";
 import SingleEvent from "./singleEvent";
 
