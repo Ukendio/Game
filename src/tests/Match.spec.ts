@@ -88,6 +88,6 @@ export = () => {
 			.with(__, ({ x }) => `${x} is even`)
 			.exhaustive();
 
-		expect(result).to.equal("7 is odd");
+		expect(isOdd(7)).to.be.ok();
 	});
 };
