@@ -49,10 +49,10 @@ export = () => {
 			}
 
 			const result = match({ left: 12, operator: Operator.Add, right: 3 })
-				.with({ operator: Operator.Add }, ({ left, right }) => left + right)
-				.with({ operator: Operator.Sub }, ({ left, right }) => left - right)
-				.with({ operator: Operator.Div }, ({ left, right }) => left / right)
-				.with({ operator: Operator.Mul }, ({ left, right }) => left * right)
+				.with({ __, operator: Operator.Add }, ({ left, right }) => left + right)
+				.with({ __, operator: Operator.Sub }, ({ left, right }) => left - right)
+				.with({ __, operator: Operator.Div }, ({ left, right }) => left / right)
+				.with({ __, operator: Operator.Mul }, ({ left, right }) => left * right)
 				.otherwise(() => error("This shouldn't happen"));
 
 			expect(result).to.equal(15);
