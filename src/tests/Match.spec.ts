@@ -48,12 +48,12 @@ export = () => {
 				Mul,
 			}
 
-			const result = match({ operator: Operator.Add, left: 12, right: 3 })
+			const result = match({ left: 12, operator: Operator.Add, right: 3 })
 				.with({ operator: Operator.Add }, ({ left, right }) => left + right)
 				.with({ operator: Operator.Sub }, ({ left, right }) => left - right)
 				.with({ operator: Operator.Div }, ({ left, right }) => left / right)
 				.with({ operator: Operator.Mul }, ({ left, right }) => left * right)
-				.otherwise(() => error("This shouldn't happen"));
+				.run();
 
 			expect(result).to.equal(15);
 		});
@@ -88,6 +88,6 @@ export = () => {
 			.with(__, ({ x }) => `${x} is even`)
 			.exhaustive();
 
-		expect(isOdd(7)).to.be.ok();
+		expect(result).to.equal("7 is odd");
 	});
 };
