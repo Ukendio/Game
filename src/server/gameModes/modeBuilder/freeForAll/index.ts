@@ -4,10 +4,11 @@ import settings from "./settings";
 import { Vec } from "@rbxts/rust-classes";
 import { Players } from "@rbxts/services";
 import Log from "@rbxts/log";
-import store from "server/core/rodux/store";
+import { Actions, State } from "server/core/rodux/store";
 import { PlayerTeam } from "shared/Types";
+import { Store } from "@rbxts/rodux";
 
-async function buildTeam() {
+async function buildTeam(store: Store<State, Actions>) {
 	const availableTeams = store.getState().teams;
 
 	const takenTeams = Vec.withCapacity<PlayerTeam>(availableTeams.len());
@@ -38,7 +39,7 @@ async function buildTeam() {
 	}
 }
 
-function maxKills() {
+function maxKills(store: Store<State, Actions>) {
 	return new Promise((resolve) => {
 		store.changed.connect(() => {
 			store
@@ -51,12 +52,12 @@ function maxKills() {
 	});
 }
 
-async function winCondition() {
+async function winCondition(store: Store<State, Actions>) {
 	return unlistTeams()
 		.andThenCall(listTeams, settings.teams, store)
 		.then(() =>
 			Promise.race([
-				maxKills().then((winners) => {
+				maxKills(store).then((winners) => {
 					Log.Info("{winners}", winners);
 				}),
 				Promise.delay(settings.roundLength).then(() => {

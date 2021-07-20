@@ -40,24 +40,20 @@ export = () => {
 			expect(matchedPlayerTeam).to.be.ok();
 		});
 
-		it("adds to 15", () => {
-			enum Operator {
-				Add,
-				Sub,
-				Div,
-				Mul,
-			}
+		it("match string", () => {
+			expect(
+				match("Hello")
+					.with(__.string, (str) => str + " World")
+					.exhaustive(),
+			).to.equal("Hello World");
+		});
 
-			const sum = { operator: Operator.Add, left: 12, right: 3 };
-			print(sum);
-			const result = match({ left: 12, operator: Operator.Add, right: 3 })
-				.with({ operator: Operator.Add }, ({ left, right }) => left + right)
-				.with({ operator: Operator.Sub }, ({ left, right }) => left - right)
-				.with({ operator: Operator.Div }, ({ left, right }) => left / right)
-				.with({ operator: Operator.Mul }, ({ left, right }) => left * right)
-				.run();
-
-			expect(result).to.equal(15);
+		it("throw at number", () => {
+			expect(
+				match("Hello")
+					.with(__.number, () => 1)
+					.run(),
+			).to.throw();
 		});
 	});
 
@@ -80,16 +76,5 @@ export = () => {
 			.exhaustive();
 
 		expect(result).to.equal("2 is even");
-	});
-
-	it("7 is odd", () => {
-		const isOdd = (x: number) => x % 2 === 1;
-
-		const result = match({ x: 7 })
-			.with({ x: when(isOdd) }, ({ x }) => `${x} is odd`)
-			.with(__, ({ x }) => `${x} is even`)
-			.exhaustive();
-
-		expect(result).to.equal("7 is odd");
 	});
 };

@@ -1,7 +1,9 @@
-import Rodux from "@rbxts/rodux";
+import Rodux, { Store } from "@rbxts/rodux";
 import { Vec } from "@rbxts/rust-classes";
+import { State } from "server/core/rodux/store";
 import { gameModes } from "server/gameModes";
 import { TopicFormat } from "shared/Types";
+import { Actions } from "../store";
 
 export interface ElectionState {
 	voting: boolean;
@@ -10,7 +12,7 @@ export interface ElectionState {
 	hasVoted: Vec<Player>;
 	sequence: "started" | "intermission";
 	gameMode: keyof typeof gameModes;
-	winCondition: () => Promise<void>;
+	winCondition: (store: Store<State, Actions>) => Promise<void>;
 	currentMap: string;
 	spawnLocations: Set<SpawnLocation>;
 }

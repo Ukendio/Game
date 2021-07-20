@@ -1,11 +1,12 @@
 import { Dependency } from "@rbxts/flamework";
-import store from "server/core/rodux/store";
+import { Store } from "@rbxts/rodux";
+import { State, Actions } from "server/core/rodux/store";
 import type { UnitConstructor } from "server/services/unitConstructor";
 import { match } from "shared/match";
 
 const unitConstructor = Dependency<UnitConstructor>();
 
-function matchModeForKill(player: Player, enemyPlayer: Player) {
+function matchModeForKill(player: Player, enemyPlayer: Player, store: Store<State, Actions>) {
 	if (store.getState().sequence === "intermission") return;
 
 	return match(store.getState())
