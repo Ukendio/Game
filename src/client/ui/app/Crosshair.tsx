@@ -1,12 +1,12 @@
 import Roact from "@rbxts/roact";
 import Hooks from "@rbxts/roact-hooks";
 import Flipper from "@rbxts/flipper";
-import Dispatcher from "shared/dispatcher";
 import Outline from "client/ui/components/Outline";
 import { match } from "shared/match";
+import Yessir from "@rbxts/yessir";
 
 interface Props {
-	signal: Dispatcher;
+	signal: Yessir;
 	offset: number;
 	fireRate: number;
 	recoil: number;
@@ -36,7 +36,7 @@ const recoilOnClick: Hooks.FC<Props> = (props, { useCallback }) => {
 		});
 	});
 
-	props.signal.connect(() => doRecoil());
+	props.signal.setup(() => doRecoil());
 
 	const layers = ["Inner", "Outer"] as const;
 	const directions = ["Up", "Down", "Left", "Right"] as const;

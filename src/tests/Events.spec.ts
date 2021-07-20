@@ -1,5 +1,5 @@
 /// <reference types="@rbxts/testez/globals" />
-import Dispatcher, { interval } from "shared/dispatcher";
+import Yessir, { interval } from "@rbxts/yessir";
 
 export = () => {
 	describe("interval", () => {
@@ -38,37 +38,37 @@ export = () => {
 
 	describe("Signal", () => {
 		it("Should only run once", () => {
-			const signal = new Dispatcher();
+			const signal = new Yessir();
 			let hasRanTimes = 0;
-			const connection = signal.connect((check) => {
-				connection.disconnect();
+			const connection = signal.setup((check) => {
+				connection.dispose();
 				hasRanTimes = check;
 			});
-			signal.fire(1);
-			signal.fire(2); // This should not connect
+			signal.fireUnsafe(1);
+			signal.fireUnsafe(2); // This should not connect
 
 			expect(hasRanTimes).to.equal(1);
 		});
 
 		it("Inline resumption should be of okay", () => {
-			const signal = new Dispatcher();
+			const signal = new Yessir();
 			let success = false;
-			signal.connect(() => {
+			signal.setup(() => {
 				success = true;
 			});
 
-			signal.fire();
+			signal.fireUnsafe();
 			expect(success).to.equal(true);
 		});
 
 		it("Error when yielding inside of handler", () => {
-			const signal = new Dispatcher();
+			const signal = new Yessir();
 
-			signal.connect(() => {
+			signal.setup(() => {
 				wait(5);
 			});
 
-			expect(() => signal.fireNoYield()).to.throw();
+			expect(() => signal.fireSafe()).to.throw();
 		});
 	});
 };
