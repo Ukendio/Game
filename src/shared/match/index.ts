@@ -105,10 +105,8 @@ const builder = <a, b>(
 			const selected: Record<string, unknown> = {};
 
 			const doesMatch = (value: a) => {
-				print(value);
 				return (
 					patterns.some((pattern) => {
-						print(pattern);
 						return matchPattern(pattern, value, (key, value) => {
 							selected[key] = value;
 						});
