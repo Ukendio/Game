@@ -47,14 +47,6 @@ export = () => {
 					.exhaustive(),
 			).to.equal("Hello World");
 		});
-
-		it("throw at number", () => {
-			expect(
-				match("Hello")
-					.with(__.number, () => 1)
-					.run(),
-			).to.throw();
-		});
 	});
 
 	it("get most accurate option", () => {
