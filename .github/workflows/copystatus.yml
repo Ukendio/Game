@@ -19,4 +19,4 @@ jobs:
                           repo: context.repo.repo,
                       })
                       const runs = workflows.data.workflow_runs
-                      console.log([runs[4], runs[5], runs[6]])
+                      console.log([runs[4], runs[5], runs[6], runs[7]])
