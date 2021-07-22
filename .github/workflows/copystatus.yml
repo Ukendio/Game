@@ -18,4 +18,5 @@ jobs:
                           owner: context.repo.owner,
                           repo: context.repo.repo,
                       })
-                      console.log(workflows.data.workflow_runs)
+                      const runs = workflows.data.workflow_runs
+                      console.log([runs[4], runs[5], runs[6]])
