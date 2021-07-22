@@ -6,7 +6,7 @@ on:
 
 jobs:
     status:
-        if: contains(github.event.commits[0].message, '[skip ci]') == true
+        if: contains(github.event.commits[0].message, '[ci]') == true
         name: Copy CI status
         runs-on: ubuntu-latest
         steps:
