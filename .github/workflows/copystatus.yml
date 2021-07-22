@@ -19,6 +19,5 @@ jobs:
                           repo: context.repo.repo,
                       })
                       const runs = workflows.data.workflow_runs
-                      const checkRuns = [runs[4], runs[5], runs[6], runs[7]]
-                      const passed = checkRuns.filter(e => e.name !== "Copy CI status").every(e => e.conclusion === "success")
-                      if (!passed) core.setFailed(checkRuns.filter(e => e.conclusion !== "success").map(e => `${e.name}: ${e.conclusion}`).join())
+                      const failedRuns = [runs[4], runs[5], runs[6], runs[7]].filter(e => e.name !== "Copy CI status" && e.conclusion !== "success")
+                      if (failedRuns.length) core.setFailed("\n" + failedRuns.map(e => `${e.name}: ${e.conclusion}`).join("\n"))
