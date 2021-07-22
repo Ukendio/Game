@@ -17,7 +17,14 @@
 		"game:out/server/services/roundCoordinator/init@RoundCoordinator": "rp",
 		"game:out/shared/spirit/spring@Spring": "VB",
 		"game:out/client/UI/App/Home@Home": "wR",
-		"game:out/client/UI/Components/Vote@Vote": "ZW"
+		"game:out/client/UI/Components/Vote@Vote": "ZW",
+		"game:out/client/ui/app/Home@Home": "ax",
+		"game:out/client/controllers/unitConstructor@UnitController": "mj",
+		"game:out/client/controllers/unitConstructor@UnitConstructor": "QB",
+		"game:out/client/controllers/zircon@ZirconController": "gW",
+		"game:out/client/controllers/zirconProvider@ZirconProvider": "4P",
+		"game:out/shared/dispatcher/init@Dispatcher": "7r",
+		"game:out/server/services/zirconProvider/init@ZirconProvider": "xm"
 	},
 	"salt": "6e34ab0d7aa054a31fedafcb23da6a2b1e23175deff955e9b7fe9cefb2a69230a998ead447cb83d25ad3befd954d20e99fcc134b778f5db90224c165379815c3"
 }

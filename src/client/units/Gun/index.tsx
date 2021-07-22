@@ -1,18 +1,18 @@
 import Roact from "@rbxts/roact";
 import { Players, ReplicatedStorage, SoundService, UserInputService, Workspace } from "@rbxts/services";
 import { Config, Mode } from "shared/Types";
-import Crosshair from "client/ui/app/crosshair";
-import HitMark from "client/ui/app/hitMark";
+import Crosshair from "client/ui/app/Crosshair";
+import HitMark from "client/ui/app/HitMark";
 import { shoot } from "client/units/Gun/shoot";
-import Dispatcher, { interval } from "shared/dispatcher";
 import { match } from "shared/match";
 import { ThisFabricUnit, UnitDefinition } from "@rbxts/fabric";
 import { Janitor } from "@rbxts/janitor";
+import Yessir, { interval } from "@rbxts/yessir";
 
 const player = Players.LocalPlayer;
 const mouse = player.GetMouse();
 
-const signal = new Dispatcher();
+const signal = new Yessir();
 
 declare global {
 	interface FabricUnits {

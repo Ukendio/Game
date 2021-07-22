@@ -1,5 +1,6 @@
 import { Players } from "@rbxts/services";
-import matchModeForKill from "shared/gameModes/helpers/matchModeForKill";
+import store from "server/core/rodux/store";
+import matchModeForKill from "server/gameModes/helpers/matchModeForKill";
 import { Mode } from "shared/Types";
 const gun: FabricUnits["Gun"] = {
 	name: "Gun",
@@ -63,7 +64,7 @@ const gun: FabricUnits["Gun"] = {
 				if (player && enemyPlayer && humanoid) {
 					humanoid.TakeDamage(tonumber(hit)!);
 
-					if (humanoid.Health <= 0) matchModeForKill(player, enemyPlayer);
+					if (humanoid.Health <= 0) matchModeForKill(player, enemyPlayer, store);
 				}
 			}
 		},

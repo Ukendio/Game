@@ -32,7 +32,7 @@ Workspace.GetPropertyChangedSignal("CurrentCamera").Connect(() => {
 
 const bodyVelocity = new Instance("BodyVelocity");
 
-const wyvernAbility1: WyvernAbility1Definition = {
+const wyvernAbility1 = identity<WyvernAbility1Definition>({
 	name: "WyvernAbility1",
 
 	execute: function (this) {
@@ -61,6 +61,6 @@ const wyvernAbility1: WyvernAbility1Definition = {
 			bodyVelocity.Parent = host;
 		},
 	],
-};
+});
 
 export = wyvernAbility1;

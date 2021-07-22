@@ -1,8 +1,7 @@
 import { OnInit, OnStart, Service } from "@rbxts/flamework";
 import { Vec } from "@rbxts/rust-classes";
-import { gameModes } from "shared/gameModes";
-import store from "shared/rodux/store";
-import { castVote, createTopic, selectGameMode, startVote, stopVote } from "shared/rodux/actions";
+import { gameModes } from "server/gameModes";
+import store from "server/core/rodux/store";
 import { match } from "shared/match";
 import { getVoteOrDefault } from "./getVoteOrDefault";
 import remotes from "shared/Remotes";
@@ -12,7 +11,7 @@ import Object from "@rbxts/object-utils";
 const serverEvents = remotes.Server;
 
 @Service({
-	loadOrder: 4,
+	loadOrder: 5,
 })
 export class Election implements OnInit, OnStart {
 	private clientAppendVote = serverEvents.Create("clientAppendVote");
@@ -28,30 +27,29 @@ export class Election implements OnInit, OnStart {
 	onStart() {}
 
 	async voteOn(topic: string) {
-		await match(topic)
-			.with("GameMode", async () =>
-				store.dispatch(
-					createTopic({
-						name: "Gamemode",
-						options: Vec.vec(...Object.keys(gameModes)),
-					}),
-				),
-			)
-			.with("Map", async () =>
-				store.dispatch(
-					createTopic({
-						name: "Map",
-						options: Vec.vec(...Object.keys(gameModes)),
-					}),
-				),
-			)
-			.run();
-		store.dispatch(startVote());
+		if (topic === "GameMode") {
+			store.dispatch({
+				type: "CreateTopic",
+				topic: { name: "Gamemode", options: Vec.vec(...Object.keys(gameModes)) },
+			});
+		} else if (topic === "Map") {
+			store.dispatch({
+				type: "CreateTopic",
+				topic: {
+					name: "Map",
+					options: Vec.vec(...Object.keys(gameModes)),
+				},
+			});
+		}
+
+		store.dispatch({ type: "StartVote" });
 		this.councilVoteOn.SendToAllPlayers(this._serializeTopic(store.getState().topic));
-		await Promise.delay(1);
-		store.dispatch(selectGameMode(this._conclude() as keyof typeof gameModes));
-		store.dispatch(stopVote());
-		this.councilStopVote.SendToAllPlayers();
+
+		return Promise.delay(1).then(() => {
+			store.dispatch({ type: "SelectGameMode", gameMode: this._conclude() as keyof typeof gameModes });
+			store.dispatch({ type: "StopVote" });
+			this.councilStopVote.SendToAllPlayers();
+		});
 	}
 
 	protected _conclude() {
@@ -67,6 +65,6 @@ export class Election implements OnInit, OnStart {
 	}
 
 	protected _castVote(player: Player, vote: string) {
-		store.dispatch(castVote(player, vote));
+		store.dispatch({ type: "CastVote", player: player, vote: vote });
 	}
 }

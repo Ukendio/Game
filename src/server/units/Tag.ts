@@ -1,7 +1,6 @@
 import { Janitor } from "@rbxts/janitor";
 import { RunService } from "@rbxts/services";
-import store from "shared/rodux/store";
-import { addDeathToPlayer, addKillToPlayer } from "shared/rodux/actions";
+import store from "server/core/rodux/store";
 
 export = identity<FabricUnits["Tag"]>({
 	name: "Tag",
@@ -64,8 +63,8 @@ export = identity<FabricUnits["Tag"]>({
 			const enemyPlayer = this.get("owner") ?? this.defaults!.owner;
 
 			if (player && enemyPlayer) {
-				store.dispatch(addKillToPlayer(player));
-				store.dispatch(addDeathToPlayer(enemyPlayer));
+				store.dispatch({ type: "AddKillToPlayer", player: player });
+				store.dispatch({ type: "AddDeathToPlayer", player: enemyPlayer });
 			}
 		},
 	],

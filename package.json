@@ -17,9 +17,9 @@
 	"author": "Ukendio",
 	"license": "MPL-2.0",
 	"devDependencies": {
-		"@rbxts/compiler-types": "^1.1.1-types.5",
+		"@rbxts/compiler-types": "^1.2.1-types.0",
 		"@rbxts/testez": "^0.3.1-ts.6",
-		"@rbxts/types": "^1.0.502",
+		"@rbxts/types": "^1.0.503",
 		"@typescript-eslint/eslint-plugin": "^4.28.1",
 		"@typescript-eslint/parser": "^4.28.1",
 		"@typescript-eslint/typescript-estree": "^4.28.1",
@@ -46,6 +46,7 @@
 		"@rbxts/rust-classes": "^0.10.0",
 		"@rbxts/services": "^1.1.4",
 		"@rbxts/t": "^2.1.3",
+		"@rbxts/yessir": "0.0.1",
 		"@rbxts/yield-for-character": "^1.1.0",
 		"@rbxts/zircon": "^0.8.0-beta.0"
 	}
