@@ -17,4 +17,4 @@ jobs:
                       console.log(await core.actions.listWorkflowRunsForRepo({
                           owner: context.repo.owner,
                           repo: context.repo.repo,
-                      })
+                      }))
