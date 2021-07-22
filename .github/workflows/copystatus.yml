@@ -22,4 +22,4 @@ jobs:
                       const checkRuns = [runs[4], runs[5], runs[6], runs[7]]
                       const passed = checkRuns.filter(e => e.name !== "Copy CI status").every(e => e.conclusion === "success")
                       console.log(passed)
-                      if (!passed) core.setFailed(checkRuns.filter(e => e.conclusion !== "success").join())
+                      if (!passed) core.setFailed(checkRuns.filter(e => e.conclusion !== "success").map(e => `${e.name}: ${e.conclusion}`).join())
