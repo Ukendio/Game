@@ -1,0 +1,23 @@
+name: Copy CI status
+
+on:
+    pull_request:
+    push:
+
+jobs:
+    status:
+        if: contains(github.event.commits[0].message, '[ci]') == true
+        name: Copy CI status
+        runs-on: ubuntu-latest
+        steps:
+            - name: Copy CI status
+              uses: actions/github-script@v4
+              with:
+                  script: |
+                      const workflows = await github.actions.listWorkflowRunsForRepo({
+                          owner: context.repo.owner,
+                          repo: context.repo.repo,
+                      })
+                      const runs = workflows.data.workflow_runs
+                      const failedRuns = [runs[4], runs[5], runs[6], runs[7]].filter(e => e.name !== "Copy CI status" && e.conclusion !== "success")
+                      if (failedRuns.length) core.setFailed("\n" + failedRuns.map(e => `${e.name}: ${e.conclusion}`).join("\n"))
