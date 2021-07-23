@@ -47,7 +47,7 @@
 		"@rbxts/rust-classes": "^0.10.0",
 		"@rbxts/services": "^1.1.4",
 		"@rbxts/t": "^2.1.3",
-		"@rbxts/yessir": "0.0.1",
+		"@rbxts/yessir": "0.0.2-x",
 		"@rbxts/yield-for-character": "^1.1.0",
 		"@rbxts/zircon": "^0.8.0-beta.0"
 	}
