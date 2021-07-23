@@ -1,3 +1,7 @@
+![Build](https://github.com/Ukendio/Game/actions/workflows/build.yml/badge.svg)
+![ESLint](https://github.com/Ukendio/Game/actions/workflows/lint.yml/badge.svg)
+![Tests](https://github.com/Ukendio/Game/actions/workflows/test.yml/badge.svg)
+
 ## :exclamation: Quick Start :exclamation:
 
 ## Dependencies:
