@@ -3,15 +3,15 @@ import { Players, ReplicatedStorage, SoundService, UserInputService, Workspace }
 import { Config, Mode } from "shared/Types";
 import Crosshair from "client/ui/app/Crosshair";
 import HitMark from "client/ui/app/HitMark";
-import { shoot } from "client/units/Gun/shoot";
 import { match } from "shared/match";
 import { ThisFabricUnit, UnitDefinition } from "@rbxts/fabric";
 import { Janitor } from "@rbxts/janitor";
 import Yessir, { interval } from "@rbxts/yessir";
+import { CylinderRenderer, Projectile } from "@rbxts/projectile";
 
 const player = Players.LocalPlayer;
 const mouse = player.GetMouse();
-
+const random = new Random();
 const signal = new Yessir();
 
 declare global {
@@ -38,7 +38,7 @@ interface GunDefinition extends UnitDefinition<"Gun"> {
 		ricochet: boolean;
 		filter: Instance[];
 		origin: undefined | Vector3;
-		direction: undefined | Vector3;
+		velocity: undefined | Vector3;
 		configurableSettings: Config;
 	};
 
@@ -75,7 +75,7 @@ const gun: GunDefinition = {
 		ricochet: false,
 		filter: [],
 		origin: undefined,
-		direction: undefined,
+		velocity: undefined,
 
 		configurableSettings: {
 			fireRate: 1,
@@ -93,6 +93,7 @@ const gun: GunDefinition = {
 
 		let handle: Roact.Tree;
 		let equipped = false;
+
 		const onEquipped = () => {
 			equipped = true;
 			handle = Roact.mount(
@@ -126,8 +127,14 @@ const gun: GunDefinition = {
 			rayCastParameters.FilterType = Enum.RaycastFilterType.Blacklist;
 
 			const origin = Workspace.CurrentCamera!.CFrame;
-			const direction = mouse.Hit.Position.sub(origin.Position).Unit.mul(settings.maxDistance);
+			const endPosition = mouse.Hit.Position;
+			const direction = endPosition.sub(origin.Position).Unit.mul(settings.maxDistance);
 			const result = Workspace.Raycast(origin.Position, direction, rayCastParameters);
+
+			const velocity = new CFrame(origin.Position, endPosition)
+				.mul(CFrame.Angles(0, 0, random.NextNumber(0, 2 * math.pi)))
+				.mul(CFrame.Angles(0, random.NextNumber(math.rad(0), math.rad(10)), 0))
+				.LookVector.mul(75);
 
 			const target = result?.Instance;
 			const luck = this.getUnit("Luck");
@@ -136,7 +143,7 @@ const gun: GunDefinition = {
 			this.getUnit("Transmitter")!.sendWithPredictiveLayer(
 				{
 					origin: origin.Position,
-					direction: direction,
+					velocity: velocity,
 				},
 				"shoot",
 				{ target: target, hit: hit },
@@ -190,39 +197,33 @@ const gun: GunDefinition = {
 		function (this) {
 			const target = this.get("target");
 			const filter = this.get("filter");
-			const origin = this.get("origin");
-			const direction = this.get("direction");
+			const position = this.get("origin");
+			const velocity = this.get("velocity");
 			const settings = this.get("configurableSettings");
 
-			if (origin && direction) {
-				const pistolShot = ReplicatedStorage.assets.PistolShot.Clone();
+			if (position && velocity) {
+				const projectile = new Projectile({
+					position,
+					velocity: new Vector3(),
+					acceleration: new Vector3(0, -50, 0),
 
-				pistolShot.Parent = SoundService;
-				pistolShot.Play();
-				pistolShot.Ended.Connect(() => pistolShot.Destroy());
+					bounce: false,
+					life: 4,
+					penetration: true,
+					minExitVelocity: 50,
+					physicsIgnore: filter,
 
-				let ricochet = false;
-				if (target !== undefined && target.Parent?.FindFirstChild("Humanoid") !== undefined) {
-					const substrings = target.Name.split("_");
-					if (substrings && substrings[1] === "shield") {
-						const findPlayer = Players.GetPlayerByUserId(tonumber(substrings[0])!);
-						if (findPlayer && findPlayer.Team === player.Team) {
-							filter.push(target.Parent!);
-						} else ricochet = true;
-					}
-				}
-
-				Promise.defer(() =>
-					shoot({
-						ricochet: ricochet,
-						stepDistance: 4,
-						startPosition: origin,
-						startNormal: direction,
-						filter: filter,
-						maxDistance: settings.maxDistance,
-					}),
-				);
+					renderer: new CylinderRenderer(Color3.fromHSV(0, 0, 1)),
+				});
 			}
+		},
+
+		function (this) {
+			const pistolShot = ReplicatedStorage.assets.PistolShot.Clone();
+
+			pistolShot.Parent = SoundService;
+			pistolShot.Play();
+			pistolShot.Ended.Connect(() => pistolShot.Destroy());
 		},
 	],
 };
