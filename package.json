@@ -40,6 +40,7 @@
 		"@rbxts/log": "^0.3.0-alpha.1",
 		"@rbxts/net": "^2.1.3",
 		"@rbxts/object-utils": "^1.0.4",
+		"@rbxts/projectile": "^1.3.0",
 		"@rbxts/roact": "^1.3.0-ts.14",
 		"@rbxts/roact-hooks": "^0.1.1-ts.1",
 		"@rbxts/rodux": "^3.0.0-ts.3",

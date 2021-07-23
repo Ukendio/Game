@@ -19,7 +19,7 @@ const gun: FabricUnits["Gun"] = {
 		ricochet: false,
 		filter: [],
 		origin: undefined,
-		direction: undefined,
+		velocity: undefined,
 
 		configurableSettings: {
 			fireRate: 1,
