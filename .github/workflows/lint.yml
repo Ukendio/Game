@@ -6,7 +6,7 @@ on:
 
 jobs:
     lint:
-        if: contains(github.event.commits[0].message, '[skip ci]') == false
+        if: contains(github.event.commits[0].message, '[ci]') == false
         name: ESLint
         runs-on: ubuntu-latest
         steps:

@@ -10,7 +10,7 @@ on:
 
 jobs:
     test:
-        if: contains(github.event.commits[0].message, '[skip ci]') == false
+        if: contains(github.event.commits[0].message, '[ci]') == false
         name: Unit Tests
         runs-on: windows-latest
         timeout-minutes: 10
@@ -51,6 +51,6 @@ jobs:
                   if (git diff-index --quiet HEAD --) {}
                   else {
                     echo "Generated files changed!"
-                    git commit -m "${{github.event.commits[0].author.name}}: ${{github.event.commits[0].message}} [skip ci]"
+                    git commit -m "${{github.event.commits[0].author.name}}: ${{github.event.commits[0].message}} [ci]"
                     git push https://Ukendio:${{ secrets.github_token }}@github.com/Ukendio/Game.git HEAD:master
                   }

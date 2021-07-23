@@ -42,12 +42,12 @@
 			"$properties": {
 				"FilteringEnabled": true,
 				"MeshPartHeadsAndAccessories": {
-   					"Type": "Enum",
-    				"Value": 1
+					"Type": "Enum",
+					"Value": 1
 				},
 				"SignalBehavior": {
 					"Type": "Enum",
-					"Value": 2   
+					"Value": 2
 				}
 			},
 			"Maps": {
