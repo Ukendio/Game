@@ -13,11 +13,9 @@ function matchModeForKill(player: Player, enemyPlayer: Player, store: Store<Stat
 		.with({ gameMode: "Team Deathmatch" }, () => {
 			store.dispatch({ type: "AddKillToPlayer", player: player });
 			store.dispatch({ type: "AddDeathToPlayer", player: enemyPlayer });
-
 			store
 				.getState()
 				.teams.iter()
-
 				.forEach((team) =>
 					match({ TeamColor: team.tag.TeamColor })
 						.with({ TeamColor: player.TeamColor }, () => {
