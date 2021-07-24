@@ -1,9 +1,10 @@
+import { Result, Option } from "@rbxts/rust-classes";
 import store from "server/core/rodux/store";
 
-export async function findSpawn(player: Player) {
-	let closestSpawn = undefined! as SpawnLocation;
+export function findSpawn(): Result<Option<SpawnLocation>, string> {
+	let closestSpawn: Option<SpawnLocation> = Option.none();
 
-	let closestMagnitude = undefined! as number;
+	let closestMagnitude: Option<number> = Option.none();
 
 	store.getState().spawnLocations.forEach((spawnLocation) => {
 		let totalMagnitude = 0;
@@ -17,15 +18,15 @@ export async function findSpawn(player: Player) {
 				}
 			});
 
-		if (closestMagnitude === undefined) {
-			closestMagnitude = totalMagnitude;
+		if (closestMagnitude.isNone()) {
+			closestMagnitude = Option.some(totalMagnitude);
 		}
 
-		if (totalMagnitude < closestMagnitude) {
-			closestMagnitude = totalMagnitude;
-			closestSpawn = spawnLocation;
+		if (closestMagnitude.unwrapOrElse(() => -1) > totalMagnitude) {
+			closestMagnitude = Option.some(totalMagnitude);
+			closestSpawn = Option.some(spawnLocation);
 		}
 	});
 
-	player.RespawnLocation = closestSpawn;
+	return Result.ok(closestSpawn);
 }
