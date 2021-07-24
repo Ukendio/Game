@@ -74,7 +74,8 @@ export = () => {
 		expect(
 			match(1)
 				.with(1, () => true)
-				.with(__, () => false),
+				.with(__, () => false)
+				.exhaustive(),
 		).to.equal(true);
 	});
 };
