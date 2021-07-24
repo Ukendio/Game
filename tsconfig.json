@@ -13,7 +13,7 @@
 		"resolveJsonModule": true,
 		"strict": true,
 		"target": "ESNext",
-		"typeRoots": ["node_modules/@rbxts"],
+		"typeRoots": ["node_modules/@rbxts", "node_modules/@flamework"],
 		"plugins": [
 			{ "transform": "rbxts-transformer-flamework" }
 		],
