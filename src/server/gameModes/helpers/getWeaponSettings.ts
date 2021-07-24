@@ -1,3 +1,4 @@
+import { Option, Result } from "@rbxts/rust-classes";
 import { Config, Mode } from "shared/Types";
 
 const weaponsTable: Record<string, Config> = {
@@ -15,6 +16,12 @@ const weaponsTable: Record<string, Config> = {
 		mode: Mode.Semi,
 		damage: 5,
 	},
-} as const;
+};
 
-export const getWeaponSettings = (weaponName: keyof typeof weaponsTable) => weaponsTable[weaponName];
+export const getWeaponSettings = (weaponName: keyof typeof weaponsTable): Result<Option<Config>, string> => {
+	const weaponSettings = weaponsTable[weaponName];
+
+	if (weaponSettings) return Result.ok(Option.some(weaponSettings));
+
+	return Result.err("Unknown weaponName");
+};
