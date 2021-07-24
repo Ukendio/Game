@@ -1,3 +1,4 @@
+import { Option, Result } from "@rbxts/rust-classes";
 import { Workspace, Players } from "@rbxts/services";
 
 const mouse = Players.LocalPlayer.GetMouse();
@@ -35,16 +36,14 @@ export function getCamera() {
 			return this;
 		},
 
-		setActor: function (this, character: Model) {
-			assert(Workspace.FindFirstChild("CameraPart"), "CameraPart already exists");
-
-			if (character && currentCamera) {
-				const playerHumanoid: Humanoid = character.FindFirstChildOfClass("Humanoid")!;
+		setActor: function (this, character: Option<Model>) {
+			return character.map((rig) => {
+				const playerHumanoid = rig.FindFirstChildOfClass("Humanoid")!;
 				currentCamera.CameraSubject = playerHumanoid;
 				currentCamera.CameraType = Enum.CameraType.Follow;
-			}
 
-			return this;
+				return Result.ok(this);
+			});
 		},
 
 		setActorNone: function (this) {
@@ -59,14 +58,16 @@ export function getCamera() {
 			return this;
 		},
 
-		addBlur: function (this, blurLevel: number) {
-			assert(currentCamera.FindFirstChildOfClass("BlurEffect") === undefined, "Already blurred");
+		addBlur: function (this, blurLevel: number): Result<defined, string> {
+			if (currentCamera.FindFirstChildOfClass("BlurEffect") !== undefined) {
+				return Result.err("BlurEffect already exists");
+			}
 
 			const newBlur = new Instance("BlurEffect");
 			newBlur.Size = blurLevel;
 			newBlur.Parent = currentCamera;
 
-			return this;
+			return Result.ok(this);
 		},
 
 		removeBlur: function (this) {
