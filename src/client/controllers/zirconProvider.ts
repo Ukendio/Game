@@ -1,4 +1,4 @@
-import { Controller, OnInit, OnStart } from "@rbxts/flamework";
+import { Controller, OnInit, OnStart } from "@flamework/core";
 import Log, { Logger } from "@rbxts/log";
 import { Players } from "@rbxts/services";
 import Zircon, { ZirconClient } from "@rbxts/zircon";

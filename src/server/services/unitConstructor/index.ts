@@ -1,5 +1,5 @@
 import FabricLib from "@rbxts/fabric";
-import { OnInit, Service } from "@rbxts/flamework";
+import { OnInit, Service } from "@flamework/core";
 import { ReplicatedStorage, ServerScriptService, Workspace } from "@rbxts/services";
 import remotes from "shared/Remotes";
 import { Config } from "shared/Types";

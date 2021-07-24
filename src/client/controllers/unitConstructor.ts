@@ -1,7 +1,7 @@
 import FabricLib from "@rbxts/fabric";
-import { Controller, OnInit } from "@rbxts/flamework";
 import { StarterPlayer } from "@rbxts/services";
 import remotes from "shared/Remotes";
+import { Controller, OnInit } from "@flamework/core";
 
 const clientEvents = remotes.Client;
 const constructUnit = clientEvents.WaitFor("constructUnit");

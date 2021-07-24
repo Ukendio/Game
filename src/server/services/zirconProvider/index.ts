@@ -5,7 +5,7 @@ import kick from "./commands/kick";
 import { ZirconRegistryService } from "@rbxts/zircon/out/Services/RegistryService";
 import { match, __ } from "shared/match";
 import give_temp_admin from "./commands/admin";
-import { OnInit, OnStart, Service } from "@rbxts/flamework";
+import { OnInit, OnStart, Service } from "@flamework/core";
 
 Log.SetLogger(Logger.configure().WriteTo(Zircon.Log.Console()).Create());
 

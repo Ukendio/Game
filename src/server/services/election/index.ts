@@ -1,4 +1,4 @@
-import { OnInit, Service } from "@rbxts/flamework";
+import { OnInit, Service } from "@flamework/core";
 import { Vec } from "@rbxts/rust-classes";
 import { gameModes } from "server/gameModes";
 import store from "server/core/rodux/store";

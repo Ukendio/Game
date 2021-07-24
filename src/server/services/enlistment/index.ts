@@ -1,4 +1,4 @@
-import { Service } from "@rbxts/flamework";
+import { Service } from "@flamework/core";
 import store from "server/core/rodux/store";
 
 function lock(tag: Team) {}

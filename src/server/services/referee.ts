@@ -1,4 +1,4 @@
-import { Service } from "@rbxts/flamework";
+import { Service } from "@flamework/core";
 
 @Service({})
 export class Referee {}

@@ -1,4 +1,4 @@
-import { OnStart, Service } from "@rbxts/flamework";
+import { OnStart, Service } from "@flamework/core";
 import store from "server/core/rodux/store";
 import { Election } from "../election";
 import remotes from "shared/Remotes";

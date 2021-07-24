@@ -1,6 +1,6 @@
 import { NonNullableObject } from "@rbxts/fabric";
 import Unit from "@rbxts/fabric/src/FabricLib/Fabric/Unit";
-import { Flamework } from "@rbxts/flamework";
+import { Flamework } from "@flamework/core";
 import Net from "@rbxts/net";
 import { TLayerData } from "./Types";
 

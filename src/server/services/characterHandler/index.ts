@@ -1,4 +1,4 @@
-import { OnStart, Service } from "@rbxts/flamework";
+import { OnStart, Service } from "@flamework/core";
 import Log from "@rbxts/log";
 import { Result } from "@rbxts/rust-classes";
 import { Players } from "@rbxts/services";

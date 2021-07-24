@@ -1,4 +1,4 @@
-import { Dependency } from "@rbxts/flamework";
+import { Dependency } from "@flamework/core";
 import { Store } from "@rbxts/rodux";
 import { State, Actions } from "server/core/rodux/store";
 import type { UnitConstructor } from "server/services/unitConstructor";
