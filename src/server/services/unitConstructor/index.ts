@@ -13,7 +13,7 @@ const serverEvents = remotes.Server;
 export class UnitConstructor implements OnInit {
 	public fabric = new FabricLib.Fabric("Game");
 
-	private _constructUnit = serverEvents.Create("constructUnit");
+	private constructUnit = serverEvents.Create("constructUnit");
 
 	onInit() {
 		const fabric = this.fabric;
@@ -32,7 +32,7 @@ export class UnitConstructor implements OnInit {
 		gunTool.Parent = backpack;
 
 		return createUnit(this.fabric, "Gun", gunTool, { configurableSettings: settings }, (...args) => {
-			this._constructUnit.SendToPlayer(player, ...args);
+			this.constructUnit.SendToPlayer(player, ...args);
 		});
 	}
 
@@ -51,13 +51,13 @@ export class UnitConstructor implements OnInit {
 		healthPack.Parent = Workspace;
 
 		return createUnit(this.fabric, "Heal", healthPack, {}, (...args) => {
-			this._constructUnit.SendToPlayer(player, ...args);
+			this.constructUnit.SendToAllPlayersExcept(player, ...args);
 		});
 	}
 
 	createHero(player: Player) {
 		return createUnit(this.fabric, "Wyvern", player, {}, (...args) => {
-			this._constructUnit.SendToPlayer(player, ...args);
+			this.constructUnit.SendToPlayer(player, ...args);
 		});
 	}
 
@@ -67,7 +67,7 @@ export class UnitConstructor implements OnInit {
 		melee.Parent = backpack;
 
 		return createUnit(this.fabric, "Melee", melee, {}, (...args) => {
-			this._constructUnit.SendToPlayer(player, ...args);
+			this.constructUnit.SendToPlayer(player, ...args);
 		});
 	}
 
@@ -82,7 +82,7 @@ export class UnitConstructor implements OnInit {
 		dogTag.Parent = Workspace;
 
 		return createUnit(this.fabric, "Tag", dogTag, {}, (...args) => {
-			this._constructUnit.SendToPlayer(player, ...args);
+			this.constructUnit.SendToAllPlayersExcept(player, ...args);
 		});
 	}
 }
