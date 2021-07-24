@@ -19,7 +19,7 @@ const remotes = define.Create({
 		[keyof FabricUnits, Instance | Unit<keyof FabricUnits>, NonNullableObject<TLayerData<keyof FabricUnits>>]
 	>(),
 
-	userRequestDeploy: define.ServerAsyncFunction<() => boolean | Model>(),
+	userRequestDeploy: define.ServerAsyncFunction<() => boolean>(),
 
 	clientAppendVote: define.ClientToServerEvent<[string]>(),
 });
