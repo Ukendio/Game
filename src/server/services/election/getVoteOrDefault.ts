@@ -18,6 +18,5 @@ export function getVoteOrDefault(votes: Record<string, number>, votableOptions: 
 	return Iterator.fromItems(...Object.entries(votes))
 		.maxBy(([_a, aCount], [_b, bCount]) => aCount - bCount)
 		.map(([name]) => name)
-		.or(votableOptions.last())
-		.unwrap();
+		.or(votableOptions.last());
 }
