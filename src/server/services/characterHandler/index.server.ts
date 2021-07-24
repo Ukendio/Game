@@ -1,9 +1,11 @@
 import { OnStart, Service } from "@rbxts/flamework";
+import Log from "@rbxts/log";
+import { Result } from "@rbxts/rust-classes";
 import { Players } from "@rbxts/services";
 import yieldForR15CharacterDescendants from "@rbxts/yield-for-character";
 
 import store from "server/core/rodux/store";
-import { Config, Mode } from "shared/Types";
+import { getWeaponSettings } from "server/gameModes/helpers/getWeaponSettings";
 import { UnitConstructor } from "../unitConstructor";
 import { findSpawn } from "./findSpawn";
 
@@ -11,8 +13,6 @@ import { findSpawn } from "./findSpawn";
 	loadOrder: 3,
 })
 export class CharacterHandler implements OnStart {
-	private stateContainer = store;
-
 	constructor(private UnitConstructor: UnitConstructor) {}
 
 	onStart() {
@@ -20,15 +20,9 @@ export class CharacterHandler implements OnStart {
 			const rig = await yieldForR15CharacterDescendants(character);
 			const player = Players.GetPlayerFromCharacter(rig)!;
 
-			this.UnitConstructor.createGun(
-				player,
-				identity<Config>({
-					fireRate: 1,
-					recoil: 1,
-					maxDistance: 400,
-					damage: 5,
-					mode: Mode.Auto,
-				}),
+			getWeaponSettings("AK47").match(
+				(config) => this.UnitConstructor.createGun(player, config.unwrap()),
+				(errorMessage) => Log.Error(errorMessage),
 			);
 
 			rig.Humanoid.Health = 20;
@@ -41,12 +35,22 @@ export class CharacterHandler implements OnStart {
 		};
 
 		const onPlayerAdded = (player: Player) => {
-			findSpawn(player).then(() => {
-				if (player.Character) handleCharacterAdded(player.Character);
-				else player.CharacterAdded.Connect(handleCharacterAdded);
-			});
-		};
+			findSpawn()
+				.map((closestSpawnOption) => {
+					closestSpawnOption.match(
+						(closestSpawn) => {
+							player.RespawnLocation = closestSpawn;
+							return Result.ok("Changed Player respawn location");
+						},
+						() => Result.err("No spawn location found"),
+					);
+				})
+				.mapErr((errorMessage) => Log.Error(errorMessage));
 
+			player.Character
+				? handleCharacterAdded(player.Character)
+				: player.CharacterAdded.Connect(handleCharacterAdded);
+		};
 		Players.PlayerAdded.Connect(onPlayerAdded);
 		for (const player of Players.GetPlayers()) {
 			onPlayerAdded(player);
