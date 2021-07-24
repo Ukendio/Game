@@ -20,10 +20,9 @@ export class CharacterHandler implements OnStart {
 			const rig = await yieldForR15CharacterDescendants(character);
 			const player = Players.GetPlayerFromCharacter(rig)!;
 
-			getWeaponSettings("AK47").match(
-				(config) => this.UnitConstructor.createGun(player, config.unwrap()),
-				(errorMessage) => Log.Error(errorMessage),
-			);
+			getWeaponSettings("AK47")
+				.map((config) => this.UnitConstructor.createGun(player, config.unwrap()))
+				.mapErr((errorMessage) => Log.Error(errorMessage));
 
 			rig.Humanoid.Health = 20;
 			rig.Humanoid.Died.Connect(() => {
