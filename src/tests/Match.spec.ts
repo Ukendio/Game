@@ -69,4 +69,12 @@ export = () => {
 
 		expect(result).to.equal("2 is even");
 	});
+
+	it("Wild doesn't consume valid matches", () => {
+		expect(
+			match(1)
+				.with(1, () => true)
+				.with(__, () => false),
+		).to.equal(true);
+	});
 };
