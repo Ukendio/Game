@@ -50,6 +50,7 @@ export class CharacterHandler implements OnStart {
 				? handleCharacterAdded(player.Character)
 				: player.CharacterAdded.Connect(handleCharacterAdded);
 		};
+
 		Players.PlayerAdded.Connect(onPlayerAdded);
 		for (const player of Players.GetPlayers()) {
 			onPlayerAdded(player);
