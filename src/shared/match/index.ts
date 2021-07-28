@@ -252,8 +252,8 @@ const matchPattern = <a, p extends Pattern<a>>(
 
 		if (!isObject(value)) return false;
 
-		if (t.array(t.none)(pattern)) {
-			if (!t.array(t.none)(value)) return false;
+		if (t.array(t.any)(pattern)) {
+			if (!t.array(t.any)(value)) return false;
 
 			// List pattern
 			if (pattern.size() === 1) {
@@ -282,15 +282,15 @@ const matchPattern = <a, p extends Pattern<a>>(
 				: false;
 		}
 
-		if (t.map(t.none, t.none)(pattern)) {
-			if (!t.map(t.none, t.none)(value)) return false;
+		if (t.map(t.any, t.any)(pattern)) {
+			if (!t.map(t.any, t.any)(value)) return false;
 			return [...(Object.keys(pattern) as never[])].every((key) =>
 				matchPattern(pattern.get(key), value.get(key), _select),
 			);
 		}
 
-		if (t.set(t.none)(pattern)) {
-			if (!t.set(t.none)(value)) return false;
+		if (t.set(t.any)(pattern)) {
+			if (!t.set(t.any)(value)) return false;
 
 			if (pattern.size() === 0) return value.size() === 0;
 
@@ -312,6 +312,7 @@ const matchPattern = <a, p extends Pattern<a>>(
 	}
 
 	if (typeIs(pattern, "string")) {
+		print("AYO?", pattern);
 		if (pattern === __.string) return typeIs(value, "string");
 		if (pattern === __.boolean) return typeIs(value, "boolean");
 		if (pattern === __.number) {
