@@ -44,7 +44,7 @@ export = () => {
 			expect(
 				match("Hello")
 					.with(__.string, (str) => str + " World")
-					.exhaustive(),
+					.run(),
 			).to.equal("Hello World");
 		});
 	});
@@ -70,6 +70,16 @@ export = () => {
 		expect(result).to.equal("2 is even");
 	});
 
+	it("7 is odd", () => {
+		const isOdd = (x: number) => x % 2 === 1;
+
+		const result = match({ x: 7 })
+			.with({ x: when(isOdd) }, ({ x }) => `${x} is odd`)
+			.run();
+
+		expect(result).to.equal("7 is odd");
+	});
+
 	it("Wild doesn't consume valid matches", () => {
 		expect(
 			match(1)
@@ -77,5 +87,20 @@ export = () => {
 				.with(__, () => false)
 				.exhaustive(),
 		).to.equal(true);
+	});
+
+	it("math equal to 48", () => {
+		type Input = [number, "+", number] | [number, "-", number] | [number, "/", number] | [number, "*", number];
+
+		const input = identity<Input>([12, "*", 4]);
+
+		const output = match(input)
+			.with([__, "*", __], ([x, _, y]) => x * y)
+			.with([__, "+", __], ([x, _, y]) => x + y)
+			.with([__, "-", __], ([x, _, y]) => x - y)
+			.with([__, "/", __], ([x, _, y]) => x / y)
+			.exhaustive();
+
+		expect(output).to.equal(48);
 	});
 };
