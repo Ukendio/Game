@@ -195,11 +195,9 @@ const gun: GunDefinition = {
 			}
 		},
 		function (this) {
-			const target = this.get("target");
 			const filter = this.get("filter");
 			const position = this.get("origin");
 			const velocity = this.get("velocity");
-			const settings = this.get("configurableSettings");
 
 			if (position && velocity) {
 				const projectile = new Projectile({
