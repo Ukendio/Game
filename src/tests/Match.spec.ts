@@ -49,16 +49,6 @@ export = () => {
 		});
 	});
 
-	it("get most accurate option", () => {
-		const result = match({ field1: 1, field2: "test" })
-			.with({ field1: 1 }, () => "a")
-			.with({ field1: 1, field2: "test" }, () => "b")
-			.with({ field1: 1 }, () => "c")
-			.run();
-
-		expect(result).to.equal("b");
-	});
-
 	it("2 is even", () => {
 		const isOdd = (x: number) => x % 2 === 1;
 
