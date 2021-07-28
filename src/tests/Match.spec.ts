@@ -69,7 +69,7 @@ export = () => {
 
 		expect(result).to.equal("2 is even");
 	});
-
+	SKIP();
 	it("7 is odd", () => {
 		const isOdd = (x: number) => x % 2 === 1;
 
