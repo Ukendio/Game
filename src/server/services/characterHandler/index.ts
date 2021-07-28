@@ -5,7 +5,7 @@ import { Players } from "@rbxts/services";
 import yieldForR15CharacterDescendants from "@rbxts/yield-for-character";
 
 import store from "server/core/rodux/store";
-import { getWeaponSettings } from "server/gameModes/helpers/getWeaponSettings";
+import { getWeaponSettings } from "server/core/helpers/getWeaponSettings";
 import { UnitConstructor } from "../unitConstructor";
 import { findSpawn } from "./findSpawn";
 
@@ -21,7 +21,7 @@ export class CharacterHandler implements OnStart {
 			const player = Players.GetPlayerFromCharacter(rig)!;
 
 			getWeaponSettings("AK47")
-				.map((config) => this.UnitConstructor.createGun(player, config.unwrap()))
+				.map((config) => this.UnitConstructor.createGun(player, config.expect("Unknown weapon name")))
 				.mapErr((errorMessage) => Log.Error(errorMessage));
 
 			rig.Humanoid.Health = 20;

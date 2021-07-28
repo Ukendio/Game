@@ -21,7 +21,5 @@ const weaponsTable: Record<string, Config> = {
 export const getWeaponSettings = (weaponName: keyof typeof weaponsTable): Result<Option<Config>, string> => {
 	const weaponSettings = weaponsTable[weaponName];
 
-	if (weaponSettings) return Result.ok(Option.some(weaponSettings));
-
-	return Result.err("Unknown weaponName");
+	return Result.ok(Option.wrap(weaponSettings));
 };

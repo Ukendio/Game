@@ -1,6 +1,6 @@
 import { Players } from "@rbxts/services";
 import store from "server/core/rodux/store";
-import matchModeForKill from "server/gameModes/helpers/matchModeForKill";
+import matchModeForKill from "server/core/helpers/matchModeForKill";
 
 const melee: FabricUnits["Melee"] = {
 	name: "Melee",

@@ -1,6 +1,6 @@
 import { Players } from "@rbxts/services";
 import store from "server/core/rodux/store";
-import matchModeForKill from "server/gameModes/helpers/matchModeForKill";
+import matchModeForKill from "server/core/helpers/matchModeForKill";
 import { Mode } from "shared/Types";
 const gun: FabricUnits["Gun"] = {
 	name: "Gun",
@@ -32,6 +32,7 @@ const gun: FabricUnits["Gun"] = {
 
 	onClientShoot: function (this, _player, packet) {
 		const settings = this.get("configurableSettings");
+
 		if (this.get("debounce") === true) {
 			this.addLayer("damage", {
 				debounce: false,
