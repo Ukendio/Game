@@ -263,9 +263,7 @@ const matchPattern = <a, p extends Pattern<a>>(
 					selected[key] = [...(selected[key] || []), value];
 				};
 
-				const doesMatch = ((value as unknown) as []).every((v) =>
-					matchPattern((pattern as never)[0], v, listSelect),
-				);
+				const doesMatch = value.every((v) => matchPattern(pattern[0], v, listSelect));
 
 				if (doesMatch) {
 					Object.keys(selected).forEach((key) => _select(key, selected[key]));
@@ -312,12 +310,9 @@ const matchPattern = <a, p extends Pattern<a>>(
 	}
 
 	if (typeIs(pattern, "string")) {
-		print("AYO?", pattern);
 		if (pattern === __.string) return typeIs(value, "string");
 		if (pattern === __.boolean) return typeIs(value, "boolean");
-		if (pattern === __.number) {
-			return typeIs(value, "number") && (value as never)[1][1] !== (value as never)[1][1];
-		}
+		if (pattern === __.number) return typeIs(value, "number");
 	}
 
 	function deepEquals(a: object, b: object) {
