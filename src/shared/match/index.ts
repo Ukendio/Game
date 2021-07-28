@@ -96,6 +96,7 @@ const builder = <a, b>(
 			for (let i = 0; i < args.size() - 1; i++) {
 				const arg = args[i];
 				if (typeIs(arg, "function")) {
+					//TODO: evaluate if WHEN is passed
 					predicates.push(arg);
 				} else {
 					patterns.push(arg);
@@ -110,7 +111,7 @@ const builder = <a, b>(
 						return matchPattern(pattern, value, (key, value) => {
 							selected[key] = value;
 						});
-					}) && predicates.every((predicate) => predicate(value) as never)
+					}) && predicates.every((predicate) => predicate(value) as boolean)
 				);
 			};
 
