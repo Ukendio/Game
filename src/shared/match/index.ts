@@ -97,6 +97,7 @@ const builder = <a, b>(
 				const arg = args[i];
 				if (typeIs(arg, "function")) {
 					//TODO: evaluate if WHEN is passed
+					print(typeOf(arg));
 					predicates.push(arg);
 				} else {
 					patterns.push(arg);
