@@ -95,10 +95,10 @@ export = () => {
 		const input = identity<Input>([12, "*", 4]);
 
 		const output = match(input)
-			.with([__, "*", __], ([x, _, y]) => x * y)
-			.with([__, "+", __], ([x, _, y]) => x + y)
-			.with([__, "-", __], ([x, _, y]) => x - y)
-			.with([__, "/", __], ([x, _, y]) => x / y)
+			.with([__.number, "*", __.number], ([x, _, y]) => x * y)
+			.with([__.number, "+", __.number], ([x, _, y]) => x + y)
+			.with([__.number, "-", __.number], ([x, _, y]) => x - y)
+			.with([__.number, "/", __.number], ([x, _, y]) => x / y)
 			.exhaustive();
 
 		expect(output).to.equal(48);
