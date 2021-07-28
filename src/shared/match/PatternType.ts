@@ -1,11 +1,11 @@
 export enum PatternType {
-	String = "@ts-pattern/string",
-	Number = "@ts-pattern/number",
-	Boolean = "@ts-pattern/boolean",
-	Guard = "@ts-pattern/guard",
-	Not = "@ts-pattern/not",
-	NamedSelect = "@ts-pattern/named-select",
-	AnonymousSelect = "@ts-pattern/anonymous-select",
+	String = "@rbxts-pattern/string",
+	Number = "@rbxts-pattern/number",
+	Boolean = "@rbxts-pattern/boolean",
+	Guard = "@rbxts-pattern/guard",
+	Not = "@rbxts-pattern/not",
+	NamedSelect = "@rbxts-pattern/named-select",
+	AnonymousSelect = "@rbxts-pattern/anonymous-select",
 }
 
 /**
@@ -24,8 +24,15 @@ export enum PatternType {
  *   .with(__.number, () => 'will match on numbers only')
  *   .with(__.boolean, () => 'will match on booleans only')
  */
+
+export interface __ {
+	string: string;
+	number: string;
+	boolean: string;
+}
+
 export const __ = {
 	string: PatternType.String,
 	number: PatternType.Number,
 	boolean: PatternType.Boolean,
-} as const;
+};
