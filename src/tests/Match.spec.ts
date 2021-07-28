@@ -69,16 +69,6 @@ export = () => {
 
 		expect(result).to.equal("2 is even");
 	});
-	SKIP();
-	it("7 is odd", () => {
-		const isOdd = (x: number) => x % 2 === 1;
-
-		const result = match({ x: 7 })
-			.with({ x: when(isOdd) }, ({ x }) => `${x} is odd`)
-			.run();
-
-		expect(result).to.equal("7 is odd");
-	});
 
 	it("Wild doesn't consume valid matches", () => {
 		expect(
