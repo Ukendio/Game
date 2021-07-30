@@ -73,7 +73,10 @@ export = () => {
 
 		expect(
 			match({ x: 8 })
-				.with({ x: when(isPrime) }, ({ x }) => `${x} is a prime number`)
+				.when(
+					({ x }) => isPrime(x),
+					({ x }) => `${x} is a prime number`,
+				)
 				.run(),
 		);
 	});
