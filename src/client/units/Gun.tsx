@@ -3,7 +3,7 @@ import { Players, ReplicatedStorage, SoundService, UserInputService, Workspace }
 import { Config, Mode } from "shared/Types";
 import Crosshair from "client/ui/app/Crosshair";
 import HitMark from "client/ui/app/HitMark";
-import { match } from "shared/match";
+import { match } from "@rbxts/rbxts-pattern";
 import { ThisFabricUnit, UnitDefinition } from "@rbxts/fabric";
 import { Janitor } from "@rbxts/janitor";
 import Yessir, { interval } from "@rbxts/yessir";

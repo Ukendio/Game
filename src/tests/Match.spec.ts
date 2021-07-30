@@ -1,6 +1,6 @@
 /// <reference types="@rbxts/testez/globals" />
 import { Option, Result, Vec } from "@rbxts/rust-classes";
-import { match, when, _select, __ } from "shared/match";
+import { match, when, _select, __ } from "@rbxts/rbxts-pattern";
 
 export = () => {
 	describe("match number utility", () => {

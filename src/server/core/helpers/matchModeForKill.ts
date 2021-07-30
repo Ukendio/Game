@@ -2,7 +2,7 @@ import { Dependency } from "@flamework/core";
 import { Store } from "@rbxts/rodux";
 import { State, Actions } from "server/core/rodux/store";
 import type { UnitConstructor } from "server/services/unitConstructor";
-import { match } from "shared/match";
+import { match } from "@rbxts/rbxts-pattern";
 
 const unitConstructor = Dependency<UnitConstructor>();
 

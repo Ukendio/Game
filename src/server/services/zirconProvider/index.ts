@@ -3,7 +3,7 @@ import Log, { Logger } from "@rbxts/log";
 import print_message from "./commands/print";
 import kick from "./commands/kick";
 import { ZirconRegistryService } from "@rbxts/zircon/out/Services/RegistryService";
-import { match, __ } from "shared/match";
+import { match, __ } from "@rbxts/rbxts-pattern";
 import give_temp_admin from "./commands/admin";
 import { OnInit, OnStart, Service } from "@flamework/core";
 

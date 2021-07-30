@@ -2,7 +2,7 @@ import Roact from "@rbxts/roact";
 import Hooks from "@rbxts/roact-hooks";
 import Flipper from "@rbxts/flipper";
 import Outline from "client/ui/components/Outline";
-import { match } from "shared/match";
+import { match } from "@rbxts/rbxts-pattern";
 import Yessir from "@rbxts/yessir";
 
 interface Props {

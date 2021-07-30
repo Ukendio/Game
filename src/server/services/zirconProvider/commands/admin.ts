@@ -1,5 +1,5 @@
 import Log from "@rbxts/log";
-import { match } from "shared/match";
+import { match } from "@rbxts/rbxts-pattern";
 import { ListCommand } from "..";
 
 export = (...parameters: Parameters<ListCommand>) => {

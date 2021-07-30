@@ -1,7 +1,7 @@
 import Roact from "@rbxts/roact";
 import Hooks from "@rbxts/roact-hooks";
 
-import { match } from "shared/match";
+import { match } from "@rbxts/rbxts-pattern";
 import store from "../../core/rodux/store";
 
 interface Props {

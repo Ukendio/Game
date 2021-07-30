@@ -6,7 +6,7 @@ import ColourScheme from "client/ui/colourScheme";
 import Button from "client/ui/components/Button";
 import { Players } from "@rbxts/services";
 import { Option, Result, UnitType } from "@rbxts/rust-classes";
-import { match, __ } from "shared/match";
+import { match, __ } from "@rbxts/rbxts-pattern";
 import Log from "@rbxts/log";
 
 const roundStarted = Remotes.Client.WaitFor("roundStarted");
