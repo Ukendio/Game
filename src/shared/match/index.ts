@@ -245,7 +245,9 @@ const matchPattern = <a, p extends Pattern<a>>(
 			return true;
 		}
 
-		if (isGuardPattern(pattern)) return pattern["@rbxts-pattern/__when"](value) === true;
+		if (isGuardPattern(pattern)) {
+			return pattern["@rbxts-pattern/__when"](value) === true;
+		}
 
 		if (isNotPattern(pattern))
 			return !matchPattern(pattern["@rbxts-pattern/__pattern"] as Pattern<a>, value, _select);

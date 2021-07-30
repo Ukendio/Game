@@ -72,13 +72,11 @@ export = () => {
 		};
 
 		expect(
-			match({ x: 8 })
-				.when(
-					({ x }) => isPrime(x),
-					({ x }) => `${x} is a prime number`,
-				)
-				.run(),
-		);
+			match({ x: 7 })
+				.with({ x: when(isPrime) }, ({ x }) => `${x} is a prime number`)
+				.with(__, ({ x }) => `${x} is not a prime number`)
+				.exhaustive(),
+		).to.equal("7 is a prime number");
 	});
 
 	it("Wild doesn't consume valid matches", () => {
