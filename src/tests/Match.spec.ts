@@ -4,14 +4,14 @@ import { match, when, _select, __ } from "shared/match";
 
 export = () => {
 	describe("match number utility", () => {
-		it("it is a prime", () => {
+		it("number is in set", () => {
 			const number = 5;
 
 			const result = match(number)
-				.numberSet([1, 3, 5, 7, 11], (value) => `${value} is a prime number`)
+				.numberSet([1, 3, 5, 7, 11], (value) => `${value} is in array`)
 				.run();
 
-			expect(result).to.equal(`5 is a prime number`);
+			expect(result).to.equal(`5 is in array`);
 		});
 
 		it("it is a Teen", () => {
@@ -58,6 +58,24 @@ export = () => {
 			.exhaustive();
 
 		expect(result).to.equal("2 is even");
+	});
+
+	it("is a prime number", () => {
+		const isPrime = (n: number) => {
+			if (n <= 1) return false;
+
+			for (let i = 2; i < n; i++) {
+				if (n % i === 0) return false;
+			}
+
+			return true;
+		};
+
+		expect(
+			match({ x: 8 })
+				.with({ x: when(isPrime) }, ({ x }) => `${x} is a prime number`)
+				.run(),
+		);
 	});
 
 	it("Wild doesn't consume valid matches", () => {
