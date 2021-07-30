@@ -1,5 +1,4 @@
 /// <reference types="@rbxts/testez/globals" />
-import { Option, Result, Vec } from "@rbxts/rust-classes";
 import { match, when, _select, __ } from "@rbxts/rbxts-pattern";
 
 export = () => {
