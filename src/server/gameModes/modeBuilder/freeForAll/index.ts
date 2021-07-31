@@ -9,7 +9,7 @@ import { PlayerTeam } from "shared/Types";
 import { Store } from "@rbxts/rodux";
 
 async function buildTeam(store: Store<State, Actions>) {
-	const availableTeams = store.getState().teams;
+	const availableTeams = store.getState().team.teams;
 
 	const takenTeams = Vec.withCapacity<PlayerTeam>(availableTeams.len());
 
@@ -44,7 +44,7 @@ function maxKills(store: Store<State, Actions>) {
 		store.changed.connect(() => {
 			store
 				.getState()
-				.teams.iter()
+				.team.teams.iter()
 				.forEach((team) => {
 					if (team.kills >= settings.maxKills) resolve(team.tag);
 				});
@@ -65,7 +65,7 @@ async function winCondition(store: Store<State, Actions>) {
 					let mostKills = 0;
 					store
 						.getState()
-						.teams.iter()
+						.team.teams.iter()
 						.forEach((team) => {
 							if (team.kills > mostKills) {
 								winningTeam = team;

@@ -5,16 +5,21 @@ import { RoundActions, roundReducer, roundState, RoundState } from "./reducers/r
 import { ScoreActions, scoreReducer, scoreState, ScoreState } from "./reducers/score";
 import { TeamActions, teamReducer, teamState, TeamState } from "./reducers/team";
 
-export type State = DispatcherState & ElectionState & RoundState & ScoreState & TeamState;
-
+export interface State {
+	dispatcher: DispatcherState;
+	election: ElectionState;
+	round: RoundState;
+	score: ScoreState;
+	team: TeamState;
+}
 export type Actions = DispatcherActions | ElectionActions | RoundActions | ScoreActions | TeamActions;
 
 const initialState = identity<State>({
-	...dispatcherState,
-	...electionState,
-	...roundState,
-	...scoreState,
-	...teamState,
+	dispatcher: dispatcherState,
+	election: electionState,
+	round: roundState,
+	score: scoreState,
+	team: teamState,
 });
 
 const reducer = Rodux.combineReducers({
@@ -25,4 +30,4 @@ const reducer = Rodux.combineReducers({
 	team: teamReducer,
 });
 
-export default new Rodux.Store<State, Actions>(reducer as never, initialState);
+export default new Rodux.Store(reducer, initialState);

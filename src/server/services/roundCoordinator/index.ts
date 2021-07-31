@@ -21,7 +21,7 @@ export class RoundCoordinator implements OnStart {
 
 			return store
 				.getState()
-				.winCondition(store)
+				.election.winCondition(store)
 				.andThenCall(Promise.delay, 5)
 				.then(() => {
 					Log.Info("prompt");

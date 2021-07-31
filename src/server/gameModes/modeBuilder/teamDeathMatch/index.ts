@@ -11,7 +11,7 @@ function maxKills(store: Store<State, Actions>) {
 		store.changed.connect(() => {
 			store
 				.getState()
-				.teams.iter()
+				.team.teams.iter()
 				.forEach((team) => {
 					if (team.kills >= settings.maxKills) resolve(team.tag);
 				});
@@ -32,7 +32,7 @@ async function winCondition(store: Store<State, Actions>) {
 					let mostKills = 0;
 					store
 						.getState()
-						.teams.iter()
+						.team.teams.iter()
 						.forEach((team) => {
 							if (team.kills > mostKills) {
 								winningTeam = team;

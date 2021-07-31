@@ -7,15 +7,15 @@ import { match } from "@rbxts/rbxts-pattern";
 const unitConstructor = Dependency<UnitConstructor>();
 
 function matchModeForKill(player: Player, enemyPlayer: Player, store: Store<State, Actions>) {
-	if (store.getState().sequence === "intermission") return;
+	if (store.getState().round.sequence === "intermission") return;
 
-	return match(store.getState())
+	return match(store.getState().election)
 		.with({ gameMode: "Team Deathmatch" }, () => {
 			store.dispatch({ type: "AddKillToPlayer", player: player });
 			store.dispatch({ type: "AddDeathToPlayer", player: enemyPlayer });
 			store
 				.getState()
-				.teams.iter()
+				.team.teams.iter()
 				.forEach((team) =>
 					match({ TeamColor: team.tag.TeamColor })
 						.with({ TeamColor: player.TeamColor }, () => {

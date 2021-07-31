@@ -43,11 +43,13 @@ export class Election implements OnInit {
 			});
 		}
 
+		print(store.getState());
+
 		store.dispatch({ type: "StartVote" });
-		this.councilVoteOn.SendToAllPlayers({ name: topic, options: store.getState().topic.options.asPtr() });
+		this.councilVoteOn.SendToAllPlayers({ name: topic, options: store.getState().election.topic.options.asPtr() });
 
 		return Promise.delay(1).then(() => {
-			const currentState = store.getState();
+			const currentState = store.getState().election;
 			store.dispatch({
 				type: "SelectGameMode",
 				gameMode: getVoteOrDefault(currentState.votes, currentState.topic.options).expect(

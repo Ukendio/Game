@@ -8,10 +8,10 @@ const userRequestDeploy = Remotes.Server.Create("userRequestDeploy");
 export class Deployment implements OnInit {
 	onInit() {
 		userRequestDeploy.SetCallback((player) => {
-			const state = store.getState();
-			if (state.sequence === "started") {
-				return state.deployedPlayers
-					.iter()
+			if (store.getState().round.sequence === "started") {
+				return store
+					.getState()
+					.dispatcher.deployedPlayers.iter()
 					.find((current) => current === player)
 					.match(
 						(player) => {

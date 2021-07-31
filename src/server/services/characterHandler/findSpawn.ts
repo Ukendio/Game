@@ -6,11 +6,11 @@ export function findSpawn(): Result<Option<SpawnLocation>, string> {
 
 	let closestMagnitude: Option<number> = Option.none();
 
-	store.getState().spawnLocations.forEach((spawnLocation) => {
+	store.getState().election.spawnLocations.forEach((spawnLocation) => {
 		let totalMagnitude = 0;
 		store
 			.getState()
-			.deployedPlayers.iter()
+			.dispatcher.deployedPlayers.iter()
 			.forEach((player) => {
 				const root = player.Character?.FindFirstChild("HumanoidRootPart") as BasePart;
 				if (root) {

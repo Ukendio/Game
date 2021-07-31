@@ -10,7 +10,7 @@ export class Enlistment {
 	join(player: Player) {
 		const team = store
 			.getState()
-			.teams.iter()
+			.team.teams.iter()
 			.maxBy((a, b) => a.members.len() - b.members.len())
 			.unwrap();
 

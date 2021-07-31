@@ -92,11 +92,13 @@ export = () => {
 
 		const input = identity<Input>([12, "*", 4]);
 
-		const output = match(input)
+		const alt = ["str", "+", 4];
+
+		const output = match<Input>(input)
 			.with([__.number, "*", __.number], ([x, _, y]) => x * y)
 			.with([__.number, "+", __.number], ([x, _, y]) => x + y)
 			.with([__.number, "-", __.number], ([x, _, y]) => x - y)
-			.with([__.number, "/", __.number], ([x, _, y]) => x / y)
+			.with([__.string, "/", __.number], ([x, _, y]) => x / y)
 			.exhaustive();
 
 		expect(output).to.equal(48);
