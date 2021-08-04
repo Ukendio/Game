@@ -4,7 +4,7 @@ import { match, when, _select, __ } from "@rbxts/rbxts-pattern";
 export = () => {
 	describe("match number utility", () => {
 		it("number is in set", () => {
-			const number = 4;
+			const number = 5;
 
 			const result = match(number)
 				.numberSet([1, 3, 5, 7, 11], (value) => `${value} is in array`)
