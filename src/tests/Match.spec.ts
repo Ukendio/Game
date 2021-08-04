@@ -97,7 +97,7 @@ export = () => {
 			.with([__.number, "*", __.number], ([x, _, y]) => x * y)
 			.with([__.number, "+", __.number], ([x, _, y]) => x + y)
 			.with([__.number, "-", __.number], ([x, _, y]) => x - y)
-			.with([__.string, "/", __.number], ([x, _, y]) => x / y)
+			.with([__.number, "/", __.number], ([x, _, y]) => x / y)
 			.exhaustive();
 
 		expect(output).to.equal(48);
