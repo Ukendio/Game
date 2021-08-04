@@ -23,7 +23,6 @@ const Button: Hooks.FC<Props> = (props, { useState }) => {
 				MouseLeave: () => setColour(props.hoverOn),
 				MouseButton1Down: () => props.handler(),
 			}}
-			{...props}
 		>
 			<Diamond />
 		</textbutton>
