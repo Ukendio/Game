@@ -60,8 +60,8 @@ export const electionState = {
 
 export const electionReducer = Rodux.createReducer<ElectionState, ElectionActions>(electionState, {
 	StartVote: (state) => {
-		const newState = { ...state, voting: true };
-		state.topic.options.iter().forEach((index) => {
+		const newState = { ...state, voting: true, topic: { ...state.topic, options: state.topic.options } };
+		newState.topic.options.iter().forEach((index) => {
 			newState.votes[index] = 0;
 		});
 		return newState;
@@ -83,17 +83,14 @@ export const electionReducer = Rodux.createReducer<ElectionState, ElectionAction
 
 	SelectGameMode: (state, action) => {
 		const newState = { ...state };
-		newState.gameMode = action.gameMode as keyof typeof gameModes;
-		newState.winCondition = gameModes[action.gameMode as keyof typeof gameModes];
+		newState.gameMode = action.gameMode;
+		newState.winCondition = gameModes[action.gameMode];
 
 		return newState;
 	},
 
 	SelectMap: (state, action) => {
-		const newState = { ...state };
-		newState.currentMap = action.map;
-
-		return newState;
+		return { ...state, currentMap: action.map };
 	},
 
 	SetSpawnLocations: (state, action) => {
