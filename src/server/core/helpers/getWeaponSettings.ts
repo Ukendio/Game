@@ -1,7 +1,7 @@
 import { Option, Result } from "@rbxts/rust-classes";
 import { Config, Mode } from "shared/Types";
 
-const weaponsTable: Record<string, Config> = {
+const weaponsTable = identity<Record<string, Config>>({
 	AK47: {
 		fireRate: 1,
 		recoil: 1,
@@ -16,7 +16,7 @@ const weaponsTable: Record<string, Config> = {
 		mode: Mode.Semi,
 		damage: 5,
 	},
-};
+});
 
 export const getWeaponSettings = (weaponName: keyof typeof weaponsTable): Result<Option<Config>, string> => {
 	const weaponSettings = weaponsTable[weaponName];
