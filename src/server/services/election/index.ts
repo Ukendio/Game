@@ -43,8 +43,6 @@ export class Election implements OnInit {
 			});
 		}
 
-		print(store.getState());
-
 		store.dispatch({ type: "StartVote" });
 		this.councilVoteOn.SendToAllPlayers({ name: topic, options: store.getState().election.topic.options.asPtr() });
 

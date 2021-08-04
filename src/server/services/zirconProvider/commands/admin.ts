@@ -1,29 +1,51 @@
 import Log from "@rbxts/log";
-import { match } from "@rbxts/rbxts-pattern";
+import { match, when, __ } from "@rbxts/rbxts-pattern";
+import { Option } from "@rbxts/rust-classes";
 import { ListCommand } from "..";
+
+enum Period {
+	Temporary,
+	Permanent,
+}
+
+function parsePeriod(str: string): Option<Period> {
+	if (str.find("perm")[0] !== undefined) return Option.some(Period.Permanent);
+	else if (str.find("temp")[0] !== undefined) return Option.some(Period.Temporary);
+	return Option.none();
+}
 
 export = (...parameters: Parameters<ListCommand>) => {
 	const registry = parameters[0];
 
 	registry.RegisterFunction(
 		new parameters[1]("admin")
-			.AddArguments("player?")
+			.AddArguments("player")
 			.AddArguments("string")
 			.Bind((context, player, position) => {
-				if (player && !registry.Administrator.HasMember(player)) {
+				const executor = context.GetExecutor();
+
+				if (!registry.Administrator.HasMember(player)) {
 					registry.Administrator.AddMember(player);
 
-					match(position)
-						.with("temporary" || "temp" || "temporarily", () => {
-							Log.Info("{} Gave admin to {} temporarily", context.GetExecutor(), player);
-						})
-						.with("permanent" || "perm" || "permanently", () => {
-							Log.Info("{} Gave admin to {} permanently", context.GetExecutor(), player);
-							//TODO: Save
-						})
-						.run();
+					parsePeriod(position).match(
+						(period) => {
+							match(period)
+								.with(Period.Permanent, () => {
+									//TODO we have to save the player when it is permanent in a datastore
+								})
+								.with(Period.Temporary, () => {
+									Log.Info("{} gave admin to {} temporarily", executor, player);
+								})
+								.with(__, () => {
+									throw Log.Fatal("Unexpected Error");
+								})
+								.exhaustive();
+						},
+						() =>
+							Log.Error("Invalid Period, expected `string` to have `perm` or `temp`, got `{}`", position),
+					);
 				} else {
-					Log.Error("Invalid user");
+					Log.Error("User already has Administrator");
 				}
 			}),
 		[registry.Creator],

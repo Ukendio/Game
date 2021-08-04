@@ -4,11 +4,12 @@ import { match, when, _select, __ } from "@rbxts/rbxts-pattern";
 export = () => {
 	describe("match number utility", () => {
 		it("number is in set", () => {
-			const number = 5;
+			const number = 4;
 
 			const result = match(number)
 				.numberSet([1, 3, 5, 7, 11], (value) => `${value} is in array`)
-				.run();
+				.with(__, (value) => `${value} is NOT in array`)
+				.exhaustive();
 
 			expect(result).to.equal(`5 is in array`);
 		});
@@ -91,8 +92,6 @@ export = () => {
 		type Input = [number, "+", number] | [number, "-", number] | [number, "/", number] | [number, "*", number];
 
 		const input = identity<Input>([12, "*", 4]);
-
-		const alt = ["str", "+", 4];
 
 		const output = match<Input>(input)
 			.with([__.number, "*", __.number], ([x, _, y]) => x * y)
