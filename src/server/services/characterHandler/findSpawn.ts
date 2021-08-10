@@ -1,7 +1,8 @@
+import { Store } from "@rbxts/rodux";
 import { Result, Option } from "@rbxts/rust-classes";
-import store from "server/core/rodux/store";
+import { Actions, State } from "server/core/rodux/store";
 
-export function findSpawn(): Result<Option<SpawnLocation>, string> {
+export function findSpawn(store: Store<State, Actions>): Result<Option<SpawnLocation>, string> {
 	let closestSpawn: Option<SpawnLocation> = Option.none();
 
 	let closestMagnitude: Option<number> = Option.none();
