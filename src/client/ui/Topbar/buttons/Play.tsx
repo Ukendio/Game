@@ -2,7 +2,6 @@ import Roact from "@rbxts/roact";
 import Hooks from "@rbxts/roact-hooks";
 import Remotes from "shared/Remotes";
 import { getCamera } from "client/core/userCamera";
-import ColourScheme from "client/ui/colourScheme";
 import Button from "client/ui/components/Button";
 import { Players } from "@rbxts/services";
 import { Option, Result, UnitType } from "@rbxts/rust-classes";
