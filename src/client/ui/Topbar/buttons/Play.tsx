@@ -27,8 +27,6 @@ const Play: Hooks.FC = (_, { useState }) => {
 	return (
 		<Button
 			Visible={visibility}
-			hoverOff={ColourScheme.Black}
-			hoverOn={ColourScheme.Yellow}
 			Text="PLAY"
 			handler={() => {
 				match([status, debounce])
