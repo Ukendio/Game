@@ -34,7 +34,7 @@ export class CharacterHandler implements OnStart {
 		};
 
 		const onPlayerAdded = (player: Player) => {
-			findSpawn()
+			findSpawn(store)
 				.map((closestSpawnOption) => {
 					closestSpawnOption.match(
 						(closestSpawn) => {
