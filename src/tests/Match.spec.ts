@@ -27,7 +27,7 @@ export = () => {
 	});
 
 	describe("partial match", () => {
-		it("player team", () => {
+		it("respect brickColor instance", () => {
 			const brick = new BrickColor("Really black");
 
 			const playerTeam = {
@@ -36,9 +36,11 @@ export = () => {
 			};
 
 			const matchedPlayerTeam = match(playerTeam)
-				.with({ marcus: "bye", brick: brick }, () => true)
-				.run();
-			expect(matchedPlayerTeam).to.be.ok();
+				.with({ marcus: "bye", brick: new BrickColor("Really black") }, () => true)
+				.with(__, () => false)
+				.exhaustive();
+
+			expect(matchedPlayerTeam).to.equal(true);
 		});
 
 		it("match string", () => {
