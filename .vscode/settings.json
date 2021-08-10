@@ -17,6 +17,8 @@
 	"roblox-ts.color-picker.precision": 3,
 	"roblox-ts.command.parameters": ["-w", "--verbose"],
 	"roblox-ts.command.development": false,
-	"gruvboxMaterial.darkContrast": "hard",
-	"gruvboxMaterial.darkPalette": "material"
+	"gruvboxMaterial.darkContrast": "medium",
+	"gruvboxMaterial.darkPalette": "original",
+	"gruvboxMaterial.darkWorkbench": "material",
+	"gruvboxMaterial.colorfulSyntax": true,
 }
