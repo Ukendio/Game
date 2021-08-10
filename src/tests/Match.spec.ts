@@ -20,7 +20,8 @@ export = () => {
 			expect(
 				match(number)
 					.numberRange([13, 19], (value) => `${value} is a teen number`)
-					.with(__, (value) => `${value} was not in set`),
+					.with(__, (value) => `${value} was not in set`)
+					.exhaustive(),
 			).to.equal("13 is a teen number");
 		});
 	});
