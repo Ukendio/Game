@@ -20,9 +20,7 @@ export class CharacterHandler implements OnStart {
 			const rig = await yieldForR15CharacterDescendants(character);
 			const player = Players.GetPlayerFromCharacter(rig)!;
 
-			getWeaponSettings("AK47")
-				.map((config) => this.UnitConstructor.createGun(player, config.expect("Unknown weapon name")))
-				.mapErr((errorMessage) => Log.Error(errorMessage));
+			this.UnitConstructor.createGun(player, getWeaponSettings("AK47").expect("Unknown weapon name"));
 
 			rig.Humanoid.Health = 20;
 			rig.Humanoid.Died.Connect(() => {
@@ -34,17 +32,7 @@ export class CharacterHandler implements OnStart {
 		};
 
 		const onPlayerAdded = (player: Player) => {
-			findSpawn(store)
-				.map((closestSpawnOption) => {
-					closestSpawnOption.match(
-						(closestSpawn) => {
-							player.RespawnLocation = closestSpawn;
-							return Result.ok("Changed Player respawn location");
-						},
-						() => Result.err("No spawn location found"),
-					);
-				})
-				.mapErr((errorMessage) => Log.Error(errorMessage));
+			player.RespawnLocation = findSpawn(store).expect("Couldn't find a spawn location");
 
 			player.Character
 				? handleCharacterAdded(player.Character)

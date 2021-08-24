@@ -58,7 +58,7 @@ export function getCamera() {
 			return this;
 		},
 
-		addBlur: function (this, blurLevel: number): Result<defined, string> {
+		addBlur: function <T>(this: T, blurLevel: number): Result<T, string> {
 			if (currentCamera.FindFirstChildOfClass("BlurEffect") !== undefined) {
 				return Result.err("BlurEffect already exists");
 			}

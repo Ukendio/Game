@@ -2,6 +2,7 @@ import { Players } from "@rbxts/services";
 import store from "server/core/rodux/store";
 import matchModeForKill from "server/core/helpers/matchModeForKill";
 import { Mode } from "shared/Types";
+
 const gun: FabricUnits["Gun"] = {
 	name: "Gun",
 

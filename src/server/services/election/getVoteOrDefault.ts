@@ -3,8 +3,8 @@ import { Iterator, Vec } from "@rbxts/rust-classes";
 
 /**
  * getVoteOrDefault takes two arguments:
- * - a list of votes sent by clients of type string
- * - a list of votable options
+ * - a record of votes sent by clients of type string
+ * - a vector of votable options
  * This function will return the last option if no votes were cast into the ballot
  *
  * It does this in 3 main steps:

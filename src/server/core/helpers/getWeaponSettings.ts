@@ -18,8 +18,8 @@ const weaponsTable = identity<Record<string, Config>>({
 	},
 });
 
-export const getWeaponSettings = (weaponName: keyof typeof weaponsTable): Result<Option<Config>, string> => {
+export const getWeaponSettings = (weaponName: keyof typeof weaponsTable): Option<Config> => {
 	const weaponSettings = weaponsTable[weaponName];
 
-	return Result.ok(Option.wrap(weaponSettings));
+	return Option.wrap(weaponSettings);
 };

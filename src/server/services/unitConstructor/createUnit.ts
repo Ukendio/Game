@@ -9,10 +9,10 @@ export function createUnit<T extends keyof FabricUnits, R extends Instance | Uni
 	ref: R,
 	layerData: NonNullableObject<TLayerData<T>>,
 	unitBuilder: (unit: T, ref: R, layerData: NonNullableObject<TLayerData<T>>) => void,
-): Result<T, string> {
+): string {
 	const unit = fabric.getOrCreateUnitByRef(unitResolvable, ref);
 	unit.mergeBaseLayer(layerData);
 	unitBuilder(unitResolvable, ref, layerData);
 
-	return Result.ok(unitResolvable);
+	return unitResolvable;
 }

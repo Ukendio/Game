@@ -2,7 +2,7 @@ import { Store } from "@rbxts/rodux";
 import { Result, Option } from "@rbxts/rust-classes";
 import { Actions, State } from "server/core/rodux/store";
 
-export function findSpawn(store: Store<State, Actions>): Result<Option<SpawnLocation>, string> {
+export function findSpawn(store: Store<State, Actions>): Option<SpawnLocation> {
 	let closestSpawn: Option<SpawnLocation> = Option.none();
 
 	let closestMagnitude: Option<number> = Option.none();
@@ -23,11 +23,11 @@ export function findSpawn(store: Store<State, Actions>): Result<Option<SpawnLoca
 			closestMagnitude = Option.some(totalMagnitude);
 		}
 
-		if (closestMagnitude.unwrapOrElse(() => -1) > totalMagnitude) {
+		if (closestMagnitude.unwrapOr(-1) > totalMagnitude) {
 			closestMagnitude = Option.some(totalMagnitude);
 			closestSpawn = Option.some(spawnLocation);
 		}
 	});
 
-	return Result.ok(closestSpawn);
+	return closestSpawn;
 }
