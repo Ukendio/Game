@@ -60,4 +60,39 @@ const Play: Hooks.FC = (_, { useState }) => {
 	);
 };
 
+const vec = {
+	iter: () => ({
+		fold: (str: string, f: (a: string, b: unknown) => string) => {
+			return "a";
+		},
+	}),
+};
+
+function recursiveToString(t: unknown, indent = "") {
+	if (typeIs(t, "table")) {
+		let buffer = "";
+		buffer += "{";
+
+		for (const [k, v] of pairs(t)) {
+			if (typeIs(k, "string")) {
+				buffer += " " + indent + k + ": " + recursiveToString(v, " " + indent);
+			}
+		}
+
+		buffer += indent + " }";
+		return buffer;
+	} else return tostring(t);
+}
+
+function toString(): string {
+	return Option.wrap(next(["string"])).mapOr(
+		"Vec is Empty!",
+		() =>
+			`Vec[${vec
+				.iter()
+				.fold("", (acc, item) => acc + recursiveToString(item) + ", ")
+				.sub(0, -3)}]`,
+	);
+}
+
 export = new Hooks(Roact)(Play);
