@@ -84,15 +84,4 @@ function recursiveToString(t: unknown, indent = "") {
 	} else return tostring(t);
 }
 
-function toString(): string {
-	return Option.wrap(next(["string"])).mapOr(
-		"Vec is Empty!",
-		() =>
-			`Vec[${vec
-				.iter()
-				.fold("", (acc, item) => acc + recursiveToString(item) + ", ")
-				.sub(0, -3)}]`,
-	);
-}
-
 export = new Hooks(Roact)(Play);
