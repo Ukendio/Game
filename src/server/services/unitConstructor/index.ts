@@ -31,7 +31,7 @@ export class UnitConstructor implements OnInit {
 		const gunTool = ReplicatedStorage.assets.FindFirstChild("Pistol")?.Clone() as Tool;
 		gunTool.Parent = backpack;
 
-		return createUnit(this.fabric, "Gun", gunTool, { configurableSettings: settings }, (...args) => {
+		return createUnit(this.fabric, "Gun", gunTool, settings, (...args) => {
 			this.constructUnit.SendToPlayer(player, ...args);
 		});
 	}

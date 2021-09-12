@@ -18,7 +18,7 @@ interface Gun extends UnitDefinition<"Gun"> {
 	};
 
 	units: {
-		Cam: {
+		Cam?: {
 			recoil_speed: number;
 			recoil_height: number;
 			offset: CFrame;
