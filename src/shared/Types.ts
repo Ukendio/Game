@@ -1,17 +1,24 @@
 import { InferDataType } from "@rbxts/fabric";
 import { Vec } from "@rbxts/rust-classes";
 
-export enum Mode {
-	Semi,
-	Auto,
+export enum GunSide {
+	Right,
+	Left,
+}
+
+export const enum Mode {
+	Auto = "Auto",
+	Burst = "Burst",
+	Semi = "Semi",
 }
 
 export interface Config {
-	fireRate: number;
+	fire_rate: number;
 	recoil: number;
-	maxDistance: number;
+	max_distance: number;
 	mode: Mode;
 	damage: number;
+	weight: number;
 }
 
 export interface TopicFormat {
