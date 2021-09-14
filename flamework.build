@@ -4,7 +4,6 @@
 	"identifiers": {
 		"game:out/client/controllers/unitConstructor@UnitConstructor": "game:out/client/controllers/unitConstructor@UnitConstructor",
 		"game:out/client/controllers/zirconProvider@ZirconProvider": "game:out/client/controllers/zirconProvider@ZirconProvider",
-		"game:out/client/ui/components/Vote@Vote": "game:out/client/ui/components/Vote@Vote",
 		"game:out/server/services/unitConstructor/init@UnitConstructor": "game:out/server/services/unitConstructor/init@UnitConstructor",
 		"game:out/server/services/referee@Referee": "game:out/server/services/referee@Referee",
 		"game:out/server/services/characterHandler/deployment@Deployment": "game:out/server/services/characterHandler/deployment@Deployment",
