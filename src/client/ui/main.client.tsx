@@ -1,10 +1,10 @@
 import Roact from "@rbxts/roact";
-import Home from "./Home";
-import RedVignette from "./app/RedVignette";
+import { Players } from "@rbxts/services";
+import Main from "./pages/Main";
 
 Roact.mount(
 	<screengui>
-		<RedVignette />
-		<Home />
+		<Main />
 	</screengui>,
+	Players.LocalPlayer.WaitForChild("PlayerGui"),
 );
