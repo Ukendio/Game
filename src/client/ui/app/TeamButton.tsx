@@ -24,7 +24,7 @@ const teamButton: Hooks.FC<Props> = (props, { useState }) => {
 	const getTeam = (color: BrickColor) => {
 		return store
 			.getState()
-			.teams.iter()
+			.team.teams.iter()
 			.find((current) => current.tag.TeamColor === color)
 			.unwrap();
 	};
