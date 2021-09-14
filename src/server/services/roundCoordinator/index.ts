@@ -34,7 +34,7 @@ export class RoundCoordinator implements OnStart {
 			return Promise.delay(15)
 				.then(() => this.Election.voteOn("Map"))
 				.then(() => this.Election.voteOn("GameMode"))
-				.then(() => roundBuilder())
+				.andThenCall(roundBuilder)
 				.expect();
 		};
 
