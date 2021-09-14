@@ -7,7 +7,7 @@ export function findSpawn(store: Store<State, Actions>): Option<SpawnLocation> {
 
 	let closestMagnitude: Option<number> = Option.none();
 
-	store.getState().election.spawnLocations.forEach((spawnLocation) => {
+	store.getState().election.spawn_locations.forEach((spawnLocation) => {
 		let totalMagnitude = 0;
 		store
 			.getState()

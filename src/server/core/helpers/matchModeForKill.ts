@@ -11,7 +11,7 @@ function matchModeForKill(player: Player, enemyPlayer: Player, store: Store<Stat
 	if (store.getState().round.sequence === Sequence.Intermission) return;
 
 	return match(store.getState().election)
-		.with({ gameMode: "Team Deathmatch" }, () => {
+		.with({ gamemode: "Team Deathmatch" }, () => {
 			store.dispatch({ type: "AddKillToPlayer", player: player });
 			store.dispatch({ type: "AddDeathToPlayer", player: enemyPlayer });
 			store
@@ -28,11 +28,11 @@ function matchModeForKill(player: Player, enemyPlayer: Player, store: Store<Stat
 						.run(),
 				);
 		})
-		.with({ gameMode: "Free For All" }, () => {
+		.with({ gamemode: "Free For All" }, () => {
 			store.dispatch({ type: "AddKillToPlayer", player: player });
 			store.dispatch({ type: "AddDeathToPlayer", player: enemyPlayer });
 		})
-		.with({ gameMode: "Kill Confirmed" }, () => {
+		.with({ gamemode: "Kill Confirmed" }, () => {
 			unitConstructor.createTag(enemyPlayer);
 		})
 		.otherwise(() => {
