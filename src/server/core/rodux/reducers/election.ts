@@ -86,7 +86,7 @@ export const election_reducer = Rodux.createReducer<ElectionState, ElectionActio
 	},
 
 	create_topic: (state, action) => {
-		return { ...state, topic: action.topic };
+		return identity<ElectionState>({ ...state, topic: action.topic });
 	},
 
 	select_gamemode: (state, action) => {
@@ -100,7 +100,7 @@ export const election_reducer = Rodux.createReducer<ElectionState, ElectionActio
 	},
 
 	select_map: (state, action) => {
-		return { ...state, currentMap: action.selection };
+		return identity<ElectionState>({ ...state, current_map: action.selection });
 	},
 
 	set_spawn_locations: (state, action) => {
