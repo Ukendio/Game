@@ -25,7 +25,7 @@ export class Election implements OnInit {
 		});
 	}
 
-	voteOn(topic: TopicFormat) {
+	async voteOn(topic: TopicFormat) {
 		store.dispatch({
 			type: "create_topic",
 			topic: Option.some(topic),

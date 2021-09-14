@@ -3,10 +3,11 @@ import store from "server/core/rodux/store";
 import { Election } from "../election";
 import remotes from "shared/Remotes";
 import Log from "@rbxts/log";
-import { Option, Vec } from "@rbxts/rust-classes";
+import { Vec } from "@rbxts/rust-classes";
 import { mapNames } from "shared/Architect/maps";
 import Object from "@rbxts/object-utils";
 import { gamemodes } from "server/gamemodes";
+import { load_map } from "shared/Architect/Loader";
 
 const roundStarted = remotes.Server.Create("roundStarted");
 
@@ -23,10 +24,11 @@ export class RoundCoordinator implements OnStart {
 
 			Log.Info("round started");
 
-			const s = store.getState().election;
-
-			return s.win_condition
-				.expect(`Unable to get win condition from ${s.gamemode}`)(store)
+			return store
+				.getState()
+				.election.win_condition.expect(
+					`Unable to get win condition from ${store.getState().election.gamemode}`,
+				)(store)
 				.andThenCall(Promise.delay, 5)
 				.then(() => {
 					Log.Info("prompt");
@@ -38,6 +40,9 @@ export class RoundCoordinator implements OnStart {
 
 			return Promise.delay(15)
 				.then(() => this.Election.voteOn({ name: "map", options: Vec.vec(...mapNames) }))
+				.then(() => {
+					load_map(store.getState().election.current_map.unwrap()).mapErr(Log.Error);
+				})
 				.then(() => this.Election.voteOn({ name: "gamemode", options: Vec.vec(...Object.keys(gamemodes)) }))
 				.andThenCall(roundBuilder)
 				.expect();
