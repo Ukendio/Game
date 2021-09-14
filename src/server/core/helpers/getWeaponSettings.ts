@@ -3,18 +3,20 @@ import { Config, Mode } from "shared/Types";
 
 const weaponsTable = identity<Record<string, Config>>({
 	AK47: {
-		fireRate: 1,
+		fire_rate: 1,
 		recoil: 1,
-		maxDistance: 100,
+		max_distance: 100,
 		mode: Mode.Auto,
 		damage: 1,
+		weight: 1,
 	},
 	M16: {
-		fireRate: 1,
+		fire_rate: 1,
 		recoil: 1,
-		maxDistance: 100,
+		max_distance: 100,
 		mode: Mode.Semi,
 		damage: 5,
+		weight: 1,
 	},
 });
 
