@@ -1,7 +1,7 @@
 import Rodux from "@rbxts/rodux";
 import { DispatcherActions, dispatcherReducer, dispatcherState, DispatcherState } from "./reducers/dispatcher";
 import { ElectionActions, electionReducer, electionState, ElectionState } from "./reducers/election";
-import { RoundActions, roundReducer, roundState, RoundState } from "./reducers/round";
+import { RoundActions, round_reducer, roundState, RoundState } from "./reducers/round";
 import { ScoreActions, scoreReducer, scoreState, ScoreState } from "./reducers/score";
 import { TeamActions, teamReducer, teamState, TeamState } from "./reducers/team";
 
@@ -25,7 +25,7 @@ const initialState = identity<State>({
 const reducer = Rodux.combineReducers({
 	dispatcher: dispatcherReducer,
 	election: electionReducer,
-	round: roundReducer,
+	round: round_reducer,
 	score: scoreReducer,
 	team: teamReducer,
 });

@@ -3,11 +3,12 @@ import { Store } from "@rbxts/rodux";
 import { State, Actions } from "server/core/rodux/store";
 import type { UnitConstructor } from "server/services/unitConstructor";
 import { match } from "@rbxts/rbxts-pattern";
+import { Sequence } from "shared/Types";
 
 const unitConstructor = Dependency<UnitConstructor>();
 
 function matchModeForKill(player: Player, enemyPlayer: Player, store: Store<State, Actions>) {
-	if (store.getState().round.sequence === "intermission") return;
+	if (store.getState().round.sequence === Sequence.Intermission) return;
 
 	return match(store.getState().election)
 		.with({ gameMode: "Team Deathmatch" }, () => {

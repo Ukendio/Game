@@ -4,7 +4,7 @@ import Yessir from "@rbxts/yessir";
 import MainButton from "../components/MainButton";
 import Remotes from "shared/Remotes";
 import store from "client/core/rodux/store";
-import { Sequence } from "client/core/rodux/reducers/round";
+import { Sequence } from "shared/Types";
 
 const user_request_deploy = Remotes.Client.Get("userRequestDeploy");
 

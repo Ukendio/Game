@@ -12,6 +12,11 @@ export const enum Mode {
 	Semi = "Semi",
 }
 
+export enum Sequence {
+	Started,
+	Intermission,
+}
+
 export interface Config {
 	fire_rate: number;
 	recoil: number;

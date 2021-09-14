@@ -1,9 +1,5 @@
 import Rodux from "@rbxts/rodux";
-
-export enum Sequence {
-	Started,
-	Intermission,
-}
+import { Sequence } from "shared/Types";
 
 export interface RoundState {
 	sequence: Sequence;
