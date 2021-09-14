@@ -21,4 +21,7 @@
 	"gruvboxMaterial.darkPalette": "original",
 	"gruvboxMaterial.darkWorkbench": "material",
 	"gruvboxMaterial.colorfulSyntax": true,
+	"cSpell.words": [
+		"gamemodes"
+	],
 }

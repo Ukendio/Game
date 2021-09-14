@@ -1,102 +1,112 @@
 import Rodux, { Store } from "@rbxts/rodux";
-import { Vec } from "@rbxts/rust-classes";
+import { Option, Vec } from "@rbxts/rust-classes";
 import { State } from "server/core/rodux/store";
-import { gameModes } from "server/gameModes";
-import { TopicFormat } from "shared/Types";
+import { gamemodes } from "server/gamemodes";
+import { Sequence, TopicFormat } from "shared/Types";
 import { Actions } from "../store";
 
 export interface ElectionState {
 	voting: boolean;
-	topic: TopicFormat;
+	topic: Option<TopicFormat>;
 	votes: Record<string, number>;
-	hasVoted: Vec<Player>;
-	sequence: "started" | "intermission";
-	gameMode: keyof typeof gameModes;
-	winCondition: (store: Store<State, Actions>) => Promise<void>;
-	currentMap: string;
-	spawnLocations: Set<SpawnLocation>;
+	has_voted: Vec<Player>;
+	sequence: Sequence;
+	gamemode: Option<keyof typeof gamemodes>;
+	win_condition: Option<(store: Store<State, Actions>) => Promise<void>>;
+	current_map: Option<string>;
+	spawn_locations: Set<SpawnLocation>;
 }
 
 export type ElectionActions =
 	| {
-			type: "StartVote";
+			type: "start_vote";
 	  }
 	| {
-			type: "StopVote";
+			type: "stop_vote";
 	  }
 	| {
-			type: "CreateTopic";
-			topic: TopicFormat;
+			type: "create_topic";
+			topic: Option<TopicFormat>;
 	  }
 	| {
-			type: "CastVote";
+			type: "cast_vote";
 			player: Player;
 			vote: string;
 	  }
 	| {
-			type: "SelectGameMode";
-			gameMode: keyof typeof gameModes;
+			type: "select_gamemode";
+			selection: Option<string>;
 	  }
 	| {
-			type: "SelectMap";
-			map: string;
+			type: "select_map";
+			selection: Option<string>;
 	  }
 	| {
-			type: "SetSpawnLocations";
+			type: "set_spawn_locations";
 			positions: Set<SpawnLocation>;
 	  };
 
-export const electionState = {
+export const default_election_state = identity<ElectionState>({
 	voting: false,
-	topic: undefined!,
+	topic: Option.none(),
 	votes: {},
-	hasVoted: Vec.vec<Player>(),
-	sequence: "intermission" as const,
-	gameMode: undefined!,
-	winCondition: undefined!,
-	currentMap: undefined!,
-	spawnLocations: new Set<SpawnLocation>(),
-};
+	has_voted: Vec.vec<Player>(),
+	sequence: Sequence.Intermission,
+	gamemode: Option.none<keyof typeof gamemodes>(),
+	win_condition: Option.none(),
+	current_map: Option.none(),
+	spawn_locations: new Set<SpawnLocation>(),
+});
 
-export const electionReducer = Rodux.createReducer<ElectionState, ElectionActions>(electionState, {
-	StartVote: (state) => {
-		const newState = { ...state, voting: true, topic: { ...state.topic, options: state.topic.options } };
-		newState.topic.options.iter().forEach((index) => {
-			newState.votes[index] = 0;
+export const election_reducer = Rodux.createReducer<ElectionState, ElectionActions>(default_election_state, {
+	start_vote: (state) => {
+		const new_state = identity<ElectionState>({
+			...state,
+			voting: true,
 		});
-		return newState;
+
+		new_state.topic
+			.expect("no topic has been selected")
+			.options.iter()
+			.forEach((a) => {
+				new_state.votes[a] = 0;
+			});
+
+		return new_state;
 	},
 
-	StopVote: (state) => {
-		return { ...state, voting: false, topic: undefined!, votes: {}, hasVoted: Vec.vec() };
+	stop_vote: (state) => {
+		return { ...state, voting: false, topic: Option.none(), has_voted: state.has_voted.clear() };
 	},
 
-	CastVote: (state, action) => {
-		const newState = { ...state, hasVoted: state.hasVoted.push(action.player) };
+	cast_vote: (state, action) => {
+		const newState = { ...state, hasVoted: state.has_voted.push(action.player) };
 		newState.votes[action.vote]++;
 		return newState;
 	},
 
-	CreateTopic: (state, action) => {
+	create_topic: (state, action) => {
 		return { ...state, topic: action.topic };
 	},
 
-	SelectGameMode: (state, action) => {
+	select_gamemode: (state, action) => {
 		const newState = { ...state };
-		newState.gameMode = action.gameMode;
-		newState.winCondition = gameModes[action.gameMode];
+		newState.gamemode = action.selection as Option<keyof typeof gamemodes>;
+		newState.win_condition = Option.some(
+			gamemodes[action.selection.unwrapOr("Free For All") as keyof typeof gamemodes],
+		);
 
 		return newState;
 	},
 
-	SelectMap: (state, action) => {
-		return { ...state, currentMap: action.map };
+	select_map: (state, action) => {
+		return { ...state, currentMap: action.selection };
 	},
 
-	SetSpawnLocations: (state, action) => {
+	set_spawn_locations: (state, action) => {
 		if (action.positions !== undefined) {
 			const newState = { ...state };
-			newState.spawnLocations = action.positions;
+			newState.spawn_locations = action.positions;
 			return newState;
 		}
 		return state;

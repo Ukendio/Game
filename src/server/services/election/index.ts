@@ -1,61 +1,51 @@
 import { OnInit, Service } from "@flamework/core";
-import { Vec } from "@rbxts/rust-classes";
-import { gameModes } from "server/gameModes";
 import store from "server/core/rodux/store";
-import { getVoteOrDefault } from "./getVoteOrDefault";
 import remotes from "shared/Remotes";
-import Object from "@rbxts/object-utils";
 import Log from "@rbxts/log";
+import { TopicFormat } from "shared/Types";
+import { Option } from "@rbxts/rust-classes";
+import { getVoteOrDefault } from "./getVoteOrDefault";
 
 const serverEvents = remotes.Server;
+const clientAppendVote = serverEvents.Create("clientAppendVote");
+const council_vote_on = serverEvents.Create("councilVoteOn");
+const council_stop_vote = serverEvents.Create("councilStopVote");
 
 @Service({
 	loadOrder: 5,
 })
 export class Election implements OnInit {
-	private clientAppendVote = serverEvents.Create("clientAppendVote");
-	private councilVoteOn = serverEvents.Create("councilVoteOn");
-	private councilStopVote = serverEvents.Create("councilStopVote");
-
 	constructor() {}
 
 	onInit() {
 		//TODO: sanitize event
-		this.clientAppendVote.Connect((player, vote) => {
-			store.dispatch({ type: "CastVote", player: player, vote: vote });
+		clientAppendVote.Connect((player, vote) => {
+			store.dispatch({ type: "cast_vote", player: player, vote: vote });
 			Log.Info("{} has voted on {}", player, vote);
 		});
 	}
 
-	async voteOn(topic: string) {
-		if (topic === "GameMode") {
-			store.dispatch({
-				type: "CreateTopic",
-				topic: { name: "Gamemode", options: Vec.vec(...Object.keys(gameModes)) },
-			});
-		} else if (topic === "Map") {
-			store.dispatch({
-				type: "CreateTopic",
-				topic: {
-					name: "Map",
-					options: Vec.vec(...Object.keys(gameModes)),
-				},
-			});
-		}
+	voteOn(topic: TopicFormat) {
+		store.dispatch({
+			type: "create_topic",
+			topic: Option.some(topic),
+		});
 
-		store.dispatch({ type: "StartVote" });
-		this.councilVoteOn.SendToAllPlayers({ name: topic, options: store.getState().election.topic.options.asPtr() });
+		store.dispatch({ type: "start_vote" });
+
+		council_vote_on.SendToAllPlayers({
+			name: topic.name,
+			options: topic.options.asPtr(),
+		});
 
 		return Promise.delay(1).then(() => {
-			const currentState = store.getState().election;
+			store.dispatch({ type: "stop_vote" });
+			council_stop_vote.SendToAllPlayers();
+
 			store.dispatch({
-				type: "SelectGameMode",
-				gameMode: getVoteOrDefault(currentState.votes, currentState.topic.options).expect(
-					"Unexpected error",
-				) as keyof typeof gameModes,
+				type: `select_${topic.name as "map" | "gamemode"}`,
+				selection: getVoteOrDefault(store.getState().election.votes, topic.options),
 			});
-			store.dispatch({ type: "StopVote" });
-			this.councilStopVote.SendToAllPlayers();
 		});
 	}
 }
