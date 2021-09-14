@@ -1,13 +1,15 @@
 import { OnStart, Service } from "@flamework/core";
-import Log from "@rbxts/log";
-import { Result } from "@rbxts/rust-classes";
 import { Players } from "@rbxts/services";
 import yieldForR15CharacterDescendants from "@rbxts/yield-for-character";
 
-import store from "server/core/rodux/store";
 import { getWeaponSettings } from "server/core/helpers/getWeaponSettings";
 import { UnitConstructor } from "../unitConstructor";
+
+import Remotes from "shared/Remotes";
 import { findSpawn } from "./findSpawn";
+import store from "server/core/rodux/store";
+
+const deploy_user = Remotes.Server.Create("userRequestDeploy");
 
 @Service({
 	loadOrder: 3,
@@ -32,8 +34,9 @@ export class CharacterHandler implements OnStart {
 		};
 
 		const onPlayerAdded = (player: Player) => {
-			player.RespawnLocation = findSpawn(store).expect("Couldn't find a spawn location");
-
+			deploy_user.Connect(() => {
+				player.RespawnLocation = findSpawn(store).expect("Could not find a spawn location");
+			});
 			player.Character
 				? handleCharacterAdded(player.Character)
 				: player.CharacterAdded.Connect(handleCharacterAdded);
