@@ -5,12 +5,6 @@ import yieldForR15CharacterDescendants from "@rbxts/yield-for-character";
 import { getWeaponSettings } from "server/core/helpers/getWeaponSettings";
 import { UnitConstructor } from "../unitConstructor";
 
-import Remotes from "shared/Remotes";
-import { findSpawn } from "./findSpawn";
-import store from "server/core/rodux/store";
-
-const deploy_user = Remotes.Server.Create("userRequestDeploy");
-
 @Service({
 	loadOrder: 3,
 })
@@ -34,9 +28,6 @@ export class CharacterHandler implements OnStart {
 		};
 
 		const onPlayerAdded = (player: Player) => {
-			deploy_user.Connect(() => {
-				player.RespawnLocation = findSpawn(store).expect("Could not find a spawn location");
-			});
 			player.Character
 				? handleCharacterAdded(player.Character)
 				: player.CharacterAdded.Connect(handleCharacterAdded);

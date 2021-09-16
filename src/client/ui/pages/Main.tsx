@@ -28,6 +28,7 @@ const Main: Hooks.FC<Props> = ({}, { useState }) => {
 				f={() => {
 					if (store.getState().round.sequence === Sequence.Intermission) return;
 
+					print("clicked!");
 					user_request_deploy.SendToServer();
 					set_visibility(false);
 				}}
