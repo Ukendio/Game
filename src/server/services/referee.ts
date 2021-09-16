@@ -1,4 +1,6 @@
 import { Service } from "@flamework/core";
 
-@Service({})
+@Service({
+	loadOrder: 1,
+})
 export class Referee {}

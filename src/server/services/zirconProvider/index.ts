@@ -30,7 +30,7 @@ function buildCommands(...parameters: Parameters<ListCommand>) {
 	}
 }
 
-@Service({ loadOrder: 1 })
+@Service({ loadOrder: 0 })
 export class ZirconProvider implements OnInit, OnStart {
 	onInit() {
 		buildCommands(registry, ZirconFunctionBuilder);

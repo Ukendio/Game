@@ -12,7 +12,7 @@ const council_vote_on = serverEvents.Create("councilVoteOn");
 const council_stop_vote = serverEvents.Create("councilStopVote");
 
 @Service({
-	loadOrder: 5,
+	loadOrder: 4,
 })
 export class Election implements OnInit {
 	constructor() {}
