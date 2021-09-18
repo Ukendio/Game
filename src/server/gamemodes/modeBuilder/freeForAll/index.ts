@@ -26,7 +26,9 @@ async function buildTeam(store: Store<State, Actions>) {
 	};
 
 	Players.PlayerRemoving.Connect((player) => {
-		const drainedTeams = takenTeams.drainFilter([0, takenTeams.len() - 1], (team) => team.tag === player.Team);
+		const drainedTeams = takenTeams
+			.drainFilter([0, takenTeams.len() - 1], (team) => team.tag === player.Team)
+			.generator();
 
 		for (const team of drainedTeams) {
 			availableTeams.push(team);
