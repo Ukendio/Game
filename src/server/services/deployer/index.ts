@@ -25,14 +25,15 @@ export class Deployment implements OnInit {
 						() => {
 							store.dispatch({ type: "Deploy", player });
 
-							player.RespawnLocation = findSpawn(store).expect("Could not find a spawn location");
-							player.LoadCharacter();
+							findSpawn(store).map((a) => {
+								player.RespawnLocation = a.expect("Could not find a spawn location");
+								player.LoadCharacter();
+								while (!player.Character?.IsDescendantOf(Workspace)) {
+									player.Character?.AncestryChanged.Wait();
+								}
 
-							while (!player.Character?.IsDescendantOf(Workspace)) {
-								player.Character?.AncestryChanged.Wait();
-							}
-
-							Log.Info("Player deployed");
+								Log.Info("Player deployed");
+							});
 						},
 					);
 			}

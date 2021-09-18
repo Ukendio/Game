@@ -14,7 +14,7 @@ export interface ElectionState {
 	gamemode: Option<keyof typeof gamemodes>;
 	win_condition: Option<(store: Store<State, Actions>) => Promise<void>>;
 	current_map: Option<string>;
-	spawn_locations: Set<SpawnLocation>;
+	spawn_locations: Vec<SpawnLocation>;
 }
 
 export type ElectionActions =
@@ -43,7 +43,7 @@ export type ElectionActions =
 	  }
 	| {
 			type: "set_spawn_locations";
-			positions: Set<SpawnLocation>;
+			positions: Vec<SpawnLocation>;
 	  };
 
 export const default_election_state = identity<ElectionState>({
@@ -55,7 +55,7 @@ export const default_election_state = identity<ElectionState>({
 	gamemode: Option.none<keyof typeof gamemodes>(),
 	win_condition: Option.none(),
 	current_map: Option.none(),
-	spawn_locations: new Set<SpawnLocation>(),
+	spawn_locations: Vec.vec<SpawnLocation>(),
 });
 
 export const election_reducer = Rodux.createReducer<ElectionState, ElectionActions>(default_election_state, {

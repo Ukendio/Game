@@ -41,7 +41,12 @@ export class RoundCoordinator implements OnStart {
 			return Promise.delay(15)
 				.then(() => this.Election.voteOn({ name: "map", options: Vec.vec(...mapNames) }))
 				.then(() => {
-					load_map(store.getState().election.current_map.unwrap()).mapErr(Log.Error);
+					load_map(store.getState().election.current_map.unwrap()).match((current_map) => {
+						store.dispatch({
+							type: "set_spawn_locations",
+							positions: Vec.fromPtr(current_map.unwrap().Spawns.GetChildren() as Array<SpawnLocation>),
+						});
+					}, Log.Error);
 				})
 				.then(() => this.Election.voteOn({ name: "gamemode", options: Vec.vec(...Object.keys(gamemodes)) }))
 				.andThenCall(roundBuilder)
