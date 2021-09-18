@@ -4,7 +4,7 @@ import Main from "./pages/Main";
 import Remotes from "shared/remotes";
 import store from "client/core/rodux/store";
 
-const round_started = Remotes.Client.WaitFor("roundStarted");
+const round_started = Remotes.Client.WaitFor("round_started");
 
 Roact.mount(
 	<screengui>

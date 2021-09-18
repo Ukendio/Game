@@ -9,7 +9,7 @@ import Object from "@rbxts/object-utils";
 import { gamemodes } from "server/gamemodes";
 import { load_map } from "shared/Architect/Loader";
 
-const roundStarted = remotes.Server.Create("roundStarted");
+const round_started = remotes.Server.Create("round_started");
 
 @Service({
 	loadOrder: 2,
@@ -20,7 +20,7 @@ export class RoundCoordinator implements OnStart {
 	onStart() {
 		const roundBuilder = async () => {
 			store.dispatch({ type: "start_round" });
-			roundStarted.SendToAllPlayers();
+			round_started.SendToAllPlayers();
 
 			Log.Info("round started");
 
