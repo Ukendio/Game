@@ -13,8 +13,6 @@ Roact.mount(
 	Players.LocalPlayer.WaitForChild("PlayerGui"),
 );
 
-round_started.then((a) => {
-	a.Connect(() => {
-		store.dispatch({ type: "start_round" });
-	});
+round_started.then((r) => {
+	r.Connect(() => store.dispatch({ type: "start_round" }));
 });
