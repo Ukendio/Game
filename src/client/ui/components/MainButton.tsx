@@ -9,13 +9,12 @@ interface Props {
 }
 
 const MainButton: Hooks.FC<Props> = ({ name, icon, f }, { useCallback }) => {
-	const memoizedCallback = useCallback(f);
 	return (
 		<textbutton
 			Key={name}
 			Size={new UDim2(1, 0, 0, 75)}
 			Event={{
-				Activated: memoizedCallback,
+				Activated: f,
 			}}
 			BackgroundColor3={ColourScheme.bg_blue}
 		>

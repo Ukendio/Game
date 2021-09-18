@@ -20,6 +20,7 @@ export const roundState = {
 export const round_reducer = Rodux.createReducer<RoundState, RoundActions>(roundState, {
 	start_round: (state) => {
 		if (state.sequence === Sequence.Intermission) {
+			print("change state");
 			return { ...state, sequence: Sequence.Started };
 		}
 

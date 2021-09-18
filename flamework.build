@@ -6,15 +6,12 @@
 		"game:out/client/controllers/zirconProvider@ZirconProvider": "game:out/client/controllers/zirconProvider@ZirconProvider",
 		"game:out/server/services/unitConstructor/init@UnitConstructor": "game:out/server/services/unitConstructor/init@UnitConstructor",
 		"game:out/server/services/referee@Referee": "game:out/server/services/referee@Referee",
-		"game:out/server/services/characterHandler/deployment@Deployment": "game:out/server/services/characterHandler/deployment@Deployment",
 		"game:out/server/services/characterHandler/init@CharacterHandler": "game:out/server/services/characterHandler/init@CharacterHandler",
+		"game:out/server/services/deployer/init@Deployment": "game:out/server/services/deployer/init@Deployment",
 		"game:out/server/services/election/init@Election": "game:out/server/services/election/init@Election",
 		"game:out/server/services/enlistment/init@Enlistment": "game:out/server/services/enlistment/init@Enlistment",
 		"game:out/server/services/roundCoordinator/init@RoundCoordinator": "game:out/server/services/roundCoordinator/init@RoundCoordinator",
 		"game:out/server/services/zirconProvider/init@ZirconProvider": "game:out/server/services/zirconProvider/init@ZirconProvider",
-		"game:out/shared/spirit/spring@Spring": "game:out/shared/spirit/spring@Spring",
-		"game:out/server/services/deployment@Deployment": "game:out/server/services/deployment@Deployment",
-		"game:out/server/services/deployer/deployment@Deployment": "game:out/server/services/deployer/deployment@Deployment",
-		"game:out/server/services/deployer/init@Deployment": "game:out/server/services/deployer/init@Deployment"
+		"game:out/shared/spirit/spring@Spring": "game:out/shared/spirit/spring@Spring"
 	}
 }

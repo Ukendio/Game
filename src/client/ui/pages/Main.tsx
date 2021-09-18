@@ -1,12 +1,11 @@
 import Roact from "@rbxts/roact";
 import Hooks from "@rbxts/roact-hooks";
-import Yessir from "@rbxts/yessir";
 import MainButton from "../components/MainButton";
 import Remotes from "shared/Remotes";
 import store from "client/core/rodux/store";
 import { Sequence } from "shared/Types";
 
-const user_request_deploy = Remotes.Client.Get("userRequestDeploy");
+const user_request_deploy = Remotes.Client.WaitFor("userRequestDeploy");
 
 interface Props {}
 
@@ -26,10 +25,12 @@ const Main: Hooks.FC<Props> = ({}, { useState }) => {
 				name="Deploy"
 				icon=""
 				f={() => {
+					print("safe guard");
 					if (store.getState().round.sequence === Sequence.Intermission) return;
 
 					print("clicked!");
-					user_request_deploy.SendToServer();
+					user_request_deploy.then((a) => a.SendToServer());
+
 					set_visibility(false);
 				}}
 			/>
