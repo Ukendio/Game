@@ -3,7 +3,6 @@
 	"flameworkVersion": "1.0.0-beta.0",
 	"identifiers": {
 		"game:out/client/controllers/unitConstructor@UnitConstructor": "game:out/client/controllers/unitConstructor@UnitConstructor",
-		"game:out/client/controllers/zirconProvider@ZirconProvider": "game:out/client/controllers/zirconProvider@ZirconProvider",
 		"game:out/server/services/unitConstructor/init@UnitConstructor": "game:out/server/services/unitConstructor/init@UnitConstructor",
 		"game:out/server/services/referee@Referee": "game:out/server/services/referee@Referee",
 		"game:out/server/services/characterHandler/init@CharacterHandler": "game:out/server/services/characterHandler/init@CharacterHandler",
