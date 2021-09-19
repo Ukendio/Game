@@ -4,8 +4,6 @@ import { Players, Workspace } from "@rbxts/services";
 import { GunSide } from "shared/Types";
 
 interface Cam extends UnitDefinition<"Cam"> {
-	ref: Camera;
-
 	defaults?: {
 		recoil_speed: number;
 		recoil_height: number;
@@ -40,18 +38,34 @@ declare global {
 	}
 }
 
+let camera = Workspace.CurrentCamera!;
+Workspace.GetPropertyChangedSignal("CurrentCamera").Connect(() => {
+	camera = Workspace.CurrentCamera!;
+});
+
 const player = Players.LocalPlayer;
 const character = player.Character ?? player.CharacterAdded.Wait()[0];
 const humanoid = character?.FindFirstChildOfClass("Humanoid");
 
 export = identity<Cam>({
 	name: "Cam",
-	ref: Workspace.CurrentCamera!,
+
+	defaults: {
+		recoil_speed: 9,
+		recoil_height: 0.7,
+		offset: new CFrame(),
+
+		current_camera_cframe: new CFrame(),
+		camera_type: Enum.CameraType.Custom,
+		right_handed: true,
+
+		view_model: new Instance("Part"),
+		last_shot: Option.none(),
+		recoil_collected: 0,
+	},
 
 	onInitialize: function (this) {
-		Workspace.GetPropertyChangedSignal("CurrentCamera").Connect(() => {
-			this.ref = Workspace.CurrentCamera!;
-		});
+		player.CameraMode = Enum.CameraMode.LockFirstPerson;
 	},
 
 	change_view_model: function (this, view_model) {
@@ -83,7 +97,7 @@ export = identity<Cam>({
 
 		if (!view_model) return;
 
-		if (humanoid && this.ref && humanoid.RootPart && humanoid.MoveDirection.Magnitude <= 0) {
+		if (humanoid && camera && humanoid.RootPart && humanoid.MoveDirection.Magnitude <= 0) {
 			const now = os.time();
 			const amount = -(math.cos(now) / 5);
 
@@ -100,7 +114,7 @@ export = identity<Cam>({
 					recoil_height,
 				) ?? 0;
 
-			const Goal = this.ref.CFrame.mul(
+			const Goal = camera.CFrame.mul(
 				CFrame.Angles(
 					math.rad((recoil_amount <= 0 && recoil_collected <= 0 ? amount : 0) + recoil_amount),
 					0,
@@ -108,7 +122,7 @@ export = identity<Cam>({
 				),
 			);
 
-			this.ref.CFrame = this.ref.CFrame.Lerp(Goal, 0.5);
+			camera.CFrame = camera.CFrame.Lerp(Goal, 0.5);
 			this.addLayer("recoil", { recoil_collected: this.get("recoil_collected") + recoil_amount });
 
 			if (recoil_amount <= 0 && this.get("recoil_collected") <= 0) {
@@ -119,7 +133,7 @@ export = identity<Cam>({
 				);
 				humanoid.CameraOffset = humanoid.CameraOffset.Lerp(bobble, 0.25);
 			}
-		} else if (humanoid && this.ref && humanoid.RootPart) {
+		} else if (humanoid && camera && humanoid.RootPart) {
 			const recoil_amount = last_shot.isSome()
 				? math.clamp(
 						-recoil_speed * (os.clock() - last_shot.expect("no last shot")) + recoil_height,
@@ -127,19 +141,16 @@ export = identity<Cam>({
 						recoil_height,
 				  )
 				: 0;
-			this.ref.CFrame = this.ref.CFrame.Lerp(
-				this.ref.CFrame.mul(CFrame.Angles(math.rad(recoil_amount), 0, 0)),
-				0.5,
-			);
+			camera.CFrame = camera.CFrame.Lerp(camera.CFrame.mul(CFrame.Angles(math.rad(recoil_amount), 0, 0)), 0.5);
 			this.addLayer("recoil", { recoil_collected: this.get("recoil_collected") + recoil_amount });
 		}
 
-		if (this.ref && view_model.FindFirstChild("Handle")) {
+		if (camera && view_model.FindFirstChild("Handle")) {
 			const handle = view_model.FindFirstChild("Handle") as Part;
 
 			if (!handle) return;
 
-			handle.CFrame = this.ref.CFrame.mul(this.get("offset"));
+			handle.CFrame = camera.CFrame.mul(this.get("offset"));
 
 			const left_arm = view_model.FindFirstChild("Left") as Part;
 			const right_arm = view_model.FindFirstChild("Right") as Part;
@@ -156,13 +167,13 @@ export = identity<Cam>({
 
 	effects: [
 		function (this) {
-			this.ref.CFrame = this.get("current_camera_cframe");
-			this.ref.CameraType = this.get("camera_type");
+			camera.CFrame = this.get("current_camera_cframe");
+			camera.CameraType = this.get("camera_type");
 		},
 		function (this) {
 			const view_model = this.get("view_model");
 
-			if (view_model) view_model.Parent = this.ref;
+			if (view_model) view_model.Parent = camera;
 		},
 	],
 });

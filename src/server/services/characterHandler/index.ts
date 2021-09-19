@@ -12,19 +12,17 @@ export class CharacterHandler implements OnStart {
 	constructor(private UnitConstructor: UnitConstructor) {}
 
 	onStart() {
-		const handleCharacterAdded = async (character: Model) => {
-			const rig = await yieldForR15CharacterDescendants(character);
-			const player = Players.GetPlayerFromCharacter(rig)!;
+		const handleCharacterAdded = (character: Model) => {
+			const player = Players.GetPlayerFromCharacter(character)!;
+			yieldForR15CharacterDescendants(character).then(({ Humanoid }) => {
+				this.UnitConstructor.createGun(player, getWeaponSettings("AK47").expect("Unknown weapon name"));
 
-			this.UnitConstructor.createGun(player, getWeaponSettings("AK47").expect("Unknown weapon name"));
-
-			rig.Humanoid.Health = 20;
-			rig.Humanoid.Died.Connect(() => {
-				this.UnitConstructor.createHealthPack(player);
-				this.UnitConstructor.createTag(player);
+				Humanoid.Health = 20;
+				Humanoid.Died.Connect(() => {
+					this.UnitConstructor.createHealthPack(player);
+					this.UnitConstructor.createTag(player);
+				});
 			});
-
-			return rig;
 		};
 
 		const onPlayerAdded = (player: Player) => {

@@ -1,11 +1,12 @@
 import { UnitDefinition } from "@rbxts/fabric";
 import { match } from "@rbxts/rbxts-pattern";
 import { Option } from "@rbxts/rust-classes";
-import { Players, RunService, UserInputService } from "@rbxts/services";
-import { interval, noYield } from "@rbxts/yessir";
+import { Players, RunService, UserInputService, Workspace } from "@rbxts/services";
+import { interval } from "@rbxts/yessir";
 import { Config, Mode } from "shared/Types";
 import { create_view_model } from "client/core/create_view_model";
 
+const camera = Workspace.CurrentCamera;
 const player = Players.LocalPlayer;
 const mouse = player.GetMouse();
 
@@ -73,7 +74,7 @@ export = identity<Gun>({
 	},
 
 	onInitialize: function (this) {
-		const camera = this.getUnit("Cam")!;
+		const cam_unit = this.getUnit("Cam")!;
 
 		if (!this.ref) return;
 
@@ -85,13 +86,13 @@ export = identity<Gun>({
 			const character = player.Character;
 			if (character) {
 				const ray_cast = (active_recoil?: number) => {
-					this.getUnit("HitScan")?.hit?.([character], this.getUnit("Cam")!.ref.CFrame, mouse.Hit.Position, {
+					this.getUnit("HitScan")?.hit?.([character], camera!.CFrame, mouse.Hit.Position, {
 						...this.data!,
 						recoil: active_recoil ?? this.defaults!.recoil,
 					});
 				};
 
-				camera.addLayer("shot", { last_shot: Option.some<number>(os.clock()) });
+				cam_unit.addLayer("shot", { last_shot: Option.some<number>(os.clock()) });
 
 				match(this.get("mode"))
 					.with(Mode.Auto, () => {
@@ -111,10 +112,10 @@ export = identity<Gun>({
 			}
 		});
 
-		camera.change_view_model(create_view_model(this));
+		cam_unit.change_view_model(create_view_model(this));
 
 		RunService.RenderStepped.Connect(() => {
-			camera.adjust_camera();
+			cam_unit.adjust_camera();
 		});
 	},
 

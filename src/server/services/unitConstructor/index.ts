@@ -1,19 +1,17 @@
 import FabricLib from "@rbxts/fabric";
 import { OnInit, Service } from "@flamework/core";
 import { ReplicatedStorage, ServerScriptService, Workspace } from "@rbxts/services";
-import remotes from "shared/Remotes";
+import Remotes from "shared/Remotes";
 import { Config } from "shared/Types";
 import { createUnit } from "./createUnit";
 
-const serverEvents = remotes.Server;
+const construct_unit = Remotes.Server.Create("constructUnit");
 
 @Service({
 	loadOrder: 2,
 })
 export class UnitConstructor implements OnInit {
 	public fabric = new FabricLib.Fabric("Game");
-
-	private constructUnit = serverEvents.Create("constructUnit");
 
 	onInit() {
 		const fabric = this.fabric;
@@ -32,7 +30,9 @@ export class UnitConstructor implements OnInit {
 		gunTool.Parent = backpack;
 
 		return createUnit(this.fabric, "Gun", gunTool, settings, (...args) => {
-			this.constructUnit.SendToPlayer(player, ...args);
+			print(...args);
+			construct_unit.SendToPlayer(player, ...args);
+			print("player");
 		});
 	}
 
@@ -51,13 +51,13 @@ export class UnitConstructor implements OnInit {
 		healthPack.Parent = Workspace;
 
 		return createUnit(this.fabric, "Heal", healthPack, {}, (...args) => {
-			this.constructUnit.SendToAllPlayersExcept(player, ...args);
+			construct_unit.SendToAllPlayersExcept(player, ...args);
 		});
 	}
 
 	createHero(player: Player) {
 		return createUnit(this.fabric, "Wyvern", player, {}, (...args) => {
-			this.constructUnit.SendToPlayer(player, ...args);
+			construct_unit.SendToPlayer(player, ...args);
 		});
 	}
 
@@ -67,7 +67,7 @@ export class UnitConstructor implements OnInit {
 		melee.Parent = backpack;
 
 		return createUnit(this.fabric, "Melee", melee, {}, (...args) => {
-			this.constructUnit.SendToPlayer(player, ...args);
+			construct_unit.SendToPlayer(player, ...args);
 		});
 	}
 
@@ -82,7 +82,7 @@ export class UnitConstructor implements OnInit {
 		dogTag.Parent = Workspace;
 
 		return createUnit(this.fabric, "Tag", dogTag, {}, (...args) => {
-			this.constructUnit.SendToAllPlayersExcept(player, ...args);
+			construct_unit.SendToAllPlayersExcept(player, ...args);
 		});
 	}
 }

@@ -4,7 +4,7 @@ import remotes from "shared/Remotes";
 import { Controller, OnInit } from "@flamework/core";
 
 const clientEvents = remotes.Client;
-const constructUnit = clientEvents.WaitFor("constructUnit");
+const construct_unit = clientEvents.WaitFor("constructUnit");
 
 @Controller({})
 export class UnitConstructor implements OnInit {
@@ -17,10 +17,12 @@ export class UnitConstructor implements OnInit {
 		FabricLib.useBatching(fabric);
 		fabric.registerUnitsIn(StarterPlayer.StarterPlayerScripts.TS.units);
 
-		constructUnit.then((remote) => {
-			remote.Connect((unitResolvable, ref, layerData) => {
+		construct_unit.then((r) => {
+			r.Connect((unitResolvable, ref, layerData) => {
+				print(ref);
 				const c = fabric.getOrCreateUnitByRef(unitResolvable, ref);
 				c.mergeBaseLayer(layerData);
+				print(c);
 			});
 		});
 	}

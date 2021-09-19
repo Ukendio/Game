@@ -28,7 +28,6 @@ const Main: Hooks.FC<Props> = ({}, { useState }) => {
 					print("safe guard");
 					if (store.getState().round.sequence === Sequence.Intermission) return;
 
-					print("clicked!");
 					user_request_deploy.then((a) => a.SendToServer());
 
 					set_visibility(false);

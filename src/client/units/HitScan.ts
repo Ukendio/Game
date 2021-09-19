@@ -15,7 +15,7 @@ interface HitScan extends UnitDefinition<"HitScan"> {
 		Replicated: object;
 	};
 
-	defaults: {
+	defaults?: {
 		origin?: Vector3;
 		target?: BasePart;
 
@@ -23,8 +23,6 @@ interface HitScan extends UnitDefinition<"HitScan"> {
 	};
 
 	hit?: (this: ThisFabricUnit<"HitScan">, ...parameters: Parameters<typeof ray_cast>) => void;
-
-	on_active_event?: Yessir;
 
 	onClientHit?: (this: ThisFabricUnit<"HitScan">, player: Player, transmit_data: TransmitData) => void;
 }
@@ -60,10 +58,6 @@ export = identity<HitScan>({
 		Replicated: {},
 	},
 
-	defaults: {},
-
-	on_active_event: new Yessir(),
-
 	hit: function (this, ...parameters: Parameters<typeof ray_cast>) {
 		ray_cast(...parameters)((origin, target) => {
 			this.getUnit("Transmitter")?.sendWithPredictiveLayer({ origin, target }, "hit", {
@@ -75,7 +69,6 @@ export = identity<HitScan>({
 	effects: [
 		function (this) {
 			if (this.get("origin") && this.get("target")) {
-				this.on_active_event?.fireUnsafe();
 			}
 		},
 	],
