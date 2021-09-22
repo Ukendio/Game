@@ -12,7 +12,7 @@ import { load_map } from "shared/Architect/Loader";
 const round_started = remotes.Server.Create("round_started");
 
 @Service({
-	loadOrder: 2,
+	loadOrder: 3,
 })
 export class RoundCoordinator implements OnStart {
 	constructor(private Election: Election) {}

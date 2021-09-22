@@ -6,7 +6,9 @@ import { Controller, OnInit } from "@flamework/core";
 const clientEvents = remotes.Client;
 const construct_unit = clientEvents.WaitFor("constructUnit");
 
-@Controller({})
+@Controller({
+	loadOrder: 2,
+})
 export class UnitConstructor implements OnInit {
 	onInit() {
 		const fabric = new FabricLib.Fabric("Game");
@@ -18,11 +20,9 @@ export class UnitConstructor implements OnInit {
 		fabric.registerUnitsIn(StarterPlayer.StarterPlayerScripts.TS.units);
 
 		construct_unit.then((r) => {
-			r.Connect((unitResolvable, ref, layerData) => {
-				print(ref);
+			r.Connect((unitResolvable, ref, defaults) => {
 				const c = fabric.getOrCreateUnitByRef(unitResolvable, ref);
-				c.mergeBaseLayer(layerData);
-				print(c);
+				c.defaults = defaults;
 			});
 		});
 	}

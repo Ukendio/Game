@@ -30,9 +30,7 @@ export class UnitConstructor implements OnInit {
 		gunTool.Parent = backpack;
 
 		return createUnit(this.fabric, "Gun", gunTool, settings, (...args) => {
-			print(...args);
 			construct_unit.SendToPlayer(player, ...args);
-			print("player");
 		});
 	}
 

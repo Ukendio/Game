@@ -23,6 +23,7 @@ interface Gun extends UnitDefinition<"Gun"> {
 			recoil_speed: number;
 			recoil_height: number;
 			offset: CFrame;
+			now: number;
 
 			current_camera_cframe: CFrame;
 			camera_type: Enum.CameraType;
@@ -52,6 +53,7 @@ export = identity<Gun>({
 			recoil_speed: 9,
 			recoil_height: 0.7,
 			offset: new CFrame(),
+			now: os.clock(),
 
 			current_camera_cframe: new CFrame(),
 			camera_type: Enum.CameraType.Custom,
@@ -64,17 +66,9 @@ export = identity<Gun>({
 		HitScan: {},
 	},
 
-	defaults: {
-		fire_rate: 1,
-		recoil: 1,
-		max_distance: 1,
-		mode: Mode.Burst,
-		damage: 1,
-		weight: 1,
-	},
-
-	onInitialize: function (this) {
+	onLoaded: function (this) {
 		const cam_unit = this.getUnit("Cam")!;
+		cam_unit.addLayer("recoil", { recoil_height: this.get("recoil") });
 
 		if (!this.ref) return;
 
@@ -113,10 +107,6 @@ export = identity<Gun>({
 		});
 
 		cam_unit.change_view_model(create_view_model(this));
-
-		RunService.RenderStepped.Connect(() => {
-			cam_unit.adjust_camera();
-		});
 	},
 
 	effects: [

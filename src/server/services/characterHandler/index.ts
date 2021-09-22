@@ -6,7 +6,7 @@ import { getWeaponSettings } from "server/core/helpers/getWeaponSettings";
 import { UnitConstructor } from "../unitConstructor";
 
 @Service({
-	loadOrder: 3,
+	loadOrder: 7,
 })
 export class CharacterHandler implements OnStart {
 	constructor(private UnitConstructor: UnitConstructor) {}
@@ -15,7 +15,7 @@ export class CharacterHandler implements OnStart {
 		const handleCharacterAdded = (character: Model) => {
 			const player = Players.GetPlayerFromCharacter(character)!;
 			yieldForR15CharacterDescendants(character).then(({ Humanoid }) => {
-				this.UnitConstructor.createGun(player, getWeaponSettings("AK47").expect("Unknown weapon name"));
+				this.UnitConstructor.createGun(player, getWeaponSettings("M16").expect("Unknown weapon name"));
 
 				Humanoid.Health = 20;
 				Humanoid.Died.Connect(() => {

@@ -4,7 +4,7 @@ import { Config, Mode } from "shared/Types";
 const weaponsTable = identity<Record<string, Config>>({
 	AK47: {
 		fire_rate: 1,
-		recoil: 1,
+		recoil: 10,
 		max_distance: 100,
 		mode: Mode.Auto,
 		damage: 1,
@@ -20,4 +20,4 @@ const weaponsTable = identity<Record<string, Config>>({
 	},
 });
 
-export const getWeaponSettings = (weaponName: keyof typeof weaponsTable) => Option.wrap(weaponsTable[weaponName]);
+export const getWeaponSettings = (weaponName: string) => Option.wrap(weaponsTable[weaponName]);
