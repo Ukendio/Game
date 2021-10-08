@@ -1,5 +1,6 @@
 import Roact from "@rbxts/roact";
 import Hooks from "@rbxts/roact-hooks";
+import { interval } from "@rbxts/yessir";
 import ColourScheme from "../ColourScheme";
 
 interface Props {
@@ -8,7 +9,7 @@ interface Props {
 	f: Callback;
 }
 
-const MainButton: Hooks.FC<Props> = ({ name, icon, f }, { useCallback }) => {
+const MainButton: Hooks.FC<Props> = ({ name, icon, f }, { useCallback, useState }) => {
 	return (
 		<textbutton
 			Key={name}

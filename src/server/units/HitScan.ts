@@ -1,3 +1,4 @@
+import { Signal } from "@rbxts/flipper/typings/Signal";
 import { Players } from "@rbxts/services";
 import KillTag from "server/core/KillTag";
 
