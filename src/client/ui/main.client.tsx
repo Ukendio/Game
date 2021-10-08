@@ -4,8 +4,6 @@ import Main from "./pages/Main";
 import Remotes from "shared/remotes";
 import store from "client/core/rodux/store";
 
-const round_started = Remotes.Client.WaitFor("round_started");
-
 Roact.mount(
 	<screengui>
 		<Main />
@@ -13,6 +11,6 @@ Roact.mount(
 	Players.LocalPlayer.WaitForChild("PlayerGui"),
 );
 
-round_started.then((r) => {
+Remotes.Client.WaitFor("round_started").then((r) => {
 	r.Connect(() => store.dispatch({ type: "start_round" }));
 });
