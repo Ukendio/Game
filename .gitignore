@@ -119,3 +119,6 @@ dist
 include/
 out/
 .foreman-install/
+
+# Roblox
+.lock
