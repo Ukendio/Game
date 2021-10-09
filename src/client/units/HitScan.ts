@@ -1,7 +1,6 @@
 import { ThisFabricUnit, UnitDefinition } from "@rbxts/fabric";
 import Unit from "@rbxts/fabric/src/FabricLib/Fabric/Unit";
 import { Workspace } from "@rbxts/services";
-import Yessir from "@rbxts/yessir";
 import { Config } from "shared/Types";
 
 interface TransmitData {

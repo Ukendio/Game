@@ -45,7 +45,6 @@ Workspace.GetPropertyChangedSignal("CurrentCamera").Connect(() => {
 });
 
 const player = Players.LocalPlayer;
-const character = player.Character ?? player.CharacterAdded.Wait()[0];
 
 export = identity<Cam>({
 	name: "Cam",

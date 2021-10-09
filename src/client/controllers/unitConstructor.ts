@@ -20,9 +20,10 @@ export class UnitConstructor implements OnInit {
 		fabric.registerUnitsIn(StarterPlayer.StarterPlayerScripts.TS.units);
 
 		construct_unit.then((r) => {
-			r.Connect((unitResolvable, ref, defaults) => {
-				const c = fabric.getOrCreateUnitByRef(unitResolvable, ref);
+			r.Connect((unit_resolvable, ref, defaults) => {
+				const c = fabric.getOrCreateUnitByRef(unit_resolvable, ref);
 				c.defaults = defaults;
+				c.mergeBaseLayer(defaults);
 			});
 		});
 	}

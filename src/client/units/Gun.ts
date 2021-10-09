@@ -1,7 +1,7 @@
 import { UnitDefinition } from "@rbxts/fabric";
 import { match } from "@rbxts/rbxts-pattern";
 import { Option } from "@rbxts/rust-classes";
-import { Players, RunService, UserInputService, Workspace } from "@rbxts/services";
+import { Players, UserInputService, Workspace } from "@rbxts/services";
 import { interval } from "@rbxts/yessir";
 import { Config, Mode } from "shared/Types";
 import { create_view_model } from "client/core/create_view_model";
@@ -66,11 +66,9 @@ export = identity<Gun>({
 		HitScan: {},
 	},
 
-	onLoaded: function (this) {
+	onInitialize: function (this) {
 		const cam_unit = this.getUnit("Cam")!;
 		cam_unit.addLayer("recoil", { recoil_height: this.get("recoil") });
-
-		if (!this.ref) return;
 
 		const equipped = false;
 

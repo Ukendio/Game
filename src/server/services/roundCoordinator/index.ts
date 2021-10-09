@@ -38,7 +38,7 @@ export class RoundCoordinator implements OnStart {
 		const intermission = () => {
 			Log.Info("intermission");
 
-			return Promise.delay(15)
+			return Promise.delay(0.5)
 				.then(() => this.Election.voteOn({ name: "map", options: Vec.vec(...mapNames) }))
 				.then(() => {
 					load_map(store.getState().election.current_map.unwrap()).match((current_map) => {
