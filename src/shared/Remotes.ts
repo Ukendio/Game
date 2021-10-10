@@ -10,7 +10,7 @@ const remotes = define.Create({
 	UIScoreboardUpdate: define.ServerToClientEvent<[string]>(),
 	updateScoreBoard: define.ServerToClientEvent<[string]>(),
 
-	round_started: define.ServerToClientEvent<[]>(),
+	roundStarted: define.ServerToClientEvent<[]>(),
 
 	councilVoteOn: define.ServerToClientEvent<[{ name: string; options: string[] }]>(),
 	councilStopVote: define.ServerToClientEvent(),
