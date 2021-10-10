@@ -11,4 +11,4 @@ Roact.mount(
 	Players.LocalPlayer.WaitForChild("PlayerGui"),
 );
 
-print(Remotes.Client.Get("roundStarted"));
+print(Remotes.Client.Get("UICountdown"));
