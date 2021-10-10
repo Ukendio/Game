@@ -11,4 +11,6 @@ Roact.mount(
 	Players.LocalPlayer.WaitForChild("PlayerGui"),
 );
 
-print(Remotes.Client.Get("userRequestDeploy"));
+Remotes.Client.WaitFor("round_started").andThen((r) => {
+	r.Connect(() => store.dispatch({ type: "start_round" }));
+});
