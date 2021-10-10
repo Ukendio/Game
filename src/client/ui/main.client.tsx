@@ -10,3 +10,5 @@ Roact.mount(
 	</screengui>,
 	Players.LocalPlayer.WaitForChild("PlayerGui"),
 );
+
+print(Remotes.Client.Get("round_started"));
