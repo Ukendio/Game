@@ -17,7 +17,7 @@ const round_started = remotes.Server.Create("round_started");
 export class RoundCoordinator implements OnStart {
 	constructor(private Election: Election) {}
 
-	onStart() {
+	onStart(): void {
 		const roundBuilder = async () => {
 			store.dispatch({ type: "start_round" });
 			round_started.SendToAllPlayers();

@@ -177,7 +177,11 @@ namespace Input {
 	}
 
 	export function stopCapture(): void {
+<<<<<<< HEAD
 		function zero(t: Record<string, unknown>) {
+=======
+		function zero(t: Record<string, number | Vector2 | Vector3>) {
+>>>>>>> 87da3339481d7cae6f9295786c65a290f62b0396
 			for (const [k, v] of pairs(t)) {
 				t[k as never] = ((v as never) * 0) as never;
 			}

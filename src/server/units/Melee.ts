@@ -18,13 +18,13 @@ const melee: FabricUnits["Melee"] = {
 		player: undefined,
 	},
 
-	onClientSlash: function (this, _player, packet) {
+	onClientSlash: function (player, packet) {
 		if (this.get("debounce")) {
 			this.addLayer("damage", {
 				debounce: false,
 				hit: packet.hit,
 				target: packet.target,
-				player: _player,
+				player,
 			});
 
 			Promise.delay(1).then(() => this.removeLayer("damage"));
@@ -32,7 +32,7 @@ const melee: FabricUnits["Melee"] = {
 	},
 
 	effects: [
-		function (this) {
+		function (): void {
 			const hit = this.get("hit");
 			const target = this.get("target");
 			const player = this.get("player");

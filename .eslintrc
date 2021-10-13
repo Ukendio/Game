@@ -8,7 +8,12 @@
 		"project": "./tsconfig.json"
 	},
 	"plugins": ["@typescript-eslint", "prettier"],
-	"extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "plugin:prettier/recommended"],
+	"extends": [
+		"eslint:recommended",
+		"plugin:@typescript-eslint/recommended",
+		"plugin:@typescript-eslint/recommended-requiring-type-checking",
+		"plugin:prettier/recommended"
+	],
 	"rules": {
 		"prettier/prettier": "warn",
 		"@typescript-eslint/array-type": [
@@ -18,11 +23,20 @@
 				"readonly": "generic"
 			}
 		],
-		"@typescript-eslint/explicit-member-accessibility": "warn",
+		"@typescript-eslint/explicit-member-accessibility": ["warn", { "accessibility": "no-public" }],
 		"@typescript-eslint/no-misused-promises": "error",
+		"@typescript-eslint/no-floating-promises": "warn",
 		"@typescript-eslint/no-unused-expressions": "warn",
 		"@typescript-eslint/no-unused-vars": "off",
 		"@typescript-eslint/no-namespace": "off",
+<<<<<<< HEAD
 		"@typescript-eslint/no-non-null-assertion": "off"
+=======
+		"@typescript-eslint/no-non-null-assertion": "off",
+		"no-constant-condition": "off",
+		"@typescript-eslint/no-unnecessary-condition": ["warn", { "allowConstantLoopConditions": true }],
+		"@typescript-eslint/restrict-template-expressions": "off",
+		"curly": ["warn", "multi-line", "consistent"]
+>>>>>>> 87da3339481d7cae6f9295786c65a290f62b0396
 	}
 }

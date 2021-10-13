@@ -36,20 +36,21 @@ export = identity<FabricUnits["Tag"]>({
 			RunService.Heartbeat.Connect((dt) => {
 				current += dt;
 
-				if (primaryPart)
+				if (primaryPart) {
 					model.SetPrimaryPartCFrame(primaryPart.CFrame.mul(CFrame.Angles(math.rad(current), 0, 0)));
+				}
 			}),
 		);
 	},
 
 	onDestroy: function (this) {
-		this.janitor?.Destroy();
+		this.janitor.Destroy();
 		this.removeLayer(this);
 	},
 
 	effects: [
 		function (this) {
-			const model = this.ref as Model;
+			const model = this.ref;
 			for (const part of model.GetChildren()) {
 				if (part !== model.PrimaryPart && part.IsA("BasePart")) {
 					part.Transparency = this.get("transparency");

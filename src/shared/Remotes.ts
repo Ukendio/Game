@@ -12,7 +12,7 @@ const remotes = define.Create({
 
 	round_started: define.ServerToClientEvent<[]>(),
 
-	councilVoteOn: define.ServerToClientEvent<[{ name: string; options: string[] }]>(),
+	councilVoteOn: define.ServerToClientEvent<[{ name: string; options: Array<string> }]>(),
 	councilStopVote: define.ServerToClientEvent(),
 
 	constructUnit: define.ServerToClientEvent<

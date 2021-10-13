@@ -46,7 +46,11 @@ export interface PlayerScore {
 
 export type TLayerData<T extends keyof FabricUnits> = Required<FabricUnits[T]>["_addLayerData"] extends Record<
 	string,
+<<<<<<< HEAD
 	unknown
+=======
+	never
+>>>>>>> 87da3339481d7cae6f9295786c65a290f62b0396
 >
 	? Required<FabricUnits[T]>["_addLayerData"]
 	: Partial<InferDataType<T>>;

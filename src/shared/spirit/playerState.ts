@@ -1,7 +1,7 @@
 import { Players, StarterGui, UserInputService } from "@rbxts/services";
 
 const screenGuis = new Array<ScreenGui>();
-const coreGuis = {
+const coreGuis: Partial<Record<Enum.CoreGuiType["Name"], boolean>> = {
 	Backpack: true,
 	Chat: true,
 	Health: true,
@@ -13,24 +13,24 @@ const setCores = {
 	PointsNotificationsActive: true,
 };
 
-let cameraFieldOfView = undefined! as number;
-let cameraType = undefined! as Enum.CameraType;
-let cameraCFrame = undefined! as CFrame;
-let cameraFocus = undefined! as CFrame;
-let cameraSubject = undefined! as Humanoid | BasePart;
+let cameraFieldOfView: number;
+let cameraType: Enum.CameraType;
+let cameraCFrame: CFrame;
+let cameraFocus: CFrame;
+let cameraSubject: Humanoid | BasePart;
 
-let mouseIconEnabled = undefined! as boolean;
-let mouseBehavior = undefined! as Enum.MouseBehavior;
+let mouseIconEnabled: boolean;
+let mouseBehavior: Enum.MouseBehavior;
 
 namespace PlayerState {
 	export function push(camera: Camera): void {
 		for (const [name] of pairs(coreGuis)) {
-			coreGuis[name] = StarterGui.GetCoreGuiEnabled(Enum.CoreGuiType[name]);
-			StarterGui.SetCoreGuiEnabled(Enum.CoreGuiType[name], false);
+			coreGuis[name] = StarterGui.GetCoreGuiEnabled(name);
+			StarterGui.SetCoreGuiEnabled(name, false);
 		}
 		for (const [name] of pairs(setCores)) {
 			setCores[name] = StarterGui.GetCore(name);
-			StarterGui.SetCore(name as keyof SettableCores, false);
+			StarterGui.SetCore(name, false);
 		}
 		const playerGui = Players.LocalPlayer.FindFirstChildOfClass("PlayerGui");
 		if (playerGui) {
@@ -74,25 +74,12 @@ namespace PlayerState {
 		});
 
 		camera.FieldOfView = cameraFieldOfView;
-		cameraFieldOfView = undefined!;
-
 		camera.CFrame = cameraCFrame;
-		cameraCFrame = undefined!;
-
 		camera.CameraType = cameraType;
-		cameraType = undefined!;
-
 		camera.CameraSubject = cameraSubject;
-		cameraSubject = undefined!;
-
 		camera.Focus = cameraFocus;
-		cameraFocus = undefined!;
-
 		UserInputService.MouseIconEnabled = mouseIconEnabled;
-		mouseIconEnabled = undefined!;
-
 		UserInputService.MouseBehavior = mouseBehavior;
-		mouseBehavior = undefined!;
 	}
 }
 
