@@ -54,13 +54,13 @@ const healPackage: FabricUnits["Heal"] = {
 	},
 
 	effects: [
-		function (this) {
+		function (): void {
 			if (this.get("target") !== undefined) {
 				(this.get("target") as Humanoid).Health += this.get("heal");
 			}
 		},
 
-		function (this) {
+		function (): void {
 			const model = this.ref as Model;
 			for (const part of model.GetChildren()) {
 				if (part !== model.PrimaryPart && part.IsA("BasePart")) {

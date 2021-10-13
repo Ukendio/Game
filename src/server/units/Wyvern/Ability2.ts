@@ -16,7 +16,7 @@ const wyvernAbility1: FabricUnits["WyvernAbility2"] = {
 
 	onClientExecute: function (this, _player, root) {
 		const character = _player.Character;
-		const humanoidRootPart = character?.FindFirstChild("HumanoidRootPart") as BasePart;
+		const humanoidRootPart = character?.FindFirstChild("HumanoidRootPart");
 
 		if (humanoidRootPart) {
 			this.addLayer("shield", {
@@ -29,7 +29,7 @@ const wyvernAbility1: FabricUnits["WyvernAbility2"] = {
 	},
 
 	effects: [
-		function (this) {
+		function (): void {
 			const root = this.get("root");
 			const name = this.get("name");
 			if (root && name) {

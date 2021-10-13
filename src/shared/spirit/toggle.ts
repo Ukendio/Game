@@ -20,7 +20,7 @@ function getFocusDistance(cameraFrame: CFrame) {
 	const zNear = 0.1;
 	const viewPort = camera.ViewportSize;
 	const projY = 2 * math.tan(cameraFieldOfView / 2);
-	const projX = (viewPort.X / viewPort?.Y) * projY;
+	const projX = (viewPort.X / viewPort.Y) * projY;
 	const fx = cameraFrame.RightVector;
 	const fy = cameraFrame.UpVector;
 	const fz = cameraFrame.LookVector;

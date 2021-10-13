@@ -1,7 +1,7 @@
 import Log from "@rbxts/log";
 import { ListCommand } from "..";
 
-export = (...parameters: Parameters<ListCommand>) => {
+export = (...parameters: Parameters<ListCommand>): void => {
 	const registry = parameters[0];
 
 	registry.RegisterFunction(
