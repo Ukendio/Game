@@ -20,7 +20,7 @@ function getFocusDistance(cameraFrame: CFrame) {
 	const zNear = 0.1;
 	const viewPort = camera.ViewportSize;
 	const projY = 2 * math.tan(cameraFieldOfView / 2);
-	const projX = (viewPort.X / viewPort?.Y) * projY;
+	const projX = (viewPort.X / viewPort.Y) * projY;
 	const fx = cameraFrame.RightVector;
 	const fy = cameraFrame.UpVector;
 	const fz = cameraFrame.LookVector;
@@ -79,7 +79,7 @@ function stepFreeCamera(dt: number) {
 	camera.FieldOfView = cameraFieldOfView;
 }
 
-export function startFreeCamera() {
+export function startFreeCamera(): void {
 	while (camera.CameraSubject === undefined) {
 		RunService.Heartbeat.Wait();
 	}
@@ -97,7 +97,7 @@ export function startFreeCamera() {
 	Input.startCapture();
 }
 
-export function stopFreeCamera() {
+export function stopFreeCamera(): void {
 	Input.stopCapture();
 	RunService.UnbindFromRenderStep("FreeCamera");
 	PlayerState.pop(camera);

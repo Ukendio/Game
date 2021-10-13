@@ -31,7 +31,7 @@ function buildCommands(...parameters: Parameters<ListCommand>) {
 
 @Service({ loadOrder: 1 })
 export class ZirconProvider implements OnInit {
-	onInit() {
+	onInit(): void {
 		buildCommands(registry, ZirconFunctionBuilder);
 		print("init on server");
 	}

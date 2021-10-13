@@ -44,6 +44,9 @@ export interface PlayerScore {
 	deaths: number;
 }
 
-export type TLayerData<T extends keyof FabricUnits> = Required<FabricUnits[T]>["_addLayerData"] extends {}
+export type TLayerData<T extends keyof FabricUnits> = Required<FabricUnits[T]>["_addLayerData"] extends Record<
+	string,
+	never
+>
 	? Required<FabricUnits[T]>["_addLayerData"]
 	: Partial<InferDataType<T>>;

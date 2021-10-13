@@ -11,9 +11,9 @@ const construct_unit = Remotes.Server.Create("constructUnit");
 	loadOrder: 2,
 })
 export class UnitConstructor implements OnInit {
-	public fabric = new FabricLib.Fabric("Game");
+	fabric = new FabricLib.Fabric("Game");
 
-	onInit() {
+	onInit(): void {
 		const fabric = this.fabric;
 
 		FabricLib.useReplication(fabric);
@@ -23,18 +23,18 @@ export class UnitConstructor implements OnInit {
 		fabric.DEBUG = true;
 	}
 
-	createGun(player: Player, settings: Config) {
+	createGun(player: Player, settings: Config): void {
 		const backpack = player.WaitForChild("Backpack");
 
 		const gunTool = ReplicatedStorage.assets.FindFirstChild("Pistol")?.Clone() as Tool;
 		gunTool.Parent = backpack;
 
-		return createUnit(this.fabric, "Gun", gunTool, settings, (...args) => {
+		createUnit(this.fabric, "Gun", gunTool, settings, (...args) => {
 			construct_unit.SendToPlayer(player, ...args);
 		});
 	}
 
-	createHealthPack(player: Player) {
+	createHealthPack(player: Player): void {
 		type HealthPack = Model & {
 			PrimaryPart: BasePart;
 		};
@@ -48,28 +48,28 @@ export class UnitConstructor implements OnInit {
 		);
 		healthPack.Parent = Workspace;
 
-		return createUnit(this.fabric, "Heal", healthPack, {}, (...args) => {
+		createUnit(this.fabric, "Heal", healthPack, {}, (...args) => {
 			construct_unit.SendToAllPlayersExcept(player, ...args);
 		});
 	}
 
-	createHero(player: Player) {
-		return createUnit(this.fabric, "Wyvern", player, {}, (...args) => {
+	createHero(player: Player): void {
+		createUnit(this.fabric, "Wyvern", player, {}, (...args) => {
 			construct_unit.SendToPlayer(player, ...args);
 		});
 	}
 
-	createMelee(player: Player) {
+	createMelee(player: Player): void {
 		const melee = ReplicatedStorage.assets.FindFirstChild("Knife") as Tool;
 		const backpack = player.WaitForChild("Backpack");
 		melee.Parent = backpack;
 
-		return createUnit(this.fabric, "Melee", melee, {}, (...args) => {
+		createUnit(this.fabric, "Melee", melee, {}, (...args) => {
 			construct_unit.SendToPlayer(player, ...args);
 		});
 	}
 
-	createTag(player: Player) {
+	createTag(player: Player): void {
 		const dogTag = ReplicatedStorage.assets.FindFirstChild("Tag")?.Clone() as Model;
 		dogTag.SetPrimaryPartCFrame(
 			dogTag
@@ -79,7 +79,7 @@ export class UnitConstructor implements OnInit {
 		);
 		dogTag.Parent = Workspace;
 
-		return createUnit(this.fabric, "Tag", dogTag, {}, (...args) => {
+		createUnit(this.fabric, "Tag", dogTag, {}, (...args) => {
 			construct_unit.SendToAllPlayersExcept(player, ...args);
 		});
 	}

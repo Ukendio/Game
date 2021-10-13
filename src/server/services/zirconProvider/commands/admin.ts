@@ -14,7 +14,7 @@ function parsePeriod(str: string): Option<Period> {
 	return Option.none();
 }
 
-export = (...parameters: Parameters<ListCommand>) => {
+export = (...parameters: Parameters<ListCommand>): void => {
 	const registry = parameters[0];
 
 	registry.RegisterFunction(

@@ -1,6 +1,7 @@
 {
 	"compilerOptions": {
 		"experimentalDecorators": true,
+		"noUncheckedIndexedAccess": true,
 		// required
 		"allowSyntheticDefaultImports": true,
 		"downlevelIteration": true,
@@ -14,9 +15,7 @@
 		"strict": true,
 		"target": "ESNext",
 		"typeRoots": ["node_modules/@rbxts", "node_modules/@flamework"],
-		"plugins": [
-			{ "transform": "rbxts-transformer-flamework" }
-		],
+		"plugins": [{ "transform": "rbxts-transformer-flamework" }],
 
 		// configurable
 		"rootDir": "src",
