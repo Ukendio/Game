@@ -79,7 +79,7 @@ function stepFreeCamera(dt: number) {
 	camera.FieldOfView = cameraFieldOfView;
 }
 
-export function startFreeCamera() {
+export function startFreeCamera(): void {
 	while (camera.CameraSubject === undefined) {
 		RunService.Heartbeat.Wait();
 	}
@@ -97,7 +97,7 @@ export function startFreeCamera() {
 	Input.startCapture();
 }
 
-export function stopFreeCamera() {
+export function stopFreeCamera(): void {
 	Input.stopCapture();
 	RunService.UnbindFromRenderStep("FreeCamera");
 	PlayerState.pop(camera);
