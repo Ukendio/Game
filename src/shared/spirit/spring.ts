@@ -1,4 +1,4 @@
-class Spring<T extends Vector3 | Vector2 | number> {
+export = class Spring<T extends Vector3 | Vector2 | number> {
 	private f;
 	private p: T;
 	private v;
@@ -24,10 +24,8 @@ class Spring<T extends Vector3 | Vector2 | number> {
 		return p1 as T;
 	}
 
-	reset(pos: T) {
+	reset(pos: T): void {
 		this.p = pos;
 		this.v = ((pos as unknown) as number) * 0;
 	}
-}
-
-export = Spring;
+};
