@@ -1,0 +1,29 @@
+{
+	"parser": "@typescript-eslint/parser",
+	"parserOptions": {
+		"jsx": true,
+		"useJSXTextNode": true,
+		"ecmaVersion": 2018,
+		"sourceType": "module",
+		"project": "./tsconfig.json"
+	},
+	"plugins": ["@typescript-eslint", "prettier"],
+	"extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "plugin:prettier/recommended"],
+	"rules": {
+		"prettier/prettier": "warn",
+		"@typescript-eslint/array-type": [
+			"warn",
+			{
+				"default": "generic",
+				"readonly": "generic"
+			}
+		],
+		"@typescript-eslint/explicit-member-accessibility": "warn",
+		"@typescript-eslint/no-misused-promises": "error",
+		"@typescript-eslint/no-unused-expressions": "warn",
+		"@typescript-eslint/no-unused-vars": "off",
+		"@typescript-eslint/no-namespace": "off",
+		"@typescript-eslint/no-non-null-assertion": "off",
+		"class-methods-use-this": "warn",
+	}
+}
