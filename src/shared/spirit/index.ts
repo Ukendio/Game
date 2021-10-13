@@ -4,7 +4,7 @@ import { ContextActionService } from "@rbxts/services";
 
 namespace Spirit {
 	let enabled = false;
-	export function bind(key: Enum.KeyCode) {
+	export function bind(key: Enum.KeyCode): void {
 		const handleActivationInput = (action: string, state: Enum.UserInputState, input: InputObject) => {
 			if (state === Enum.UserInputState.Begin) {
 				if (input.KeyCode === key) {
@@ -25,21 +25,21 @@ namespace Spirit {
 		);
 	}
 
-	export function unbind() {
+	export function unbind(): void {
 		ContextActionService.UnbindAction("FreeCameraToggle");
 	}
 
 	type Settings = typeof SPIRIT_SETTINGS;
-	export function shape<K extends keyof Settings>(key: K, value: Settings[K]) {
+	export function shape<K extends keyof Settings>(key: K, value: Settings[K]): void {
 		SPIRIT_SETTINGS[key] = value;
 	}
 
-	export function free() {
+	export function free(): void {
 		startFreeCamera();
 		enabled = true;
 	}
 
-	export function mount() {
+	export function mount(): void {
 		stopFreeCamera();
 		enabled = false;
 	}

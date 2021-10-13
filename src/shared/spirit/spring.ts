@@ -2,13 +2,13 @@ class Spring<T extends Vector3 | Vector2 | number> {
 	private f;
 	private p: T;
 	private v;
-	constructor(freq: number, pos: T) {
+	public constructor(freq: number, pos: T) {
 		this.f = freq;
 		this.p = pos;
 		this.v = ((pos as unknown) as number) * 0;
 	}
 
-	update(dt: number, goal: T): T {
+	public update(dt: number, goal: T): T {
 		const f = this.f * 2 * math.pi;
 		const p0 = this.p;
 		const v0 = this.v;
@@ -24,7 +24,7 @@ class Spring<T extends Vector3 | Vector2 | number> {
 		return p1 as T;
 	}
 
-	reset(pos: T) {
+	public reset(pos: T): void {
 		this.p = pos;
 		this.v = ((pos as unknown) as number) * 0;
 	}

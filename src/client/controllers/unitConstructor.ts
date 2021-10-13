@@ -10,7 +10,7 @@ const construct_unit = clientEvents.WaitFor("constructUnit");
 	loadOrder: 2,
 })
 export class UnitConstructor implements OnInit {
-	onInit() {
+	public onInit(): void {
 		const fabric = new FabricLib.Fabric("Game");
 
 		fabric.DEBUG = true;

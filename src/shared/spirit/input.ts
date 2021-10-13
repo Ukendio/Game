@@ -83,7 +83,7 @@ namespace Input {
 		return kGamePad + kMouse;
 	}
 
-	export function startCapture() {
+	export function startCapture(): void {
 		function keypress(action: string, state: Enum.UserInputState, input: InputObject) {
 			keyboard[input.KeyCode.Name as never] = (state === Enum.UserInputState.Begin ? 1 : 0) as never;
 			return Enum.ContextActionResult.Sink;
@@ -176,10 +176,10 @@ namespace Input {
 		);
 	}
 
-	export function stopCapture() {
-		function zero(t: object) {
+	export function stopCapture(): void {
+		function zero(t: Record<string, unknown>) {
 			for (const [k, v] of pairs(t)) {
-				t[k as never] = ((v as number) * 0) as never;
+				t[k as never] = ((v as never) * 0) as never;
 			}
 		}
 

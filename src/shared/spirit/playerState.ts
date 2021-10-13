@@ -23,7 +23,7 @@ let mouseIconEnabled = undefined! as boolean;
 let mouseBehavior = undefined! as Enum.MouseBehavior;
 
 namespace PlayerState {
-	export function push(camera: Camera) {
+	export function push(camera: Camera): void {
 		for (const [name] of pairs(coreGuis)) {
 			coreGuis[name] = StarterGui.GetCoreGuiEnabled(Enum.CoreGuiType[name]);
 			StarterGui.SetCoreGuiEnabled(Enum.CoreGuiType[name], false);
@@ -60,7 +60,7 @@ namespace PlayerState {
 		UserInputService.MouseBehavior = Enum.MouseBehavior.Default;
 	}
 
-	export function pop(camera: Camera) {
+	export function pop(camera: Camera): void {
 		for (const [name, isEnabled] of pairs(coreGuis)) {
 			StarterGui.SetCoreGuiEnabled(Enum.CoreGuiType[name], isEnabled);
 		}
