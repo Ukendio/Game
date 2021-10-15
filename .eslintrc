@@ -24,19 +24,15 @@
 			}
 		],
 		"@typescript-eslint/explicit-member-accessibility": ["warn", { "accessibility": "no-public" }],
-		"@typescript-eslint/no-misused-promises": "error",
 		"@typescript-eslint/no-floating-promises": "warn",
+		"@typescript-eslint/no-misused-promises": "error",
+		"@typescript-eslint/no-namespace": "off",
+		"@typescript-eslint/no-non-null-assertion": "off",
+		"@typescript-eslint/no-unnecessary-condition": ["warn", { "allowConstantLoopConditions": true }],
 		"@typescript-eslint/no-unused-expressions": "warn",
 		"@typescript-eslint/no-unused-vars": "off",
-		"@typescript-eslint/no-namespace": "off",
-<<<<<<< HEAD
-		"@typescript-eslint/no-non-null-assertion": "off"
-=======
-		"@typescript-eslint/no-non-null-assertion": "off",
-		"no-constant-condition": "off",
-		"@typescript-eslint/no-unnecessary-condition": ["warn", { "allowConstantLoopConditions": true }],
 		"@typescript-eslint/restrict-template-expressions": "off",
-		"curly": ["warn", "multi-line", "consistent"]
->>>>>>> 87da3339481d7cae6f9295786c65a290f62b0396
+		"curly": ["warn", "multi-line", "consistent"],
+		"no-constant-condition": "off"
 	}
 }
