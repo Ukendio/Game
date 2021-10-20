@@ -9,7 +9,7 @@ const user_request_deploy = Remotes.Client.WaitFor("userRequestDeploy");
 
 interface Props {}
 
-const Main: Hooks.FC<Props> = ({}, { useState }) => {
+const Main: Hooks.FC<Props> = (_, { useState }) => {
 	const [visibility, set_visibility] = useState(true);
 
 	return (
@@ -24,11 +24,11 @@ const Main: Hooks.FC<Props> = ({}, { useState }) => {
 			<MainButton
 				name="Deploy"
 				icon=""
-				f={() => {
+				f={(): void => {
 					print("safe guard");
 					if (store.getState().round.sequence === Sequence.Intermission) return;
 
-					user_request_deploy.then((a) => a.SendToServer());
+					user_request_deploy.then((a) => a.SendToServer()).catch((reason) => warn(reason));
 
 					set_visibility(false);
 				}}

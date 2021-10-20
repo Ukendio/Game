@@ -4,7 +4,7 @@ import { Players, RunService } from "@rbxts/services";
 
 const player = Players.LocalPlayer;
 
-function facingDirection(source: BasePart, target: Vector3) {
+function facingDirection(source: BasePart, target: Vector3): number {
 	const lookVector = source.CFrame.LookVector;
 	const r = target.sub(source.Position).Unit;
 	return -math.deg(math.acos(lookVector.Dot(r))) * math.sign(lookVector.Cross(r).Y);

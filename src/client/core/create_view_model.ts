@@ -6,7 +6,7 @@ enum ArmSide {
 	Left = "Left",
 }
 
-function create_arm(name: ArmSide) {
+function create_arm(name: ArmSide): Part {
 	const Camera = Workspace.CurrentCamera;
 
 	const actionArm = new Instance("Part");

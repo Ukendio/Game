@@ -46,12 +46,12 @@ const wyvernAbility1 = identity<WyvernAbility1Definition>({
 				maxForce: new Vector3(1, 0, 1).mul(force),
 			});
 
-			Promise.delay(0.25).then(() => this.removeLayer("velocity"));
+			task.delay(0.25, () => this.removeLayer("velocity"));
 		}
 	},
 
 	effects: [
-		function (this) {
+		function (this): void {
 			const host = this.get("host");
 			const velocity = this.get("velocity");
 			const maxForce = this.get("maxForce");

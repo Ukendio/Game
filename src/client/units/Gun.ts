@@ -33,6 +33,7 @@ interface Gun extends UnitDefinition<"Gun"> {
 			last_shot: Option<number>;
 			recoil_collected: number;
 		};
+		// eslint-disable-next-line @typescript-eslint/ban-types
 		HitScan: {};
 	};
 
@@ -77,7 +78,7 @@ export = identity<Gun>({
 
 			const character = player.Character;
 			if (character) {
-				const ray_cast = (active_recoil?: number) => {
+				const ray_cast = (active_recoil?: number): void => {
 					this.getUnit("HitScan")?.hit?.([character], camera!.CFrame, mouse.Hit.Position, {
 						...this.data!,
 						recoil: active_recoil ?? this.defaults!.recoil,
@@ -88,9 +89,13 @@ export = identity<Gun>({
 
 				match(this.get("mode"))
 					.with(Mode.Auto, () => {
-						const { event, callback } = interval(1 / this.get("fire_rate"), ray_cast);
+						const { event, callback } = interval(1 / this.get("fire_rate"), (t: number) => {
+							ray_cast(t);
+						});
 
-						const connection = event.connect(() => callback(os.clock()));
+						const connection = event.connect(() => {
+							callback(os.clock());
+						});
 
 						UserInputService.InputEnded.Connect(({ UserInputType }) => {
 							return UserInputType === Enum.UserInputType.MouseButton1
@@ -98,7 +103,9 @@ export = identity<Gun>({
 								: undefined;
 						});
 					})
-					.with(Mode.Burst, () => {})
+					.with(Mode.Burst, () => {
+						print("ah");
+					})
 					.with(Mode.Semi, () => ray_cast())
 					.exhaustive();
 			}
@@ -108,7 +115,7 @@ export = identity<Gun>({
 	},
 
 	effects: [
-		function (this) {
+		function (this): void {
 			const humanoid = player.Character?.FindFirstChildOfClass("Humanoid");
 
 			if (humanoid) {

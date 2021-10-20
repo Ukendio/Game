@@ -24,7 +24,9 @@ const wyvernAbility1: FabricUnits["WyvernAbility2"] = {
 				name: tostring(_player.UserId),
 			});
 
-			Promise.delay(5).then(() => this.removeLayer("shield"));
+			Promise.delay(5)
+				.then(() => this.removeLayer("shield"))
+				.catch((reason) => warn(reason));
 		}
 	},
 

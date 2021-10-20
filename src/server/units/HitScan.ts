@@ -21,7 +21,7 @@ export = identity<FabricUnits["HitScan"]>({
 	},
 
 	effects: [
-		function (this) {
+		function (this): void {
 			const targeted_base_part = this.get("target");
 			const player = this.get("player");
 			const enemy_player_character = targeted_base_part?.Parent as Model;

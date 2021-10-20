@@ -5,7 +5,11 @@ import { ContextActionService } from "@rbxts/services";
 namespace Spirit {
 	let enabled = false;
 	export function bind(key: Enum.KeyCode): void {
-		const handleActivationInput = (action: string, state: Enum.UserInputState, input: InputObject) => {
+		const handleActivationInput = (
+			action: string,
+			state: Enum.UserInputState,
+			input: InputObject,
+		): Enum.ContextActionResult => {
 			if (state === Enum.UserInputState.Begin) {
 				if (input.KeyCode === key) {
 					if (enabled) mount();

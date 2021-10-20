@@ -2,7 +2,7 @@
 import { match, when, _select, __ } from "@rbxts/rbxts-pattern";
 import { Result } from "@rbxts/rust-classes";
 
-export = () => {
+export = (): void => {
 	describe("match number utility", () => {
 		it("number is in set", () => {
 			const number = 5;
@@ -27,7 +27,7 @@ export = () => {
 		});
 
 		it("2 is even", () => {
-			const isOdd = (x: number) => x % 2 === 1;
+			const isOdd = (x: number): boolean => x % 2 === 1;
 
 			expect(
 				match({ x: 2 })
@@ -38,7 +38,7 @@ export = () => {
 		});
 
 		it("is a prime number", () => {
-			const isPrime = (n: number) => {
+			const isPrime = (n: number): boolean => {
 				if (n <= 1) return false;
 
 				for (let i = 2; i < n; i++) {

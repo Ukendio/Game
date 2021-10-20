@@ -37,7 +37,7 @@ function ray_cast(
 	origin_in_cframe: CFrame,
 	end_position: Vector3,
 	configurable_settings: Config,
-) {
+): (builder: (cf: CFrame, instance?: Instance) => void) => void {
 	const ray_cast_parameters = new RaycastParams();
 	ray_cast_parameters.FilterDescendantsInstances = filter_list;
 	ray_cast_parameters.FilterType = Enum.RaycastFilterType.Blacklist;
@@ -45,7 +45,7 @@ function ray_cast(
 	const direction = end_position.sub(origin_in_cframe.Position).Unit.mul(configurable_settings.max_distance);
 	const ray_cast_result = Workspace.Raycast(origin_in_cframe.Position, direction, ray_cast_parameters);
 
-	return function (ray_cast_builder: (cf: CFrame, instance?: Instance) => void) {
+	return function (ray_cast_builder: (cf: CFrame, instance?: Instance) => void): void {
 		return ray_cast_builder(origin_in_cframe, ray_cast_result?.Instance);
 	};
 }
@@ -66,8 +66,9 @@ export = identity<HitScan>({
 	},
 
 	effects: [
-		function (this) {
+		function (this): void {
 			if (this.get("origin") && this.get("target")) {
+				print(this.get("origin"));
 			}
 		},
 	],

@@ -34,7 +34,7 @@ const mouse = {
 	Delta: new Vector2(),
 	MouseWheel: 0,
 };
-function thumbstickCurve(x: number) {
+function thumbstickCurve(x: number): number {
 	return (
 		math.sign(x) *
 		math.clamp((math.exp((2.0 * (math.abs(x) - 0.15)) / (1 - 0.15)) - 1) / (math.exp(0.15) - 1), 0, 1)
@@ -84,33 +84,33 @@ namespace Input {
 	}
 
 	export function startCapture(): void {
-		function keypress(action: string, state: Enum.UserInputState, input: InputObject) {
+		function keypress(action: string, state: Enum.UserInputState, input: InputObject): Enum.ContextActionResult {
 			keyboard[input.KeyCode.Name as never] = (state === Enum.UserInputState.Begin ? 1 : 0) as never;
 			return Enum.ContextActionResult.Sink;
 		}
 
-		function gpButton(action: string, state: Enum.UserInputState, input: InputObject) {
+		function gpButton(action: string, state: Enum.UserInputState, input: InputObject): Enum.ContextActionResult {
 			gamePad[input.KeyCode.Name as never] = (state === Enum.UserInputState.Begin ? 1 : 0) as never;
 			return Enum.ContextActionResult.Sink;
 		}
 
-		function mousePan(action: string, state: Enum.UserInputState, input: InputObject) {
+		function mousePan(action: string, state: Enum.UserInputState, input: InputObject): Enum.ContextActionResult {
 			const delta = input.Delta;
 			mouse.Delta = new Vector2(-delta.Y, -delta.X);
 			return Enum.ContextActionResult.Sink;
 		}
 
-		function thumb(action: string, state: Enum.UserInputState, input: InputObject) {
+		function thumb(action: string, state: Enum.UserInputState, input: InputObject): Enum.ContextActionResult {
 			gamePad[input.KeyCode.Name as never] = input.Position as never;
 			return Enum.ContextActionResult.Sink;
 		}
 
-		function trigger(action: string, state: Enum.UserInputState, input: InputObject) {
+		function trigger(action: string, state: Enum.UserInputState, input: InputObject): Enum.ContextActionResult {
 			gamePad[input.KeyCode.Name as never] = input.Position.Z as never;
 			return Enum.ContextActionResult.Sink;
 		}
 
-		function mouseWheel(action: string, state: Enum.UserInputState, input: InputObject) {
+		function mouseWheel(action: string, state: Enum.UserInputState, input: InputObject): Enum.ContextActionResult {
 			mouse[input.UserInputType.Name as never] = -input.Position.Z as never;
 			return Enum.ContextActionResult.Sink;
 		}
@@ -177,11 +177,7 @@ namespace Input {
 	}
 
 	export function stopCapture(): void {
-<<<<<<< HEAD
-		function zero(t: Record<string, unknown>) {
-=======
-		function zero(t: Record<string, number | Vector2 | Vector3>) {
->>>>>>> 87da3339481d7cae6f9295786c65a290f62b0396
+		function zero(t: Record<string, unknown>): void {
 			for (const [k, v] of pairs(t)) {
 				t[k as never] = ((v as never) * 0) as never;
 			}

@@ -23,7 +23,7 @@ const commands = {
 	kick: kick,
 };
 
-function buildCommands(...parameters: Parameters<ListCommand>) {
+function buildCommands(...parameters: Parameters<ListCommand>): void {
 	for (const [commandName] of pairs(commands)) {
 		commands[commandName](...parameters);
 	}
@@ -31,7 +31,7 @@ function buildCommands(...parameters: Parameters<ListCommand>) {
 
 @Service({ loadOrder: 1 })
 export class ZirconProvider implements OnInit {
-	onInit(): void {
+	public onInit(): void {
 		buildCommands(registry, ZirconFunctionBuilder);
 		print("init on server");
 	}

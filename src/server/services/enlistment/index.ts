@@ -1,13 +1,15 @@
 import { Service } from "@flamework/core";
 import store from "server/core/rodux/store";
 
-function lock(tag: Team) {}
+function lock(tag: Team): void {
+	print(tag);
+}
 
 @Service({
 	loadOrder: 6,
 })
 export class Enlistment {
-	join(player: Player) {
+	public join(player: Player): void {
 		const team = store
 			.getState()
 			.team.teams.iter()

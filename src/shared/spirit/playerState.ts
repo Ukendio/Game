@@ -30,7 +30,7 @@ namespace PlayerState {
 		}
 		for (const [name] of pairs(setCores)) {
 			setCores[name] = StarterGui.GetCore(name);
-			StarterGui.SetCore(name, false);
+			StarterGui.SetCore(name as keyof SettableCores, false);
 		}
 		const playerGui = Players.LocalPlayer.FindFirstChildOfClass("PlayerGui");
 		if (playerGui) {

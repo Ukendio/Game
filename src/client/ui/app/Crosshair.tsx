@@ -18,7 +18,7 @@ const recoilOnClick: Hooks.FC<Props> = (props, { useCallback }) => {
 	const newBinding = binding;
 	motor.onStep(setBinding);
 
-	const doRecoil = useCallback(() => {
+	const doRecoil = useCallback(async () => {
 		motor.setGoal(
 			new Flipper.Spring(1, {
 				frequency: 10,
@@ -26,7 +26,7 @@ const recoilOnClick: Hooks.FC<Props> = (props, { useCallback }) => {
 			}),
 		);
 
-		Promise.delay(0.075).then(() => {
+		return Promise.delay(0.075).then(() => {
 			motor.setGoal(
 				new Flipper.Spring(0, {
 					frequency: 4,

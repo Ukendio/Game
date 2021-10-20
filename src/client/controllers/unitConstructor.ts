@@ -19,12 +19,14 @@ export class UnitConstructor implements OnInit {
 		FabricLib.useBatching(fabric);
 		fabric.registerUnitsIn(StarterPlayer.StarterPlayerScripts.TS.units);
 
-		construct_unit.then((r) => {
-			r.Connect((unit_resolvable, ref, defaults) => {
-				const c = fabric.getOrCreateUnitByRef(unit_resolvable, ref);
-				c.defaults = defaults;
-				c.mergeBaseLayer(defaults);
-			});
-		});
+		construct_unit
+			.then<void>((r) => {
+				r.Connect((unit_resolvable, ref, defaults) => {
+					const c = fabric.getOrCreateUnitByRef(unit_resolvable, ref);
+					c.defaults = defaults;
+					c.mergeBaseLayer(defaults);
+				});
+			})
+			.await();
 	}
 }

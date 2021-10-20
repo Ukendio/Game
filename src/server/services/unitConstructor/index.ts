@@ -11,9 +11,9 @@ const construct_unit = Remotes.Server.Create("constructUnit");
 	loadOrder: 2,
 })
 export class UnitConstructor implements OnInit {
-	fabric = new FabricLib.Fabric("Game");
+	public fabric = new FabricLib.Fabric("Game");
 
-	onInit(): void {
+	public onInit(): void {
 		const fabric = this.fabric;
 
 		FabricLib.useReplication(fabric);
@@ -23,7 +23,7 @@ export class UnitConstructor implements OnInit {
 		fabric.DEBUG = true;
 	}
 
-	createGun(player: Player, settings: Config): void {
+	public createGun(player: Player, settings: Config): void {
 		const backpack = player.WaitForChild("Backpack");
 
 		const gunTool = ReplicatedStorage.assets.FindFirstChild("Pistol")?.Clone() as Tool;
@@ -34,7 +34,7 @@ export class UnitConstructor implements OnInit {
 		});
 	}
 
-	createHealthPack(player: Player): void {
+	public createHealthPack(player: Player): void {
 		type HealthPack = Model & {
 			PrimaryPart: BasePart;
 		};
@@ -53,13 +53,13 @@ export class UnitConstructor implements OnInit {
 		});
 	}
 
-	createHero(player: Player): void {
+	public createHero(player: Player): void {
 		createUnit(this.fabric, "Wyvern", player, {}, (...args) => {
 			construct_unit.SendToPlayer(player, ...args);
 		});
 	}
 
-	createMelee(player: Player): void {
+	public createMelee(player: Player): void {
 		const melee = ReplicatedStorage.assets.FindFirstChild("Knife") as Tool;
 		const backpack = player.WaitForChild("Backpack");
 		melee.Parent = backpack;
@@ -69,7 +69,7 @@ export class UnitConstructor implements OnInit {
 		});
 	}
 
-	createTag(player: Player): void {
+	public createTag(player: Player): void {
 		const dogTag = ReplicatedStorage.assets.FindFirstChild("Tag")?.Clone() as Model;
 		dogTag.SetPrimaryPartCFrame(
 			dogTag

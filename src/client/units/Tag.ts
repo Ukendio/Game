@@ -38,7 +38,7 @@ export = identity<TagDefinition>({
 	janitor: new Janitor(),
 
 	onInitialize: function (this) {
-		const model = this.ref as Model;
+		const model = this.ref;
 		const part = model.PrimaryPart!;
 
 		this.janitor.Add(

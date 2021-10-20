@@ -15,10 +15,10 @@ const round_started = remotes.Server.Create("round_started");
 	loadOrder: 3,
 })
 export class RoundCoordinator implements OnStart {
-	constructor(private Election: Election) {}
+	public constructor(private Election: Election) {}
 
-	onStart(): void {
-		const roundBuilder = async () => {
+	public onStart(): void {
+		const roundBuilder = async (): Promise<void> => {
 			store.dispatch({ type: "start_round" });
 			round_started.SendToAllPlayers();
 
@@ -27,7 +27,7 @@ export class RoundCoordinator implements OnStart {
 			return store
 				.getState()
 				.election.win_condition.expect(
-					`Unable to get win condition from ${store.getState().election.gamemode}`,
+					`Unable to get win condition from ${store.getState().election.gamemode.unwrap()}`,
 				)(store)
 				.andThenCall(Promise.delay, 5)
 				.then(() => {
@@ -35,11 +35,11 @@ export class RoundCoordinator implements OnStart {
 				});
 		};
 
-		const intermission = () => {
+		const intermission = (): Promise<Promise<void>> => {
 			Log.Info("intermission");
 
 			return Promise.delay(0.5)
-				.then(() => this.Election.voteOn({ name: "map", options: Vec.vec(...mapNames) }))
+				.then(() => this.Election.vote_on({ name: "map", options: Vec.vec(...mapNames) }))
 				.then(() => {
 					load_map(store.getState().election.current_map.unwrap()).match((current_map) => {
 						store.dispatch({
@@ -48,13 +48,12 @@ export class RoundCoordinator implements OnStart {
 						});
 					}, Log.Error);
 				})
-				.then(() => this.Election.voteOn({ name: "gamemode", options: Vec.vec(...Object.keys(gamemodes)) }))
-				.andThenCall(roundBuilder)
-				.expect();
+				.then(() => this.Election.vote_on({ name: "gamemode", options: Vec.vec(...Object.keys(gamemodes)) }))
+				.andThenCall(roundBuilder);
 		};
 
-		while (true) {
-			intermission();
+		for (;;) {
+			void intermission();
 		}
 	}
 }

@@ -16,7 +16,7 @@ let cameraPosition = new Vector3();
 let cameraRotation = new Vector2();
 let cameraFieldOfView = 0;
 
-function getFocusDistance(cameraFrame: CFrame) {
+function getFocusDistance(cameraFrame: CFrame): number {
 	const zNear = 0.1;
 	const viewPort = camera.ViewportSize;
 	const projY = 2 * math.tan(cameraFieldOfView / 2);
@@ -53,7 +53,7 @@ const velSpring = new Spring(SPIRIT_SETTINGS.VEL_STIFFNESS, new Vector3());
 const panSpring = new Spring(SPIRIT_SETTINGS.PAN_STIFFNESS, new Vector2());
 const fovSpring = new Spring(SPIRIT_SETTINGS.FOV_STIFFNESS, 0 as number);
 
-function stepFreeCamera(dt: number) {
+function stepFreeCamera(dt: number): void {
 	const vel = velSpring.update(dt, Input.vel(dt));
 	const pan = panSpring.update(dt, Input.pan(dt));
 	const fov = fovSpring.update(dt, Input.fov(dt));

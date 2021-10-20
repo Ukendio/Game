@@ -27,7 +27,9 @@ const melee: FabricUnits["Melee"] = {
 				player,
 			});
 
-			Promise.delay(1).then(() => this.removeLayer("damage"));
+			Promise.delay(1)
+				.then(() => this.removeLayer("damage"))
+				.catch((reason) => warn(reason));
 		}
 	},
 

@@ -29,8 +29,6 @@ interface Cam extends UnitDefinition<"Cam"> {
 
 	// We need to make a settings to change gun side, call this function!
 	change_gun_side: (this: ThisFabricUnit<"Cam">, gun_side: GunSide) => void;
-
-	adjust_camera: (this: ThisFabricUnit<"Cam">) => void;
 }
 
 declare global {
@@ -73,10 +71,8 @@ export = identity<Cam>({
 		this.addLayer("gun_side", { right_handed: side === GunSide.Right });
 	},
 
-	adjust_camera: function (this) {},
-
 	effects: [
-		function (this) {
+		function (this): void {
 			const recoil_speed = this.get("recoil_speed");
 			const recoil_height = this.get("recoil_height");
 			const recoil_collected = this.get("recoil_collected");
@@ -107,7 +103,7 @@ export = identity<Cam>({
 			camera.CFrame = camera.CFrame.Lerp(goal, 0.5);
 		},
 
-		function (this) {
+		function (this): void {
 			const view_model = this.get("view_model");
 
 			if (camera && view_model.FindFirstChild("Handle")) {

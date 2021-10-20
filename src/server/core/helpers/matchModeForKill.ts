@@ -7,7 +7,7 @@ import { Sequence } from "shared/Types";
 
 const unitConstructor = Dependency<UnitConstructor>();
 
-function matchModeForKill(player: Player, enemyPlayer: Player, store: Store<State, Actions>) {
+function matchModeForKill(player: Player, enemyPlayer: Player, store: Store<State, Actions>): void {
 	if (store.getState().round.sequence === Sequence.Intermission) return;
 
 	return match(store.getState().election)

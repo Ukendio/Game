@@ -63,7 +63,7 @@ const melee: MeleeDefinition = {
 	onLoaded: function (this) {
 		const tool = this.ref;
 
-		const raycast = () => {
+		const raycast = (): void => {
 			const rayCastParameters = new RaycastParams();
 			rayCastParameters.FilterDescendantsInstances = [player.Character!, tool];
 			rayCastParameters.FilterType = Enum.RaycastFilterType.Blacklist;
@@ -94,9 +94,7 @@ const melee: MeleeDefinition = {
 
 					raycast();
 
-					Promise.delay(5).then(() => {
-						debounce = true;
-					});
+					task.delay(0.75, () => (debounce = true));
 				}
 			}),
 		);
@@ -107,15 +105,13 @@ const melee: MeleeDefinition = {
 	},
 
 	effects: [
-		function (this) {
+		function (this): void {
 			const target = this.get("target");
 
 			if (target !== undefined && target.Parent?.FindFirstChild("Humanoid") !== undefined) {
 				const handle = Roact.mount(<HitMark hit={this.get("hit")} />, this.get("target") as Instance);
 
-				Promise.delay(0.75).then(() => {
-					Roact.unmount(handle);
-				});
+				task.delay(0.75, () => Roact.unmount(handle));
 			}
 		},
 	],

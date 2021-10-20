@@ -40,7 +40,7 @@ const layerMap = {
 	},
 };
 
-const outline: Hooks.FC<Props> = (props, {}) => {
+const outline: Hooks.FC<Props> = (props) => {
 	const direction = offsetMap[props.name];
 	const layer = layerMap[props.layer];
 

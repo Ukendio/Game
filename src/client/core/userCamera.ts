@@ -15,7 +15,15 @@ cameraPart.CanCollide = false;
 cameraPart.Anchored = true;
 cameraPart.Transparency = 0;
 
-export function getCamera() {
+interface MetaCamera {
+	move: (this: MetaCamera) => this;
+	set_actor: (this: MetaCamera, character: Option<Model>) => Option<this>;
+	set_actor_none: (this: MetaCamera) => this;
+	add_blur: (this: MetaCamera, blur_level: number) => Result<this, string>;
+	remove_blur: (this: MetaCamera) => this;
+}
+
+export function getCamera(): MetaCamera {
 	let currentCamera = Workspace.CurrentCamera!;
 
 	Workspace.GetPropertyChangedSignal("CurrentCamera").Connect(() => {
@@ -24,7 +32,7 @@ export function getCamera() {
 	});
 
 	return {
-		move: function (this) {
+		move: function (this): MetaCamera {
 			const viewport = currentCamera.ViewportSize;
 			const offsetFromCenterX = mouse.X / viewport.X - 0.5;
 			const offsetFromCenterY = -(mouse.Y / viewport.Y - 0.5);
@@ -36,17 +44,17 @@ export function getCamera() {
 			return this;
 		},
 
-		setActor: function (this, character: Option<Model>) {
+		set_actor: function (this, character: Option<Model>): Option<MetaCamera> {
 			return character.map((rig) => {
 				const playerHumanoid = rig.FindFirstChildOfClass("Humanoid")!;
 				currentCamera.CameraSubject = playerHumanoid;
 				currentCamera.CameraType = Enum.CameraType.Follow;
 
-				return Result.ok(this);
+				return this;
 			});
 		},
 
-		setActorNone: function (this) {
+		set_actor_none: function (this): MetaCamera {
 			cameraPart.Destroy();
 
 			if (currentCamera && cameraPart) {
@@ -58,19 +66,19 @@ export function getCamera() {
 			return this;
 		},
 
-		addBlur: function <T>(this: T, blurLevel: number): Result<T, string> {
+		add_blur: function <T>(this: T, blur_level: number): Result<T, string> {
 			if (currentCamera.FindFirstChildOfClass("BlurEffect") !== undefined) {
 				return Result.err("BlurEffect already exists");
 			}
 
-			const newBlur = new Instance("BlurEffect");
-			newBlur.Size = blurLevel;
-			newBlur.Parent = currentCamera;
+			const new_blur = new Instance("BlurEffect");
+			new_blur.Size = blur_level;
+			new_blur.Parent = currentCamera;
 
 			return Result.ok(this);
 		},
 
-		removeBlur: function (this) {
+		remove_blur: function (this): MetaCamera {
 			currentCamera.FindFirstChildOfClass("BlurEffect")?.Destroy();
 
 			return this;

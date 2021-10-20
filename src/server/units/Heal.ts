@@ -19,7 +19,7 @@ const healPackage: FabricUnits["Heal"] = {
 	janitor: new Janitor(),
 
 	onInitialize: function (this) {
-		const model = this.ref as Model;
+		const model = this.ref;
 		this.janitor?.Add(
 			RunService.Heartbeat.Connect((dt) => {
 				for (const part of model.GetChildren()) {
@@ -43,10 +43,12 @@ const healPackage: FabricUnits["Heal"] = {
 			particle: false,
 		});
 
-		Promise.delay(30).then(() => {
-			this.removeLayer(this);
-			this.ref!.Destroy();
-		});
+		Promise.delay(30)
+			.then(() => {
+				this.removeLayer(this);
+				this.ref.Destroy();
+			})
+			.catch((reason) => warn(reason));
 	},
 
 	onDestroy: function (this) {
@@ -61,7 +63,7 @@ const healPackage: FabricUnits["Heal"] = {
 		},
 
 		function (): void {
-			const model = this.ref as Model;
+			const model = this.ref;
 			for (const part of model.GetChildren()) {
 				if (part !== model.PrimaryPart && part.IsA("BasePart")) {
 					part.Transparency = this.get("transparency");

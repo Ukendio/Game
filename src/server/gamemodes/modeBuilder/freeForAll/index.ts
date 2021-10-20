@@ -8,12 +8,12 @@ import { Actions, State } from "server/core/rodux/store";
 import { PlayerTeam } from "shared/Types";
 import { Store } from "@rbxts/rodux";
 
-async function buildTeam(store: Store<State, Actions>) {
+function buildTeam(store: Store<State, Actions>): void {
 	const availableTeams = store.getState().team.teams;
 
 	const takenTeams = Vec.withCapacity<PlayerTeam>(availableTeams.len());
 
-	const playerAdded = (player: Player) => {
+	const playerAdded = (player: Player): void => {
 		const team = availableTeams
 			.pop()
 			.map((team) => team)
@@ -41,7 +41,7 @@ async function buildTeam(store: Store<State, Actions>) {
 	}
 }
 
-function maxKills(store: Store<State, Actions>) {
+function maxKills(store: Store<State, Actions>): Promise<Team> {
 	return new Promise((resolve) => {
 		store.changed.connect(() => {
 			store
@@ -54,7 +54,9 @@ function maxKills(store: Store<State, Actions>) {
 	});
 }
 
-async function winCondition(store: Store<State, Actions>) {
+async function winCondition(store: Store<State, Actions>): Promise<void> {
+	buildTeam(store);
+
 	return unlistTeams()
 		.andThenCall(listTeams, settings.teams, store)
 		.then(() =>

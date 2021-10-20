@@ -6,7 +6,7 @@ import { State, Actions } from "server/core/rodux/store";
 import { PlayerTeam } from "shared/Types";
 import { Store } from "@rbxts/rodux";
 
-function maxKills(store: Store<State, Actions>) {
+function maxKills(store: Store<State, Actions>): Promise<Team> {
 	return new Promise((resolve) => {
 		store.changed.connect(() => {
 			store
@@ -19,7 +19,7 @@ function maxKills(store: Store<State, Actions>) {
 	});
 }
 
-async function winCondition(store: Store<State, Actions>) {
+async function winCondition(store: Store<State, Actions>): Promise<void> {
 	return unlistTeams()
 		.andThenCall(listTeams, settings.teams, store)
 		.then(() =>

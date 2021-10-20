@@ -15,9 +15,7 @@ const council_stop_vote = serverEvents.Create("councilStopVote");
 	loadOrder: 4,
 })
 export class Election implements OnInit {
-	constructor() {}
-
-	onInit() {
+	public onInit(): void {
 		//TODO: sanitize event
 		clientAppendVote.Connect((player, vote) => {
 			store.dispatch({ type: "cast_vote", player: player, vote: vote });
@@ -25,7 +23,7 @@ export class Election implements OnInit {
 		});
 	}
 
-	async voteOn(topic: TopicFormat) {
+	public async vote_on(topic: TopicFormat): Promise<void> {
 		store.dispatch({
 			type: "create_topic",
 			topic: Option.some(topic),

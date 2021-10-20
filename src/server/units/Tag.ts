@@ -49,7 +49,7 @@ export = identity<FabricUnits["Tag"]>({
 	},
 
 	effects: [
-		function (this) {
+		function (this): void {
 			const model = this.ref;
 			for (const part of model.GetChildren()) {
 				if (part !== model.PrimaryPart && part.IsA("BasePart")) {
@@ -59,7 +59,7 @@ export = identity<FabricUnits["Tag"]>({
 				}
 			}
 		},
-		function (this) {
+		function (this): void {
 			const player = this.get("finder");
 			const enemyPlayer = this.get("owner") ?? this.defaults!.owner;
 

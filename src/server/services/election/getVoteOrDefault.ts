@@ -1,5 +1,5 @@
 import Object from "@rbxts/object-utils";
-import { Iterator, Vec } from "@rbxts/rust-classes";
+import { Iterator, Option, Vec } from "@rbxts/rust-classes";
 
 /**
  * getVoteOrDefault takes two arguments:
@@ -14,7 +14,7 @@ import { Iterator, Vec } from "@rbxts/rust-classes";
  * 	- 3. wrap highest element in option but map to the last index in `votableOptions` if it
  * 	  is of the `None` type
  */
-export function getVoteOrDefault(votes: Record<string, number>, votableOptions: Vec<string>) {
+export function getVoteOrDefault(votes: Record<string, number>, votableOptions: Vec<string>): Option<string> {
 	return Iterator.fromItems(...Object.entries(votes))
 		.maxBy(([_a, aCount], [_b, bCount]) => aCount - bCount)
 		.map(([name]) => name)

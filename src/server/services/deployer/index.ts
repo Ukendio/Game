@@ -9,7 +9,7 @@ const userRequestDeploy = Remotes.Server.Create("userRequestDeploy");
 
 @Service({ loadOrder: 5 })
 export class Deployment implements OnInit {
-	onInit() {
+	public onInit(): void {
 		userRequestDeploy.Connect((player) => {
 			Log.Info("{} has requested to deploy", player);
 

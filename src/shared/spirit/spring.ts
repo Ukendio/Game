@@ -24,11 +24,7 @@ export = class Spring<T extends Vector3 | Vector2 | number> {
 		return p1 as T;
 	}
 
-<<<<<<< HEAD
 	public reset(pos: T): void {
-=======
-	reset(pos: T): void {
->>>>>>> 87da3339481d7cae6f9295786c65a290f62b0396
 		this.p = pos;
 		this.v = ((pos as unknown) as number) * 0;
 	}

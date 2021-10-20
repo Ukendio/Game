@@ -24,7 +24,7 @@ const ability: AbilityDefinition = {
 	bind: function (this, name, handler, key, cooldown) {
 		let nextExecute = -1;
 
-		const createHandler = (action: string, state: Enum.UserInputState, inputObject: InputObject) => {
+		const createHandler = (action: string, state: Enum.UserInputState, inputObject: InputObject): void => {
 			if (action === name && state === Enum.UserInputState.Begin && inputObject.KeyCode === key) {
 				if (os.clock() > nextExecute) {
 					handler();

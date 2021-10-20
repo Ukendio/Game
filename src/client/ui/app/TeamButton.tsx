@@ -3,13 +3,17 @@ import Hooks from "@rbxts/roact-hooks";
 
 import { match } from "@rbxts/rbxts-pattern";
 import store from "../../core/rodux/store";
+import { Option } from "@rbxts/rust-classes";
+import { PlayerTeam } from "shared/Types";
 
 interface Props {
 	side: "Left" | "Right";
 }
 
 const teamButton: Hooks.FC<Props> = (props, { useState }) => {
-	const transform = (...args: [BrickColor, UDim2, Vector2]) => {
+	const transform = (
+		...args: [BrickColor, UDim2, Vector2]
+	): { Color: BrickColor; Position: UDim2; Anchor: Vector2 } => {
 		return {
 			Color: args[0],
 			Position: args[1],
@@ -21,17 +25,16 @@ const teamButton: Hooks.FC<Props> = (props, { useState }) => {
 		.with("Right", () => transform(new BrickColor(58, 147, 255), UDim2.fromScale(1, 0.5), new Vector2(1, 0.5)))
 		.exhaustive();
 
-	const getTeam = (color: BrickColor) => {
+	const getTeam = (color: BrickColor): Option<PlayerTeam> => {
 		return store
 			.getState()
 			.team.teams.iter()
-			.find((current) => current.tag.TeamColor === color)
-			.unwrap();
+			.find((current) => current.tag.TeamColor === color);
 	};
 
 	const thisTeam = getTeam(specificIndex.Color);
 
-	const [memberCount, setMemberCount] = useState(thisTeam.members.len());
+	const [memberCount, setMemberCount] = useState(thisTeam.unwrap().members.len());
 
 	return (
 		<frame Rotation={45}>
@@ -44,7 +47,7 @@ const teamButton: Hooks.FC<Props> = (props, { useState }) => {
 				Position={specificIndex.Position}
 				AnchorPoint={specificIndex.Anchor}
 				Event={{
-					MouseButton1Click: () => setMemberCount(memberCount + 1),
+					MouseButton1Click: (): void => setMemberCount(memberCount + 1),
 				}}
 			/>
 		</frame>
