@@ -1,6 +1,6 @@
 import FFA_WIN_CONDITION from "./modeBuilder/freeForAll";
 import KC_WIN_CONDITION from "./modeBuilder/killConfirmed";
-import TDM_WIN_CONDITION from "./modeBuilder/freeForAll";
+import TDM_WIN_CONDITION from "./modeBuilder/teamDeathMatch";
 
 export const gamemodes = {
 	["Free For All"]: FFA_WIN_CONDITION,

@@ -53,7 +53,7 @@ export class RoundCoordinator implements OnStart {
 		};
 
 		for (;;) {
-			void intermission();
+			void intermission().expect();
 		}
 	}
 }

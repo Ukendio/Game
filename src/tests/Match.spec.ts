@@ -1,6 +1,5 @@
 /// <reference types="@rbxts/testez/globals" />
 import { match, when, _select, __ } from "@rbxts/rbxts-pattern";
-import { Result } from "@rbxts/rust-classes";
 
 export = (): void => {
 	describe("match number utility", () => {
@@ -71,10 +70,10 @@ export = (): void => {
 			const input = identity<Input>([12, "*", 4]);
 
 			const output = match<Input>(input)
-				.with([__.number, "*", __.number], ([x, _, y]) => x * y)
-				.with([__.number, "+", __.number], ([x, _, y]) => x + y)
-				.with([__.number, "-", __.number], ([x, _, y]) => x - y)
-				.with([__.number, "/", __.number], ([x, _, y]) => x / y)
+				.with([__.number, "*", __.number], ([x, , y]) => x * y)
+				.with([__.number, "+", __.number], ([x, , y]) => x + y)
+				.with([__.number, "-", __.number], ([x, , y]) => x - y)
+				.with([__.number, "/", __.number], ([x, , y]) => x / y)
 				.exhaustive();
 
 			expect(output).to.equal(48);
@@ -112,6 +111,28 @@ export = (): void => {
 					.with({ foo: { bar: _select() } }, (a) => a)
 					.exhaustive(),
 			).to.equal(1);
+		});
+	});
+
+	describe("multiple patterns", () => {
+		it("accept union arm", () => {
+			expect(
+				match<1 | 2 | 3>(1)
+					.with(1, 2, () => "one or two")
+					.with(3, () => "three!")
+					.exhaustive(),
+			).to.equal("one or two");
+		});
+		it("find n is in array", () => {
+			const number = 7;
+
+			expect(
+				match<1 | 3 | 5 | 7 | 11>(number)
+					.with(1, 3, 5, 7, 11, () => {
+						return "7 is in array";
+					})
+					.exhaustive(),
+			).to.equal(`7 is in array`);
 		});
 	});
 };
